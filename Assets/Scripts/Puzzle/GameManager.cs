@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class GameManager : MonoBehaviour
 {
@@ -28,8 +29,11 @@ public class GameManager : MonoBehaviour
     //matriz game
     private int[,] matrizBoard;
     private GameObject[,] matrizPieces;
-
+    //posição vazia
     private Vector2 posBlank;
+
+    private bool axisHorizontalDown = false;
+    private bool axisVerticalDown = false;
 
     // Use this for initialization
     void Start()
@@ -50,23 +54,50 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        //if (Input.GetButtonDown("Left"))
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        int HorizontalAxis = RoudAxis(CrossPlatformInputManager.GetAxis("Horizontal"));
+        int VerticalAxis   = RoudAxis(CrossPlatformInputManager.GetAxis("Vertical"));
+
+        //Debug.Log("round: " + VerticalAxis + " - original: " + CrossPlatformInputManager.GetAxis("Vertical"));
+
+        /*Horizontal*/
+        if (HorizontalAxis == 1 || HorizontalAxis == -1)
         {
-            MovePuzzle(-1, 0);
+            if (!axisHorizontalDown)
+            {
+                int dir = HorizontalAxis;
+                MovePuzzle(dir, 0);
+                axisHorizontalDown = true;
+            }            
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        else if (HorizontalAxis == 0)
         {
-            MovePuzzle(1, 0);
+            axisHorizontalDown = false;
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
+
+        /*Vertical*/
+        if (VerticalAxis == 1 || VerticalAxis == -1)
         {
-            MovePuzzle(0, -1);
+            if (!axisVerticalDown)
+            {
+                int dir = VerticalAxis;
+                MovePuzzle(0, dir * -1);
+                axisVerticalDown = true;
+            }            
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        else if (VerticalAxis == 0)
         {
-            MovePuzzle(0, 1);
+            axisVerticalDown = false;
         }
+    }
+    
+    private int RoudAxis(float num)
+    {
+        int floatToInt = 0;
+        if (num > 0)
+            floatToInt = Mathf.CeilToInt(num);
+        else if (num < 0)
+            floatToInt = Mathf.FloorToInt(num);
+        return floatToInt;
     }
 
     private void MovePuzzle(int dirX, int dirY)
