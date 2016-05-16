@@ -4,7 +4,8 @@ using System.Collections;
 
 using UnityStandardAssets.CrossPlatformInput;
 
-public class MoveSquare : MonoBehaviour {
+public class MoveSquare : MonoBehaviour
+{
 
 	private bool axisHorizontalDown = false;
 	private bool axisVerticalDown = false;
@@ -12,12 +13,13 @@ public class MoveSquare : MonoBehaviour {
 	//texto
 	public Text getAxis;
 
-	private GameManager gameManager;
+	private BoardManager gameManager;
 
 	// Use this for initialization
-	void Start () {
+	void Start()
+	{
 
-		gameManager = GetComponent<GameManager>();
+		gameManager = GetComponent<BoardManager>();
 	}
 
 	void Update()
@@ -56,7 +58,7 @@ public class MoveSquare : MonoBehaviour {
 			axisVerticalDown = false;
 		}
 	}
-	
+
 	private int RoudAxis(float num)
 	{
 		int floatToInt = 0;

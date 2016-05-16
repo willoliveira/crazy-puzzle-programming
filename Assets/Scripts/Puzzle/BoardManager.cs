@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-public class GameManager : MonoBehaviour
+public class BoardManager : MonoBehaviour
 {
 	//imagem de referencia
 	public Texture2D image;
@@ -27,85 +27,94 @@ public class GameManager : MonoBehaviour
 	//tamanho do recorte
 	private int cropSize;	
 	//Lista de crop images
-	private List<StructCrop> listObjCropImages;
-	//matriz game
-	private int[,] matrizBoard;
+	private List<StructCrop> listObjCropImages;	
 	//referencia da classe de movimento
 	private MoveSquare moveSquare;
 	//Ultima peça
 	private Transform lastPiece;
-
-
-
+	
 	// Use this for initialization
 	void Start()
 	{
 		//pega as colunas
 		cropSize = (int)(image.width / columns);
-		//cria a matriz
-		matrizBoard = new int[columns, columns];
-
+		//pega o move square
 		moveSquare = GetComponent<MoveSquare>();
-
+		//inicia a lista de struct com as pecas
 		listObjCropImages = new List<StructCrop>();
 		//Corta a imagem
 		CropImage();
-
 		//Create pieces
 		CreatePieces();
 	}
-	
+
+	public void StartGame()
+	{
+		StartCoroutine(InitialGame());
+	}
+
+	private IEnumerator InitialGame()
+	{
+		float a = 1f;
+		SpriteRenderer rendererLastPiece = lastPiece.GetComponent<SpriteRenderer>();
+		while (true)
+		{
+			//se a peca ficar invisivel, para a rotina
+			if (rendererLastPiece.color.a <= 0)
+			{
+				//Random pieces
+				StartCoroutine(RandomPieces());
+				break;
+			}
+			a -= 0.03f;
+			rendererLastPiece.color = new Color(rendererLastPiece.color.r, rendererLastPiece.color.g, rendererLastPiece.color.b, a);
+			yield return new WaitForSeconds(0.01f);
+		}
+		yield return null;
+	}
+
 	private void CropImage()
 	{
-		for (int x = 0; x < columns; x++)
+		for (int cont = 0; cont < (columns * columns); cont++)
 		{
-			for (int y = 0; y < columns; y++)
-			{
-				//se for no lugar da ultima peça não pega
-				if ((columns - 1 - x) == 0 && y == 3) continue;
-				//Pega os pixels do recorte que quero fazer
-				Color[] pix = image.GetPixels(image.width - cropSize - ((columns - 1 - x) * cropSize), image.height - cropSize - ((y) * cropSize), cropSize, cropSize);
-				//Cria uma textura com o recorte
-				Texture2D squareTexture2d = new Texture2D(cropSize, cropSize);
-				squareTexture2d.SetPixels(pix);
-				squareTexture2d.wrapMode = TextureWrapMode.Clamp;
-				squareTexture2d.Apply();
-				//monta o struct
-				StructCrop structCrop;
-				structCrop.crop = squareTexture2d;
-				structCrop.row = y;
-				structCrop.column = x;
-				//adiciona no array o recorte
-				listObjCropImages.Add(structCrop);
-			}
+			int row = Mathf.FloorToInt(cont / (columns));
+			int column = cont % columns;
+			//Pega os pixels do recorte que quero fazer
+			Color[] pix = image.GetPixels(image.width - cropSize - ((columns - 1 - row) * cropSize), image.height - cropSize - (column * cropSize), cropSize, cropSize);
+			//Cria uma textura com o recorte
+			Texture2D squareTexture2d = new Texture2D(cropSize, cropSize);
+			squareTexture2d.SetPixels(pix);
+			squareTexture2d.wrapMode = TextureWrapMode.Clamp;
+			squareTexture2d.Apply();
+			//monta o struct
+			StructCrop structCrop;
+			structCrop.crop = squareTexture2d;
+			structCrop.row = column;
+			structCrop.column = row;
+			//adiciona no array o recorte
+			listObjCropImages.Add(structCrop);
 		}
 	}
 
 	private void CreatePieces()
 	{
-		//aumenta o board
+		//aumenta o board GAMBS!!!
 		Board.localScale = new Vector3(2, 2, 1);
-		//Assim que adiciona Component nos games object
-		//SquareGameObject.AddComponent<SpriteRenderer>();
 		SpriteRenderer squareSpriteRenderer;
 		for (int cont = 0; cont < (columns * columns); cont++)
 		{
 			int row = Mathf.FloorToInt(cont / (columns));
 			int column = cont % columns;
 			//randomiza a imagem
-			//int randomPosition = Random.Range(0, listObjCropImages.Count - 1); // quando era random na criacao
 			int randomPosition = (row * columns) + column;
 			StructCrop StructCropImage = listObjCropImages[randomPosition];
 			Texture2D randomCropImage = StructCropImage.crop;
 			//remove do array
-			//listObjCropImages.Remove(StructCropImage); // quando era random na criacao
 			//Seta a imagem como Sprite
 			squareSpriteRenderer = SquareGameObject.GetComponent<SpriteRenderer>();
 			squareSpriteRenderer.sprite = Sprite.Create(randomCropImage, new Rect(0, 0, randomCropImage.width, randomCropImage.height), new Vector2(0, 0), cropSize);
 			//Instancia o game object com a imagem recortada
-			//GameObject instance = Instantiate(SquareGameObject, new Vector3(y * Board.localScale.x, (columns - 1 - row) * Board.localScale.y), Quaternion.identity) as GameObject;// quando era random na criacao
 			GameObject instance = Instantiate(SquareGameObject, new Vector3(row * Board.localScale.x, (columns - 1 - column) * Board.localScale.y), Quaternion.identity) as GameObject;
-			//instance.name = "square-" + x + "-" + y; // quando era no random na criacao
 			instance.name = "square-" + column + "-" + row;
 			//seta a linha e coluna que essa imagem pertence
 			instance.GetComponent<Square>().Row = StructCropImage.row;
@@ -118,17 +127,11 @@ public class GameManager : MonoBehaviour
 		//pega a ultima peça
 		lastPiece = Board.Find("square-2-2") as Transform;
 		lastPiece.name = "lastPiece";
-
+		//posicao vazia
 		posBlank.x = 2;
 		posBlank.y = 2;
 	}
-
-	public void InitialGame()
-	{
-		//Random pieces
-		StartCoroutine(RandomPieces());
-	}
-
+	
 	//todo: colocar o label de onde as peças estao após a randomização
 	private IEnumerator RandomPieces()
 	{
