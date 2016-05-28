@@ -11,6 +11,9 @@ public class BoardManager : MonoBehaviour
 	public Transform Board;
 	//quadrado de referencia
 	public GameObject SquareGameObject;
+	
+
+
 	//posição vazia
 	[HideInInspector]
 	public Vector2 posBlank;
@@ -25,6 +28,8 @@ public class BoardManager : MonoBehaviour
 		public int column;
 	};
 
+	//
+	private GameManager mGameManger;
 	//tamanho do recorte
 	private int cropSize;
 	//Lista de crop images
@@ -33,68 +38,67 @@ public class BoardManager : MonoBehaviour
 	private MoveSquare moveSquare;
 	//Ultima peça
 	private Transform lastPiece;
-	
-	void Awake()
-	{
-	}
+
 
 	// Use this for initialization
 	void Start()
 	{
-		columns = 5;
-
-		//pega as colunas
-		cropSize = (int) (image.width / columns);
 		//pega o move square
 		moveSquare = GetComponent<MoveSquare>();
 		//inicia a lista de struct com as pecas
 		listObjCropImages = new List<StructCrop>();
-		//Corta a imagem
-		CropImage();
-		//Create pieces
-		CreatePieces();
+
+		//Configura o board
+		ConfigGame();
+	}
+
+	private void ConfigGame()
+	{
+		//
+		mGameManger = GameObject.Find("GameManager").GetComponent<GameManager>();
+		//Seta a dificuldade do jogo
+		Debug.Log(mGameManger.mDiffilcultyMode);
+
+		if (mGameManger.mDiffilcultyMode == DiffilcultyMode.Normal)
+		{
+			columns = 3;
+		}
+		else if (mGameManger.mDiffilcultyMode == DiffilcultyMode.Hard)
+		{
+			columns = 4;
+		}
+		//pega o tamanho do recorte pelo numero de colunas
+		cropSize = (int)(image.width / columns);
+		//TODO: Preciso fazer os modos de jogo ainda
+		if (mGameManger.mSelectMode == SelectMode.Image)
+		{
+			//Corta a imagem
+			CropImage();
+			//Create pieces
+			CreatePieces();
+		}
 	}
 
 	public void StartGame()
 	{
-		StartCoroutine(NestedCoroutine(
-			new IEnumerator[] {
-				Fade(lastPiece.GetComponent<SpriteRenderer>(), 0.03f),
-				RandomPieces()
-			}));
+		StartCoroutine(FadeInRandomPieces());
+	}
 
-		//StartCoroutine(Fade(lastPiece.GetComponent<SpriteRenderer>(), 0.03f));
-	}
-	/// <summary>
-	/// 
-	/// </summary>
-	/// <param name="fade">true fadeIn, false fadeOut</param>
-	/// <param name="fadeAmount"></param>
-	/// <returns></returns>
-	private IEnumerator NestedCoroutine(IEnumerator[] coroutines)
+	private IEnumerator FadeInRandomPieces()
 	{
-		int cont = 0;
-		StartCoroutine(coroutines[0]);
-		while (true)
-		{		
-			Debug.Log("MoveNext: " + coroutines[cont].MoveNext());
-			if (!coroutines[cont].MoveNext())
-			{
-				cont++;
-				StartCoroutine(coroutines[cont]);
-				break;
-			}
-			
-		}
-		//Debug.Log("MoveNext: " + coroutines[cont].MoveNext());
-		yield return null;
+		//some com a ultima
+		yield return StartCoroutine(Fade(lastPiece.GetComponent<SpriteRenderer>(), 0.03f));
+		//randomiza
+		yield return StartCoroutine(RandomPieces());
 	}
+
 	private IEnumerator Fade(SpriteRenderer sprite, float fadeAmount)
 	{
 		bool fade;
 		float a;
 		//verifica se é fadeIn ou fadeOut
-		if (sprite.color.a == 0) {
+		if (sprite.color.a == 0)
+		{
 			fade = true;
 			a = 0f;
 		}
@@ -104,29 +108,22 @@ public class BoardManager : MonoBehaviour
 			a = 1f;
 			fadeAmount *= -1f;
 		}
-		//float a = fade ? 0f : 1f;
-		//fadeAmount *= fade ? 1f : -1f;
-
-		a = 1f;
 		SpriteRenderer rendererLastPiece = sprite.GetComponent<SpriteRenderer>();
-		while (true)
+		while ((fade && rendererLastPiece.color.a != 1f) || (!fade && rendererLastPiece.color.a > 0))
 		{
 			//se a peca ficar invisivel, para a rotina
-			//if ((fade && rendererLastPiece.color.a == 1f) || (!fade && rendererLastPiece.color.a <= 0))
-			if (rendererLastPiece.color.a <= 0)
+			if ((fade && rendererLastPiece.color.a == 1f) || (!fade && rendererLastPiece.color.a <= 0))
 			{
-				//Random pieces
-				//StartCoroutine(RandomPieces());
 				break;
 			}
 			//a += fadeAmount;
 			a -= 0.03f;
 			rendererLastPiece.color = new Color(rendererLastPiece.color.r, rendererLastPiece.color.g, rendererLastPiece.color.b, a);
-			yield return new WaitForSeconds(5f);
-			//yield return new WaitForSeconds(0.01f);
+			//yield return new WaitForSeconds(5f);
+			yield return new WaitForSeconds(0.01f);
 		}
 		yield return null;
-	}	
+	}
 
 	private void CropImage()
 	{
@@ -187,14 +184,15 @@ public class BoardManager : MonoBehaviour
 		posBlank.y = 2;
 	}
 
-	private void renameLastPiece() {
+	private void renameLastPiece()
+	{
 		//pega a ultima peça
 		lastPiece = Board.Find("square-" + (columns - 1) + "-" + (columns - 1)) as Transform;
 		lastPiece.name = "lastPiece";
 	}
 
 
-	
+
 	//todo: colocar o label de onde as peças estao após a randomização
 	private IEnumerator RandomPieces()
 	{
@@ -214,16 +212,17 @@ public class BoardManager : MonoBehaviour
 			{
 				int indexRandomPosition;
 				//não deixa a posição ser a mesma da posição atual
-				do {
+				do
+				{
 					//randomiza a posição
 					indexRandomPosition = Random.Range(0, arrayPieces.Count - 1);
 				} while (arrayPieces[indexRandomPosition] == cont);
 				//} while (indexRandomPosition == cont);
-			//index da posição randomizada
-			int valueRandomPosition = arrayPieces[indexRandomPosition],
+				//index da posição randomizada
+				int valueRandomPosition = arrayPieces[indexRandomPosition];
 				//linha e coluna da posição randomizada
-					rowPos = (int)Mathf.Floor(valueRandomPosition / columns),
-					columnPos = valueRandomPosition % columns;
+				int rowPos = (int)Mathf.Floor(valueRandomPosition / columns);
+				int columnPos = valueRandomPosition % columns;
 				//movimenta a peça pra posição randomizada
 				//cacheSquare.position = new Vector3(columnPos * Board.localScale.x, (columns - 1 - rowPos) * Board.localScale.x, 0);
 				StartCoroutine(moveSquare.MovePieceSmooth(cacheSquare, new Vector3(columnPos * Board.localScale.x, (columns - 1 - rowPos) * Board.localScale.x, 0)));
@@ -238,13 +237,14 @@ public class BoardManager : MonoBehaviour
 				posBlank.x = columns - 1;
 				posBlank.y = columns - 1;
 			}
+			yield return null;
 			if (cont == (columns * columns) - 1)
 			{
 				//depois que acabar o random das peças, libera o jogo
 				moveSquare.enabled = true;
 				RenamePieces();
 			}
-			yield return null;
+			
 		}
 	}
 
@@ -259,5 +259,5 @@ public class BoardManager : MonoBehaviour
 		}
 		renameLastPiece();
 	}
-	
+
 }
