@@ -91,7 +91,6 @@ public class MoveSquare : MonoBehaviour
 		gameManager.posBlank.y = gameManager.posBlank.y - dirX;
 	}
 
-	[HideInInspector]
 	public IEnumerator MovePieceSmooth(Transform piece, Vector3 end)
 	{
 		// Calculate the remaining distance to move based on the square magnitude of the difference between current position and end parameter.
@@ -101,7 +100,9 @@ public class MoveSquare : MonoBehaviour
 		while (sqrRemainingDistance > float.Epsilon)
 		{
 			//Find a new position proportionally closer to the end, based on the moveTime
-			Vector3 newPostion = Vector3.MoveTowards(piece.position, end, 1f / 0.1f * Time.deltaTime);
+			Vector3 newPostion;
+			newPostion = Vector3.MoveTowards(piece.position, end, 1f / 0.1f * Time.deltaTime);
+			//newPostion.z = 3f;
 			//Call MovePosition on attached Rigidbody2D and move it to the calculated position.
 			piece.position = newPostion;
 			//Recalculate the remaining distance after moving.
