@@ -58,8 +58,6 @@ namespace PrototypingGame
 			//
 			mGameManger = GameObject.Find("GameManager").GetComponent<GameManager>();
 			//Seta a dificuldade do jogo
-			Debug.Log(mGameManger.mDiffilcultyMode);
-
 			if (mGameManger.mDiffilcultyMode == DiffilcultyMode.Normal)
 			{
 				columns = 3;
@@ -82,10 +80,10 @@ namespace PrototypingGame
 
 		public void StartGame()
 		{
-			StartCoroutine(FadeInRandomPieces());
+			StartCoroutine(FadeInAndRandomPieces());
 		}
 
-		private IEnumerator FadeInRandomPieces()
+		private IEnumerator FadeInAndRandomPieces()
 		{
 			//some com a ultima
 			yield return StartCoroutine(Fade(lastPiece.GetComponent<SpriteRenderer>(), 0.03f));
@@ -126,6 +124,8 @@ namespace PrototypingGame
 			yield return null;
 		}
 
+
+
 		private void CropImage()
 		{
 			for (int cont = 0; cont < (columns * columns); cont++)
@@ -153,7 +153,7 @@ namespace PrototypingGame
 		{
 			//aumenta o board GAMBS!!!
 			//TODO: mudar isso para o responsivo com o onGui
-			Board.localScale = new Vector3(2, 2, 1);
+			//Board.localScale = new Vector3(2, 2, 1);
 			SpriteRenderer squareSpriteRenderer;
 			for (int cont = 0; cont < (columns * columns); cont++)
 			{
@@ -168,7 +168,7 @@ namespace PrototypingGame
 				squareSpriteRenderer = SquareGameObject.GetComponent<SpriteRenderer>();
 				squareSpriteRenderer.sprite = Sprite.Create(randomCropImage, new Rect(0, 0, randomCropImage.width, randomCropImage.height), new Vector2(0, 0), cropSize);
 				//Instancia o game object com a imagem recortada
-				GameObject instance = Instantiate(SquareGameObject, new Vector3(row * Board.localScale.x, (columns - 1 - column) * Board.localScale.y), Quaternion.identity) as GameObject;
+				GameObject instance = Instantiate(SquareGameObject, new Vector3(row, (columns - 1 - column)), Quaternion.identity) as GameObject;
 				instance.name = "square-" + column + "-" + row;
 				//seta a linha e coluna que essa imagem pertence
 				instance.GetComponent<Square>().Row = StructCropImage.row;
@@ -178,6 +178,8 @@ namespace PrototypingGame
 				//coloca a peça com escola 1x1
 				instance.transform.localScale = new Vector3(1, 1, 1);
 			}
+			//TODO: mudar isso para o responsivo com o onGui
+			Board.localScale = new Vector3(2, 2, 1);
 			//rename na ultima peça
 			renameLastPiece();
 			//posicao vazia
@@ -191,8 +193,6 @@ namespace PrototypingGame
 			lastPiece = Board.Find("square-" + (columns - 1) + "-" + (columns - 1)) as Transform;
 			lastPiece.name = "lastPiece";
 		}
-
-
 
 		//todo: colocar o label de onde as peças estao após a randomização
 		private IEnumerator RandomPieces()
@@ -222,11 +222,23 @@ namespace PrototypingGame
 					//index da posição randomizada
 					int valueRandomPosition = arrayPieces[indexRandomPosition];
 					//linha e coluna da posição randomizada
-					int rowPos = (int)Mathf.Floor(valueRandomPosition / columns);
-					int columnPos = valueRandomPosition % columns;
+					int rowPosRandomized = (int)Mathf.Floor(valueRandomPosition / columns);
+					int columnPosRandomized = valueRandomPosition % columns;
+					//vetor com a posição final do recorte
+					Vector3 posEnd = new Vector3(columnPosRandomized * Board.localScale.x, (columns - 1 - rowPosRandomized) * Board.localScale.x, 0);
+					//
+					cacheSquare.GetComponent<Square>().Row = rowPosRandomized;
+					cacheSquare.GetComponent<Square>().Column = columnPosRandomized;
+					//
+					StartCoroutine(moveSquare.AnimateAndMoveSmooth(cacheSquare, posEnd));
+
+					//Animation testAnimation = cacheSquare.GetComponent<Animation>();
+					//yield WaitForSeconds (testAnimation.GetClip("ScaleIn").length);
+					//cacheSquare.GetComponent<Animator>().SetTrigger("ScaleIn");
+
 					//movimenta a peça pra posição randomizada
 					//cacheSquare.position = new Vector3(columnPos * Board.localScale.x, (columns - 1 - rowPos) * Board.localScale.x, 0);
-					StartCoroutine(moveSquare.MovePieceSmooth(cacheSquare, new Vector3(columnPos * Board.localScale.x, (columns - 1 - rowPos) * Board.localScale.x, 0)));
+					// StartCoroutine(moveSquare.MovePieceSmooth(cacheSquare, posEnd));
 					//remove do array
 					arrayPieces.Remove(valueRandomPosition);
 					//espera um pouco
@@ -243,20 +255,21 @@ namespace PrototypingGame
 				{
 					//depois que acabar o random das peças, libera o jogo
 					moveSquare.enabled = true;
-					RenamePieces();
+					NormalizePiece();
 				}
 
 			}
 		}
 
-		private void RenamePieces()
+		private void NormalizePiece()
 		{
 			for (int cont = 0, len = Board.childCount; cont < len; cont++)
 			{
 				//pega o filho
-				Transform child = Board.GetChild(cont);
+				Transform childTransform = Board.GetChild(cont);
+				Square childSquare = childTransform.GetComponent<Square>() as Square;
 				//renomeia a peça pela posição que ela ocupa
-				child.name = "square-" + (columns - child.localPosition.y - 1) + "-" + child.localPosition.x;
+				childTransform.name = "square-" + childSquare.Row + "-" + childSquare.Column;
 			}
 			renameLastPiece();
 		}
