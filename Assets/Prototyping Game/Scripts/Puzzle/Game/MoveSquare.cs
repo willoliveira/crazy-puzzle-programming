@@ -94,6 +94,41 @@ namespace PrototypingGame
 			gameManager.posBlank.y = gameManager.posBlank.y - dirX;
 		}
 
+		public IEnumerator AnimateAndMoveSmooth(Transform piece, Vector3 end)
+		{
+			//http://answers.unity3d.com/questions/628200/get-length-of-animator-statetransition.html
+			//
+			Animator animation = piece.GetComponent<Animator>();
+			Animator animator = piece.GetComponent<Animator>();
+			//
+			piece.GetComponent<Animator>().SetTrigger("ScaleIn");
+
+
+			
+			//var animationClips = animation.GetCurrentAnimatorStateInfo(0);
+			//for (int cont = 0; cont < animationClips.length; cont++)
+			//{
+			//	Debug.Log(animationClips[cont]);
+			//}
+			//Debug.Log(animation.GetNextAnimatorClipInfo());
+			//foreach (AnimationState anim in animation)
+			//{
+			//	if (animation.IsPlaying(anim.name))
+			//	{
+			//		Debug.Log(anim.name);
+			//	}
+			//}
+
+
+			//piece.GetComponent<Animator>().;
+			yield return new WaitForSeconds(1f);
+
+			yield return StartCoroutine(MovePieceSmooth(piece, end));
+
+			yield return new WaitForSeconds(0.2f);
+
+			// piece.GetComponent<Animator>().SetTrigger("ScaleOut");
+		}
 		public IEnumerator MovePieceSmooth(Transform piece, Vector3 end)
 		{
 			// Calculate the remaining distance to move based on the square magnitude of the difference between current position and end parameter.
@@ -113,6 +148,9 @@ namespace PrototypingGame
 				//Return and loop until sqrRemainingDistance is close enough to zero to end the function
 				yield return new WaitForSeconds(0.01f);
 			}
+			yield return null;
+			piece.GetComponent<Animator>().SetTrigger("ScaleOut");
+
 		}
 	}
 }

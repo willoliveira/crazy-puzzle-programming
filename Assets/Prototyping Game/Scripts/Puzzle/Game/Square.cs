@@ -28,6 +28,9 @@ namespace PrototypingGame
 			set { order = value; }
 		}
 
+		public void NormalizePiece() { }
+
+
 		//public Square(int x, int y, int order)
 		//{
 		//    this.x = x;
