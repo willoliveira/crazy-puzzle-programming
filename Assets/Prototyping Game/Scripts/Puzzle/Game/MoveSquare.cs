@@ -123,11 +123,11 @@ namespace PrototypingGame
 			//piece.GetComponent<Animator>().;
 			yield return new WaitForSeconds(1f);
 
-			yield return StartCoroutine(MovePieceSmooth(piece, end));
+			//yield return StartCoroutine(MovePieceSmooth(piece, end));
 
 			yield return new WaitForSeconds(0.2f);
 
-			// piece.GetComponent<Animator>().SetTrigger("ScaleOut");
+			piece.GetComponent<Animator>().SetTrigger("ScaleOut");
 		}
 		public IEnumerator MovePieceSmooth(Transform piece, Vector3 end)
 		{
@@ -138,7 +138,7 @@ namespace PrototypingGame
 			while (sqrRemainingDistance > float.Epsilon)
 			{
 				//Find a new position proportionally closer to the end, based on the moveTime
-				Vector3 newPostion;
+				Vector3 newPostion = end;
 				newPostion = Vector3.MoveTowards(piece.position, end, 1f / 0.1f * Time.deltaTime);
 				//newPostion.z = 3f;
 				//Call MovePosition on attached Rigidbody2D and move it to the calculated position.
@@ -149,8 +149,7 @@ namespace PrototypingGame
 				yield return new WaitForSeconds(0.01f);
 			}
 			yield return null;
-			piece.GetComponent<Animator>().SetTrigger("ScaleOut");
-
+			//piece.GetComponent<Animator>().SetTrigger("ScaleOut");
 		}
 	}
 }
