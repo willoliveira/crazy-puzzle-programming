@@ -9,22 +9,22 @@ namespace PrototypingGame
 
 	public class MoveSquare : MonoBehaviour
 	{
+		public Text getAxis;
 
 		private bool axisHorizontalDown = false;
 		private bool axisVerticalDown = false;
-
-		//texto
-		public Text getAxis;
-
-		private BoardManager gameManager;
-
-		// Use this for initialization
+		private BoardManager mBoardManager;
+		/// <summary>
+		/// Inicia
+		/// </summary>
 		void Start()
 		{
-
-			gameManager = GetComponent<BoardManager>();
+			mBoardManager = GetComponent<BoardManager>();
 		}
-
+		/// <summary>
+		/// Metodo update
+		/// Pega o eixo pressionado e passa para a funcao que move a peca
+		/// </summary>
 		void Update()
 		{
 			//pega a direção do movimento
@@ -61,7 +61,11 @@ namespace PrototypingGame
 				axisVerticalDown = false;
 			}
 		}
-
+		/// <summary>
+		/// Arredonda o eixo precionado, Horizontal e Vertical
+		/// </summary>
+		/// <param name="num"></param>
+		/// <returns></returns>
 		private int RoudAxis(float num)
 		{
 			int floatToInt = 0;
@@ -71,64 +75,60 @@ namespace PrototypingGame
 				floatToInt = Mathf.FloorToInt(num);
 			return floatToInt;
 		}
-
-
+		/// <summary>
+		/// Move a peca para posicao desejada, com base na posicao desejada
+		/// </summary>
+		/// <param name="dirX"></param>
+		/// <param name="dirY"></param>
 		private void MovePuzzle(int dirX, int dirY)
 		{
 			//pega o game object
 			Transform cacheGameObject;
-			cacheGameObject = gameManager.Board.Find("square-" + (gameManager.posBlank.x - dirY) + "-" + (gameManager.posBlank.y - dirX));
+			cacheGameObject = mBoardManager.Board.Find("square-" + (mBoardManager.posBlank.x - dirY) + "-" + (mBoardManager.posBlank.y - dirX));
+			//se houver uma gameobject
 			if (cacheGameObject == null)
 			{
+				//nao pode mover a peca
 				Debug.Log("Não pode mover para essa direção");
 				return;
 			}
-			//move
-			//new Vector3(1, 2, 2);
-			cacheGameObject.position = new Vector3(gameManager.posBlank.y * gameManager.Board.localScale.x, (gameManager.columns - 1 - gameManager.posBlank.x) * gameManager.Board.localScale.x, 0);
-			cacheGameObject.name = "square-" + gameManager.posBlank.x + "-" + gameManager.posBlank.y;
-			//posição correta da peça
-			//Debug.Log(cacheGameObject.GetComponent<Square>().Row + "-" + cacheGameObject.GetComponent<Square>().Column + "- Position Board: " + Board.localScale.x);
+			//Muda a posicao da peca
+			cacheGameObject.position = new Vector3(mBoardManager.posBlank.y * mBoardManager.Board.localScale.x, (mBoardManager.columns - 1 - mBoardManager.posBlank.x) * mBoardManager.Board.localScale.x, 0);
+			cacheGameObject.name = "square-" + mBoardManager.posBlank.x + "-" + mBoardManager.posBlank.y;
 			//atualiza o x da peça vazia
-			gameManager.posBlank.x = gameManager.posBlank.x - dirY;
-			gameManager.posBlank.y = gameManager.posBlank.y - dirX;
+			mBoardManager.posBlank.x = mBoardManager.posBlank.x - dirY;
+			mBoardManager.posBlank.y = mBoardManager.posBlank.y - dirX;
 		}
-
+		/// <summary>
+		/// Anima e move a peca para a posicao desejada
+		/// - Anima o scaleIn da peca
+		/// - Muda ela para a posicao randomizada
+		/// - Volta para o tamanho torma, com o scaleOut
+		/// TODO: conseguir contar o tempo da animacao e tirar os valores fixos
+		/// </summary>
+		/// <param name="piece"></param>
+		/// <param name="end"></param>
+		/// <returns></returns>
 		public IEnumerator AnimateAndMoveSmooth(Transform piece, Vector3 end)
 		{
 			//http://answers.unity3d.com/questions/628200/get-length-of-animator-statetransition.html
-			//
-			Animator animation = piece.GetComponent<Animator>();
-			Animator animator = piece.GetComponent<Animator>();
-			//
+			//faz a peca animar dando scale
 			piece.GetComponent<Animator>().SetTrigger("ScaleIn");
-
-
-			
-			//var animationClips = animation.GetCurrentAnimatorStateInfo(0);
-			//for (int cont = 0; cont < animationClips.length; cont++)
-			//{
-			//	Debug.Log(animationClips[cont]);
-			//}
-			//Debug.Log(animation.GetNextAnimatorClipInfo());
-			//foreach (AnimationState anim in animation)
-			//{
-			//	if (animation.IsPlaying(anim.name))
-			//	{
-			//		Debug.Log(anim.name);
-			//	}
-			//}
-
-
-			//piece.GetComponent<Animator>().;
+			//espera o tempo da animacao acabar
 			yield return new WaitForSeconds(1f);
-
-			//yield return StartCoroutine(MovePieceSmooth(piece, end));
-
-			yield return new WaitForSeconds(0.2f);
-
+			//faz a peça se mover
+			yield return StartCoroutine(MovePieceSmooth(piece, end));
+			//
+			//yield return new WaitForSeconds(0.2f);
+			//faz a peca se dar o scale de volta
 			piece.GetComponent<Animator>().SetTrigger("ScaleOut");
 		}
+		/// <summary>
+		/// Move a peca com smooth
+		/// </summary>
+		/// <param name="piece"></param>
+		/// <param name="end"></param>
+		/// <returns></returns>
 		public IEnumerator MovePieceSmooth(Transform piece, Vector3 end)
 		{
 			// Calculate the remaining distance to move based on the square magnitude of the difference between current position and end parameter.
@@ -149,7 +149,6 @@ namespace PrototypingGame
 				yield return new WaitForSeconds(0.01f);
 			}
 			yield return null;
-			//piece.GetComponent<Animator>().SetTrigger("ScaleOut");
 		}
 	}
 }

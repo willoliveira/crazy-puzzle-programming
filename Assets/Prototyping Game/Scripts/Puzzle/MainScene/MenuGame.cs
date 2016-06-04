@@ -4,25 +4,28 @@ namespace PrototypingGame
 {
 	public class MenuGame : MonoBehaviour
 	{
-		//
+		//Menus
 		public GameObject MainMenu;
 		public GameObject ModeSelect;
 		public GameObject DifficultySelect;
-		//
+		//Botam boltar
 		public GameObject buttonBack;
-		//
+		//Game Manager
 		public GameObject gameManagerObject;
 		private GameManager gameManager;
-
+		/// <summary>
+		/// Enum para as telas do menu
+		/// </summary>
 		private enum MenuScreen
 		{
 			MainMenu,
 			SelectMode,
 			DiffilcultyMode
 		}
-
 		private MenuScreen mMenuScreen;
-
+		/// <summary>
+		/// Da o setup inicial do menu
+		/// </summary>
 		void Start()
 		{
 			//Manager do jogo
