@@ -12,9 +12,7 @@ namespace PrototypingGame
 		public Transform Board;
 		//quadrado de referencia
 		public GameObject SquareGameObject;
-
-
-
+		
 		//posição vazia
 		[HideInInspector]
 		public Vector2 posBlank;
@@ -52,7 +50,9 @@ namespace PrototypingGame
 			//Configura o board
 			ConfigGame();
 		}
-
+		/// <summary>
+		/// Configura o jogo com base nas escolhas
+		/// </summary>
 		private void ConfigGame()
 		{
 			//
@@ -77,12 +77,17 @@ namespace PrototypingGame
 				CreatePieces();
 			}
 		}
-
+		/// <summary>
+		/// Inicia o game comecando dando um fade da ultima peca e randomizacao as pecas
+		/// </summary>
 		public void StartGame()
 		{
 			StartCoroutine(FadeInAndRandomPieces());
 		}
-
+		/// <summary>
+		/// Faz o fade e randomiza as pecas, em sequencia
+		/// </summary>
+		/// <returns></returns>
 		private IEnumerator FadeInAndRandomPieces()
 		{
 			//some com a ultima
@@ -90,7 +95,12 @@ namespace PrototypingGame
 			//randomiza
 			yield return StartCoroutine(RandomPieces());
 		}
-
+		/// <summary>
+		/// Faz um fade na peca
+		/// </summary>
+		/// <param name="sprite"></param>
+		/// <param name="fadeAmount"></param>
+		/// <returns></returns>
 		private IEnumerator Fade(SpriteRenderer sprite, float fadeAmount)
 		{
 			bool fade;
@@ -123,9 +133,9 @@ namespace PrototypingGame
 			}
 			yield return null;
 		}
-
-
-
+		/// <summary>
+		/// Cropa a imagem
+		/// </summary>
 		private void CropImage()
 		{
 			for (int cont = 0; cont < (columns * columns); cont++)
@@ -148,7 +158,9 @@ namespace PrototypingGame
 				listObjCropImages.Add(structCrop);
 			}
 		}
-
+		/// <summary>
+		/// Cria as pecas com base nos recortes
+		/// </summary>
 		private void CreatePieces()
 		{
 			//aumenta o board GAMBS!!!
@@ -186,18 +198,25 @@ namespace PrototypingGame
 			posBlank.x = 2;
 			posBlank.y = 2;
 		}
-
+		/// <summary>
+		/// Renomeia a ultima peca
+		/// </summary>
 		private void renameLastPiece()
 		{
 			//pega a ultima peça
 			lastPiece = Board.Find("square-" + (columns - 1) + "-" + (columns - 1)) as Transform;
 			lastPiece.name = "lastPiece";
 		}
-
-		//todo: colocar o label de onde as peças estao após a randomização
+		/// <summary>
+		/// Randomiza as pecas antes do inicio do jogo
+		/// 
+		/// TODO: liberar o game realmente após acabar o randmo, se não me engano ele não estao acabando
+		///       o tempo mudou por conta das animacoes, arrumar isso
+		/// </summary>
+		/// <returns></returns>
 		private IEnumerator RandomPieces()
 		{
-			//preenche o array com os indices que uso no random
+			//preenche o array de apoio para ajudar no random
 			List<int> arrayPieces = new List<int>();
 			for (int cont = 0; cont < (columns * columns); cont++)
 				arrayPieces.Add(cont);
@@ -226,19 +245,11 @@ namespace PrototypingGame
 					int columnPosRandomized = valueRandomPosition % columns;
 					//vetor com a posição final do recorte
 					Vector3 posEnd = new Vector3(columnPosRandomized * Board.localScale.x, (columns - 1 - rowPosRandomized) * Board.localScale.x, -5f);
-					//
+					//preenche a coluna e linha dessa peca
 					cacheSquare.GetComponent<Square>().Row = rowPosRandomized;
 					cacheSquare.GetComponent<Square>().Column = columnPosRandomized;
-					//
+					//anima e move a peca
 					StartCoroutine(moveSquare.AnimateAndMoveSmooth(cacheSquare, posEnd));
-
-					//Animation testAnimation = cacheSquare.GetComponent<Animation>();
-					//yield WaitForSeconds (testAnimation.GetClip("ScaleIn").length);
-					//cacheSquare.GetComponent<Animator>().SetTrigger("ScaleIn");
-
-					//movimenta a peça pra posição randomizada
-					//cacheSquare.position = new Vector3(columnPos * Board.localScale.x, (columns - 1 - rowPos) * Board.localScale.x, 0);
-					// StartCoroutine(moveSquare.MovePieceSmooth(cacheSquare, posEnd));
 					//remove do array
 					arrayPieces.Remove(valueRandomPosition);
 					//espera um pouco
@@ -260,19 +271,19 @@ namespace PrototypingGame
 
 			}
 		}
-
+		/// <summary>
+		/// Normaliza os nomes das pecas
+		/// </summary>
 		private void NormalizePiece()
 		{
 			for (int cont = 0, len = Board.childCount; cont < len; cont++)
 			{
 				//pega o filho
-				Transform childTransform = Board.GetChild(cont);
-				Square childSquare = childTransform.GetComponent<Square>() as Square;
-				//renomeia a peça pela posição que ela ocupa
-				childTransform.name = "square-" + childSquare.Row + "-" + childSquare.Column;
+				Square childSquare = Board.GetChild(cont).GetComponent<Square>() as Square;
+				//normaliza os nomes
+				childSquare.NormalizePieceName();
 			}
 			renameLastPiece();
 		}
-
 	}
 }
