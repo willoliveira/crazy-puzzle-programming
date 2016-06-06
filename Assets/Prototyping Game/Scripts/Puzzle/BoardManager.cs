@@ -244,7 +244,7 @@ namespace PrototypingGame
 					int rowPosRandomized = (int)Mathf.Floor(valueRandomPosition / columns);
 					int columnPosRandomized = valueRandomPosition % columns;
 					//vetor com a posição final do recorte
-					Vector3 posEnd = new Vector3(columnPosRandomized * Board.localScale.x, (columns - 1 - rowPosRandomized) * Board.localScale.x, -5f);
+					Vector3 posEnd = new Vector3(columnPosRandomized * Board.localScale.x, (columns - 1 - rowPosRandomized) * Board.localScale.x);
 					//preenche a coluna e linha dessa peca
 					cacheSquare.GetComponent<Square>().Row = rowPosRandomized;
 					cacheSquare.GetComponent<Square>().Column = columnPosRandomized;
