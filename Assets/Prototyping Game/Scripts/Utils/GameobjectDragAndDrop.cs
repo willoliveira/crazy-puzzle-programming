@@ -2,46 +2,66 @@
 using System.Collections;
 
 public class GameobjectDragAndDrop : MonoBehaviour {
+	
+	private Vector3 screenPoint;
+	private Vector3 offset;
+	private bool isCollider = false;
 
-	bool isMouseDrag;
-	Vector3 screenPosition;
-	Vector3 offset;
-	GameObject target;
+	public GameObject Drop;
+
+
+
 
 	void Update()
 	{
-		float y = transform.position.y;
-		float z = transform.position.z;
-		if (Input.GetMouseButtonDown(0))
+		//if (Input.GetMouseButtonDown(0))
+		//{
+		//	OnMouseDown();
+		//}
+	}
+
+	void OnMouseDown()
+	{
+		offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+	}
+
+	void OnMouseDrag()
+	{
+		//if (!isCollider)
+		//{
+			Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
+			Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
+			transform.position = curPosition;
+		//}
+	}
+
+	void OnCollisionEnter2D(Collision2D collision)
+	{
+		if (collision.gameObject == Drop)
 		{
-			RaycastHit hitInfo;
-			target = ReturnClickedObject(out hitInfo);
-			if (target != null)
-			{
-				isMouseDrag = true;
-				Debug.Log("target position :" + target.transform.position);
-				//Convert world position to screen position.
-				screenPosition = Camera.main.WorldToScreenPoint(target.transform.position);
-				//offset = target.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z));
-				offset = target.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, y, z));
-			}
+			isCollider = true;
+			collision.gameObject.GetComponent<Renderer>().material.color = Color.green;
+
+
+
+			//gameObject.transform.position = new Vector3();
 		}
-		if (Input.GetMouseButtonUp(0))
+    }
+
+	void OnCollisionExit2D(Collision2D collision)
+	{
+		if (collision.gameObject == Drop)
 		{
-			isMouseDrag = false;
-		}
-		if (isMouseDrag)
-		{
-			//track mouse position.
-			//Vector3 currentScreenSpace = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPosition.z);			
-			Vector3 currentScreenSpace = new Vector3(Input.mousePosition.x, y);
-			//convert screen position to world position with offset changes.
-			Vector3 currentPosition = Camera.main.ScreenToWorldPoint(currentScreenSpace) + offset;
-			//It will update target gameobject's current postion.
-			target.transform.position = currentPosition;
+			isCollider = false;
+			collision.gameObject.GetComponent<Renderer>().material.color = Color.red;
 		}
 	}
 
+	/// <summary>
+	/// Verifica se o clique do mouse clicou no objeto
+	/// </summary>
+	/// <param name="hit"></param>
+	/// <returns></returns>
 	GameObject ReturnClickedObject(out RaycastHit hit)
 	{
 		GameObject target = null;
