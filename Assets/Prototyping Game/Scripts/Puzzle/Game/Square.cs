@@ -5,7 +5,6 @@ namespace PrototypingGame
 {
 	public class Square : MonoBehaviour
 	{
-
 		private int row;
 		private int column;
 		private int order;
