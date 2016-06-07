@@ -58,12 +58,36 @@ namespace PrototypingGame
 		{
 			StartCoroutine(FadeInAndRandomPieces());
 		}
+
+		public void SetPositionSquareBlank(GameObject SquareGameObject, Vector3 pos)
+		{
+			//Atualiza a posicao da peca vazia
+			GameObjectPositionBlank.transform.position = pos;
+			//Atualiza a posicao vazia
+			posBlank.x = columns - 1 - pos.y;
+			posBlank.y = pos.x;
+			//Atualiza a propriedade de linha e colona do square
+			Square Square = SquareGameObject.GetComponent<Square>();
+			Square.Column = (int)SquareGameObject.transform.position.x;
+			Square.Row = columns - 1 - (int) SquareGameObject.transform.position.y;
+			//Normaliza o nome do square
+			Square.NormalizePieceName();
+
+			Debug.Log(posBlank);
+		}
 		#endregion
 
 		#region PRIVATE METHODS
-		private void setPositionPosBlack()
+		//CONTINUAR DAQUI!!!
+		private void ToogleDrag()
 		{
+			for (int cont = 0; cont < (columns * columns); cont++)
+			{
+				int row = Mathf.FloorToInt(cont / (columns));
+				int column = cont % columns;
 
+
+			}
 		}
 		/// <summary>
 		/// Configura o jogo com base nas escolhas
@@ -184,6 +208,7 @@ namespace PrototypingGame
 			GameObjectPositionBlank.GetComponent<BoxCollider2D>().offset = new Vector2(.5f, .5f);
 			GameObjectPositionBlank.GetComponent<BoxCollider2D>().isTrigger = true;
 			GameObjectPositionBlank.transform.SetParent(Board);
+			GameObjectPositionBlank.transform.localScale = new Vector3(1, 1, 1);
 
 			SpriteRenderer squareSpriteRenderer;
 			for (int cont = 0; cont < (columns * columns); cont++)
@@ -205,7 +230,7 @@ namespace PrototypingGame
 				instance.GetComponent<Square>().Row = StructCropImage.row;
 				instance.GetComponent<Square>().Column = StructCropImage.column;
 				//
-				instance.GetComponent<GameobjectDragAndDrop>().Drop = GameObjectPositionBlank;
+				instance.GetComponent<DragAndDrop>().Drop = GameObjectPositionBlank;
 				//Adiciona no Board
 				instance.transform.SetParent(Board);
 				//coloca a peça com escola 1x1
@@ -218,7 +243,7 @@ namespace PrototypingGame
 			GameObjectPositionBlank.transform.position = new Vector3(columns - 1, 0, 0);
 			GameObjectPositionBlank.name = "PositionBlank";
 			//TODO: mudar isso para o responsivo com o onGui
-			Board.localScale = new Vector3(2, 2, 1);
+			//Board.localScale = new Vector3(2, 2, 1);
 			//rename na ultima peça
 			renameLastPiece();
 		}
@@ -234,8 +259,7 @@ namespace PrototypingGame
 		/// <summary>
 		/// Randomiza as pecas antes do inicio do jogo
 		/// 
-		/// TODO: liberar o game realmente após acabar o randmo, se não me engano ele não estao acabando
-		///       o tempo mudou por conta das animacoes, arrumar isso
+		/// TODO: liberar o game realmente após acabar o randmo, se não me engano ele não estao acabando o tempo mudou por conta das animacoes, arrumar isso
 		/// </summary>
 		/// <returns></returns>
 		private IEnumerator RandomPieces()
@@ -285,6 +309,7 @@ namespace PrototypingGame
 					posBlank.x = columns - 1;
 					posBlank.y = columns - 1;
 					GameObjectPositionBlank.transform.position = new Vector3(columns - 1, 0, 0);
+					GameObjectPositionBlank.transform.localScale = new Vector3(1, 1, 1);
 				}
 				yield return null;
 				if (cont == (columns * columns) - 1)
