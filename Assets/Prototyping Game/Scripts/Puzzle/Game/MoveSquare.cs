@@ -98,6 +98,10 @@ namespace PrototypingGame
 			//atualiza o x da peça vazia
 			mBoardManager.posBlank.x = mBoardManager.posBlank.x - dirY;
 			mBoardManager.posBlank.y = mBoardManager.posBlank.y - dirX;
+
+			Debug.Log(new Vector3(mBoardManager.posBlank.x, (mBoardManager.columns - 1 - mBoardManager.posBlank.y)));
+
+			GameObject.Find("PositionBlank").transform.position = new Vector3(mBoardManager.posBlank.x * mBoardManager.Board.localScale.x, mBoardManager.posBlank.y * mBoardManager.Board.localScale.y);
 		}
 		/// <summary>
 		/// Anima e move a peca para a posicao desejada
