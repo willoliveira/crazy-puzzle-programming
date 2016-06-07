@@ -5,7 +5,8 @@ using System.Collections.Generic;
 namespace PrototypingGame
 {
 	public class BoardManager : MonoBehaviour
-	{
+	{ 
+		#region PUBLIC VARS
 		//imagem de referencia
 		public Texture2D image;
 		//referencia de onde vai adicionar as peças
@@ -19,14 +20,16 @@ namespace PrototypingGame
 		//numero de colunas
 		[HideInInspector]
 		public int columns;
+		#endregion
 
-		struct StructCrop
+		#region PRIVATE VARS
+		private GameObject GameObjectPositionBlank;
+		private struct StructCrop
 		{
 			public Texture2D crop;
 			public int row;
 			public int column;
 		};
-
 		//
 		private GameManager mGameManger;
 		//tamanho do recorte
@@ -37,7 +40,7 @@ namespace PrototypingGame
 		private MoveSquare moveSquare;
 		//Ultima peça
 		private Transform lastPiece;
-
+		#endregion
 
 		// Use this for initialization
 		void Start()
@@ -46,9 +49,21 @@ namespace PrototypingGame
 			moveSquare = GetComponent<MoveSquare>();
 			//inicia a lista de struct com as pecas
 			listObjCropImages = new List<StructCrop>();
-
 			//Configura o board
 			ConfigGame();
+		}
+
+		#region PUBLIC METHODS
+		public void StartGame()
+		{
+			StartCoroutine(FadeInAndRandomPieces());
+		}
+		#endregion
+
+		#region PRIVATE METHODS
+		private void setPositionPosBlack()
+		{
+
 		}
 		/// <summary>
 		/// Configura o jogo com base nas escolhas
@@ -80,10 +95,7 @@ namespace PrototypingGame
 		/// <summary>
 		/// Inicia o game comecando dando um fade da ultima peca e randomizacao as pecas
 		/// </summary>
-		public void StartGame()
-		{
-			StartCoroutine(FadeInAndRandomPieces());
-		}
+		
 		/// <summary>
 		/// Faz o fade e randomiza as pecas, em sequencia
 		/// </summary>
@@ -163,9 +175,16 @@ namespace PrototypingGame
 		/// </summary>
 		private void CreatePieces()
 		{
-			//aumenta o board GAMBS!!!
 			//TODO: mudar isso para o responsivo com o onGui
-			//Board.localScale = new Vector3(2, 2, 1);
+			//posicao vazia
+			//ta meio na gambs, mudar isso depois
+			//criacao de uma peca pra ser o espaço vazio
+			GameObjectPositionBlank = new GameObject();
+			GameObjectPositionBlank.AddComponent<BoxCollider2D>();
+			GameObjectPositionBlank.GetComponent<BoxCollider2D>().offset = new Vector2(.5f, .5f);
+			GameObjectPositionBlank.GetComponent<BoxCollider2D>().isTrigger = true;
+			GameObjectPositionBlank.transform.SetParent(Board);
+
 			SpriteRenderer squareSpriteRenderer;
 			for (int cont = 0; cont < (columns * columns); cont++)
 			{
@@ -185,18 +204,23 @@ namespace PrototypingGame
 				//seta a linha e coluna que essa imagem pertence
 				instance.GetComponent<Square>().Row = StructCropImage.row;
 				instance.GetComponent<Square>().Column = StructCropImage.column;
+				//
+				instance.GetComponent<GameobjectDragAndDrop>().Drop = GameObjectPositionBlank;
 				//Adiciona no Board
 				instance.transform.SetParent(Board);
 				//coloca a peça com escola 1x1
 				instance.transform.localScale = new Vector3(1, 1, 1);
 			}
+			//
+			posBlank.x = columns - 1;
+			posBlank.y = columns - 1;
+			//arruma a posica da peca vazia
+			GameObjectPositionBlank.transform.position = new Vector3(columns - 1, 0, 0);
+			GameObjectPositionBlank.name = "PositionBlank";
 			//TODO: mudar isso para o responsivo com o onGui
 			Board.localScale = new Vector3(2, 2, 1);
 			//rename na ultima peça
 			renameLastPiece();
-			//posicao vazia
-			posBlank.x = 2;
-			posBlank.y = 2;
 		}
 		/// <summary>
 		/// Renomeia a ultima peca
@@ -260,6 +284,7 @@ namespace PrototypingGame
 					//seta a posição vazia
 					posBlank.x = columns - 1;
 					posBlank.y = columns - 1;
+					GameObjectPositionBlank.transform.position = new Vector3(columns - 1, 0, 0);
 				}
 				yield return null;
 				if (cont == (columns * columns) - 1)
@@ -280,10 +305,14 @@ namespace PrototypingGame
 			{
 				//pega o filho
 				Square childSquare = Board.GetChild(cont).GetComponent<Square>() as Square;
-				//normaliza os nomes
-				childSquare.NormalizePieceName();
+				if (childSquare)
+				{
+					//normaliza os nomes
+					childSquare.NormalizePieceName();
+				}
 			}
 			renameLastPiece();
 		}
+		#endregion
 	}
 }
