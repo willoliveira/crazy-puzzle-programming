@@ -151,8 +151,10 @@ namespace PrototypingGame
 				sqrRemainingDistance = (piece.transform.position - end).sqrMagnitude;
 				//Return and loop until sqrRemainingDistance is close enough to zero to end the function
 				yield return new WaitForSeconds(0.01f);
+				//Debug.Log("sqrRemainingDistance > float.Epsilon");
+				//yield return null;
 			}
-			yield return null;
+			//yield return null;
 		}
 	}
 }
