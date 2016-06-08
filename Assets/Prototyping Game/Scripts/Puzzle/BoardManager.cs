@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace PrototypingGame
 {
 	public class BoardManager : MonoBehaviour
-	{ 
+	{
 		#region PUBLIC VARS
 		//imagem de referencia
 		public Texture2D image;
@@ -13,7 +13,7 @@ namespace PrototypingGame
 		public Transform Board;
 		//quadrado de referencia
 		public GameObject SquareGameObject;
-		
+
 		//posição vazia
 		[HideInInspector]
 		public Vector2 posBlank;
@@ -69,25 +69,83 @@ namespace PrototypingGame
 			//Atualiza a propriedade de linha e colona do square
 			Square Square = SquareGameObject.GetComponent<Square>();
 			Square.Column = (int)SquareGameObject.transform.position.x;
-			Square.Row = columns - 1 - (int) SquareGameObject.transform.position.y;
+			Square.Row = columns - 1 - (int)SquareGameObject.transform.position.y;
 			//Normaliza o nome do square
 			Square.NormalizePieceName();
-
-			Debug.Log(posBlank);
+			//
+			ToogleDrag();
 		}
-		#endregion
-
-		#region PRIVATE METHODS
-		//CONTINUAR DAQUI!!!
-		private void ToogleDrag()
+		/// <summary>
+		/// Habilita e desabilita o drag das peças
+		/// </summary>
+		public void ToogleDrag()
 		{
 			for (int cont = 0; cont < (columns * columns); cont++)
 			{
 				int row = Mathf.FloorToInt(cont / (columns));
 				int column = cont % columns;
-
-
+				//pega o gameobject do quadrado
+				Transform TransformSquare = Board.Find("square-" + row + "-" + column);
+				if (TransformSquare)
+				{
+					if (checkNeighbors(row, column, (int)posBlank.x, (int)posBlank.y))
+					{
+						//Habilita o drag
+						TransformSquare.GetComponent<DragAndDrop>().EnabledDrag = true;
+					}
+					else
+					{
+						//Desabilita o drag
+						TransformSquare.GetComponent<DragAndDrop>().EnabledDrag = false;
+					}
+				}
 			}
+		}
+		#endregion
+
+		#region PRIVATE METHODS
+
+		/// <summary>
+		/// Verifica os vizinhos das coordenadas que estou passando
+		/// </summary>
+		/// <param name="rowNeighbor"></param>
+		/// <param name="columnNeighbor"></param>
+		/// <param name="rowMe"></param>
+		/// <param name="columnMe"></param>
+		/// <returns></returns>
+		private bool checkNeighbors(int rowNeighbor, int columnNeighbor, int rowMe, int columnMe)
+		{
+			//Se estiver na mesma linha
+			if (rowNeighbor == rowMe)
+			{
+				//Se minha coluna for maior que do meu vizinh0
+				if (columnMe > columnNeighbor)
+				{ 
+					//testa se eu estou atras
+					if (columnNeighbor + 1 == columnMe) return true;
+				}
+				else
+				{
+					//testa se eu estou a frente
+					if (columnNeighbor - 1 == columnMe) return true;
+				}
+			}
+			//Se estiver na mesma coluna
+			else if (columnNeighbor == columnMe)
+			{
+				//Se minha linha for maior que do meu vizinho
+				if (rowMe > rowNeighbor)
+				{
+					//testa se eu estou em baixo
+					if (rowNeighbor + 1 == rowMe) return true;
+				}
+				else
+				{
+					//testa se eu estou em cima
+					if (rowNeighbor - 1 == rowMe) return true;
+				}
+			}
+			return false;
 		}
 		/// <summary>
 		/// Configura o jogo com base nas escolhas
@@ -119,7 +177,7 @@ namespace PrototypingGame
 		/// <summary>
 		/// Inicia o game comecando dando um fade da ultima peca e randomizacao as pecas
 		/// </summary>
-		
+
 		/// <summary>
 		/// Faz o fade e randomiza as pecas, em sequencia
 		/// </summary>
@@ -317,6 +375,7 @@ namespace PrototypingGame
 					//depois que acabar o random das peças, libera o jogo
 					moveSquare.enabled = true;
 					NormalizePiece();
+					ToogleDrag();
 				}
 
 			}
