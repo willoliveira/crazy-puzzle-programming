@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-
 using PrototypingGame;
 
 [RequireComponent(typeof(DragAndDrop))]
@@ -17,11 +15,12 @@ public class SquareDragAndDrop : MonoBehaviour
 
 	void OnMouseUp()
 	{
-		Debug.Log("OnMouseUp");
-		if (mDragAndDrop.IsCollider)
+		if (mDragAndDrop.EnabledDrag)
 		{
-			Debug.Log("mDragAndDrop.IsCollider");
-			mBoardManager.SetPositionSquareBlank(gameObject, mDragAndDrop.PositionBeforeDrag);
+			if (mDragAndDrop.IsCollider)
+			{
+				mBoardManager.SetPositionSquareBlank(gameObject, mDragAndDrop.PositionBeforeDrag);
+			}
 		}
 	}
 }

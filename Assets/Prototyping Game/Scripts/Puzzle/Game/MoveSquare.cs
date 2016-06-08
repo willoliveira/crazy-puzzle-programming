@@ -98,11 +98,10 @@ namespace PrototypingGame
 			//atualiza o x da peça vazia
 			mBoardManager.posBlank.x = mBoardManager.posBlank.x - dirY;
 			mBoardManager.posBlank.y = mBoardManager.posBlank.y - dirX;
-			//
-			Debug.Log(mBoardManager.posBlank);
-			//Debug.Log(new Vector3(mBoardManager.posBlank.x, (mBoardManager.columns - 1 - mBoardManager.posBlank.y)));
-
+			//seta a posicao do PositionBlank GameObject
 			GameObject.Find("PositionBlank").transform.position = new Vector3(mBoardManager.posBlank.y * mBoardManager.Board.localScale.x, (mBoardManager.columns - 1 - mBoardManager.posBlank.x) * mBoardManager.Board.localScale.y);
+			//Ativa e desativa os drag
+			mBoardManager.ToogleDrag();
 		}
 		/// <summary>
 		/// Anima e move a peca para a posicao desejada
