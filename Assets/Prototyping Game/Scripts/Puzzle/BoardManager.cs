@@ -54,6 +54,22 @@ namespace PrototypingGame
 		}
 
 		#region PUBLIC METHODS
+		public void RecenterBoard()
+		{
+			Vector3 worldPoint;
+			//worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, 5));
+			//worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 5));
+			//Board.transform.position = worldPoint;
+
+			Debug.Log("ScreenSize: " + new Vector3(Screen.width, Screen.height, 5));
+			Debug.Log("Recenter: " + GameObject.Find("Recenter"));
+		}
+
+		public void ResizeBoard()
+		{
+
+		}
+
 		public void StartGame()
 		{
 			StartCoroutine(FadeInAndRandomPieces());
@@ -96,7 +112,7 @@ namespace PrototypingGame
 					else
 					{
 						//Desabilita o drag
-						TransformSquare.GetComponent<DragAndDrop>().EnabledDrag = false;
+						TransformSquare.GetComponent<DragAndDrop>().EnabledDrag = true;
 					}
 				}
 			}
@@ -356,6 +372,7 @@ namespace PrototypingGame
 					cacheSquare.GetComponent<Square>().Column = columnPosRandomized;
 					//anima e move a peca
 					StartCoroutine(moveSquare.AnimateAndMoveSmooth(cacheSquare, posEnd));
+					//StartCoroutine(moveSquare.MovePieceSmooth(cacheSquare, posEnd));
 					//remove do array
 					arrayPieces.Remove(valueRandomPosition);
 					//espera um pouco
