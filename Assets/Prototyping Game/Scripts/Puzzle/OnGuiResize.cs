@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 namespace PrototypingGame
@@ -21,17 +22,11 @@ namespace PrototypingGame
 			{
 				Debug.Log("Change Resolution");
 				//
-				RectTransform BoardContainer = GameObject.Find("BoardContainer").GetComponent<RectTransform>();
-				//RectTransform BoardContainer =  .Find("BoardContainer").GetComponent<RectTransform>();
-				//
-				Debug.Log(Screen.width - 20);
-				Debug.Log((Screen.width - 20) / 300);
-				float scale = (Screen.width - 20) / 300;
+				RectTransform BoardContainer = GameObject.Find("UIBoardTransform").GetComponent<RectTransform>();
+				float scale = (Screen.width - 20) / 300; // esse -20 é a borda da tela. do lado esquerdo e direito
 
-				Debug.Log(scale);
-				BoardContainer.localScale = new Vector2((Screen.width - 20f) / 300f, (Screen.width - 20f) / 300f);
-				BoardContainer.localPosition = new Vector2((Screen.width / 2) - 10, 150f);
-				//BoardContainer.rect = new Rect(new Vector2(Screen.width - 20, BoardContainer.rect.y), new Vector2(BoardContainer.rect.width, BoardContainer.rect.height));
+				BoardContainer.localScale = new Vector2((Screen.width - 20f) / 300f, (Screen.width - 20f) / 300f);// esse -20 é a borda da tela. do lado esquerdo e direito
+				BoardContainer.localPosition = new Vector2((Screen.width / 2) - 10, 200f); // esse -10 é a borda da tela. do lado esquerdo só
 
 				ScreenHeight = Screen.height;
 				ScreenWidth = Screen.width;
