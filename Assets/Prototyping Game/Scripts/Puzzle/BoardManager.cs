@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -39,7 +40,7 @@ namespace PrototypingGame
 		//referencia da classe de movimento
 		private MoveSquare moveSquare;
 		//Ultima peça
-		private Transform lastPiece;
+		private RectTransform lastPiece;
 		#endregion
 
 		// Use this for initialization
@@ -201,7 +202,7 @@ namespace PrototypingGame
 		private IEnumerator FadeInAndRandomPieces()
 		{
 			//some com a ultima
-			yield return StartCoroutine(Fade(lastPiece.GetComponent<SpriteRenderer>(), 0.03f));
+			yield return StartCoroutine(Fade(lastPiece.GetComponent<Image>(), 0.03f));
 			//randomiza
 			yield return StartCoroutine(RandomPieces());
 		}
@@ -211,7 +212,7 @@ namespace PrototypingGame
 		/// <param name="sprite"></param>
 		/// <param name="fadeAmount"></param>
 		/// <returns></returns>
-		private IEnumerator Fade(SpriteRenderer sprite, float fadeAmount)
+		private IEnumerator Fade(Image sprite, float fadeAmount)
 		{
 			bool fade;
 			float a;
@@ -227,7 +228,7 @@ namespace PrototypingGame
 				a = 1f;
 				fadeAmount *= -1f;
 			}
-			SpriteRenderer rendererLastPiece = sprite.GetComponent<SpriteRenderer>();
+			Image rendererLastPiece = sprite.GetComponent<Image>();
 			while ((fade && rendererLastPiece.color.a != 1f) || (!fade && rendererLastPiece.color.a > 0))
 			{
 				//se a peca ficar invisivel, para a rotina
@@ -327,7 +328,7 @@ namespace PrototypingGame
 		private void renameLastPiece()
 		{
 			//pega a ultima peça
-			lastPiece = Board.Find("square-" + (columns - 1) + "-" + (columns - 1)) as Transform;
+			lastPiece = Board.Find("square-" + (columns - 1) + "-" + (columns - 1)) as RectTransform;
 			lastPiece.name = "lastPiece";
 		}
 		/// <summary>

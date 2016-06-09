@@ -38,7 +38,7 @@ namespace PrototypingGame
 		//Lista de crop images
 		private List<StructCrop> listObjCropImages;
 		//referencia da classe de movimento
-		private MoveSquare moveSquare;
+		private UIMoveSquare moveSquare;
 		//Ultima peça
 		private Transform lastPiece;
 		#endregion
@@ -47,7 +47,7 @@ namespace PrototypingGame
 		void Start()
 		{
 			//pega o move square
-			moveSquare = GetComponent<MoveSquare>();
+			moveSquare = GetComponent<UIMoveSquare>();
 			//inicia a lista de struct com as pecas
 			listObjCropImages = new List<StructCrop>();
 			//Configura o board
@@ -57,13 +57,13 @@ namespace PrototypingGame
 		#region PUBLIC METHODS
 		public void RecenterBoard()
 		{
-			Vector3 worldPoint;
+			//Vector3 worldPoint;
 			//worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, 5));
 			//worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 5));
 			//Board.transform.position = worldPoint;
 
 			Debug.Log("ScreenSize: " + new Vector3(Screen.width, Screen.height, 5));
-			Debug.Log("Recenter: " + GameObject.Find("Recenter"));
+			//Debug.Log("Recenter: " + GameObject.Find("Recenter"));
 		}
 
 		public void ResizeBoard()
@@ -108,12 +108,12 @@ namespace PrototypingGame
 					if (checkNeighbors(row, column, (int)posBlank.x, (int)posBlank.y))
 					{
 						//Habilita o drag
-						TransformSquare.GetComponent<DragAndDrop>().EnabledDrag = true;
+						//TransformSquare.GetComponent<DragAndDrop>().EnabledDrag = true;
 					}
 					else
 					{
 						//Desabilita o drag
-						TransformSquare.GetComponent<DragAndDrop>().EnabledDrag = true;
+						//TransformSquare.GetComponent<DragAndDrop>().EnabledDrag = true;
 					}
 				}
 			}
@@ -202,7 +202,7 @@ namespace PrototypingGame
 		private IEnumerator FadeInAndRandomPieces()
 		{
 			//some com a ultima
-			yield return StartCoroutine(Fade(lastPiece.GetComponent<SpriteRenderer>(), 0.03f));
+			yield return StartCoroutine(Fade(lastPiece.GetComponent<Image>(), 0.03f));
 			//randomiza
 			yield return StartCoroutine(RandomPieces());
 		}
@@ -212,7 +212,7 @@ namespace PrototypingGame
 		/// <param name="sprite"></param>
 		/// <param name="fadeAmount"></param>
 		/// <returns></returns>
-		private IEnumerator Fade(SpriteRenderer sprite, float fadeAmount)
+		private IEnumerator Fade(Image sprite, float fadeAmount)
 		{
 			bool fade;
 			float a;
@@ -228,7 +228,7 @@ namespace PrototypingGame
 				a = 1f;
 				fadeAmount *= -1f;
 			}
-			SpriteRenderer rendererLastPiece = sprite.GetComponent<SpriteRenderer>();
+			Image rendererLastPiece = sprite.GetComponent<Image>();
 			while ((fade && rendererLastPiece.color.a != 1f) || (!fade && rendererLastPiece.color.a > 0))
 			{
 				//se a peca ficar invisivel, para a rotina
@@ -309,8 +309,6 @@ namespace PrototypingGame
 				//instance.GetComponent<DragAndDrop>().Drop = GameObjectPositionBlank;
 				//Adiciona no Board
 				instance.transform.SetParent(Board, false);
-				//coloca a peça com escola 1x1
-				instance.transform.localScale = new Vector3(1, 1, 1);
 			}
 			//
 			posBlank.x = columns - 1;
@@ -351,7 +349,7 @@ namespace PrototypingGame
 				int row = Mathf.FloorToInt(cont / (columns));
 				int column = cont % columns;
 				//Rigidbody2D cacheSquare = Board.Find("square-" + x + "-" + y).GetComponent<Rigidbody2D>();
-				Transform cacheSquare = Board.Find("square-" + row + "-" + column);
+				RectTransform cacheSquare = Board.Find("square-" + row + "-" + column) as RectTransform;
 				if (cacheSquare != null)
 				{
 					int indexRandomPosition;
@@ -368,13 +366,20 @@ namespace PrototypingGame
 					int rowPosRandomized = (int)Mathf.Floor(valueRandomPosition / columns);
 					int columnPosRandomized = valueRandomPosition % columns;
 					//vetor com a posição final do recorte
-					Vector3 posEnd = new Vector3(columnPosRandomized * Board.localScale.x, (columns - 1 - rowPosRandomized) * Board.localScale.x);
+					//new Vector3((row * 100) + 50, ((column) * -100) - 50);
+					//Vector3 posEnd = new Vector3(columnPosRandomized * Board.localScale.x, (columns - 1 - rowPosRandomized) * Board.localScale.x);
+					Vector3 posEnd = new Vector3((columnPosRandomized * 100) + 50, ((rowPosRandomized) * -100) - 50);
+					//Debug.Log("rowPosRandomized: " + rowPosRandomized + " - columnPosRandomized: " + columnPosRandomized + " - posEnd: " + posEnd);
 					//preenche a coluna e linha dessa peca
 					cacheSquare.GetComponent<Square>().Row = rowPosRandomized;
 					cacheSquare.GetComponent<Square>().Column = columnPosRandomized;
+#if UNITY_EDITOR
+					//alternativa para quando nao quiser animacao
+					cacheSquare.anchoredPosition = posEnd;
+#else
 					//anima e move a peca
 					StartCoroutine(moveSquare.AnimateAndMoveSmooth(cacheSquare, posEnd));
-					//StartCoroutine(moveSquare.MovePieceSmooth(cacheSquare, posEnd));
+#endif
 					//remove do array
 					arrayPieces.Remove(valueRandomPosition);
 					//espera um pouco
@@ -385,8 +390,8 @@ namespace PrototypingGame
 					//seta a posição vazia
 					posBlank.x = columns - 1;
 					posBlank.y = columns - 1;
-					GameObjectPositionBlank.transform.position = new Vector3(columns - 1, 0, 0);
-					GameObjectPositionBlank.transform.localScale = new Vector3(1, 1, 1);
+					//GameObjectPositionBlank.transform.position = new Vector3(columns - 1, 0, 0);
+					//GameObjectPositionBlank.transform.localScale = new Vector3(1, 1, 1);
 				}
 				yield return null;
 				if (cont == (columns * columns) - 1)
