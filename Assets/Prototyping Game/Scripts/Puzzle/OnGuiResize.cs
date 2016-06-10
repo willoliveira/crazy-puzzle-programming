@@ -13,7 +13,6 @@ namespace PrototypingGame
 		void Start() {
 			ScreenHeight = Screen.height;
 			ScreenWidth = Screen.width;
-			Debug.Log("H: " + Screen.height + " - W: " + Screen.width);
 		}
 
 		// Update is called once per frame

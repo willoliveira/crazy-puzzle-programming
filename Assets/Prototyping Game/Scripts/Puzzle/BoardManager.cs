@@ -57,11 +57,6 @@ namespace PrototypingGame
 		#region PUBLIC METHODS
 		public void RecenterBoard()
 		{
-			Vector3 worldPoint;
-			//worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, 5));
-			//worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 5));
-			//Board.transform.position = worldPoint;
-
 			Debug.Log("ScreenSize: " + new Vector3(Screen.width, Screen.height, 5));
 			Debug.Log("Recenter: " + GameObject.Find("Recenter"));
 		}
