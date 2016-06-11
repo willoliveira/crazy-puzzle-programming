@@ -11,8 +11,8 @@ namespace PrototypingGame
 
 		// Use this for initialization
 		void Start() {
-			ScreenHeight = Screen.height;
-			ScreenWidth = Screen.width;
+			ScreenHeight = 0;
+			ScreenWidth = 0;
 		}
 
 		// Update is called once per frame
