@@ -23,22 +23,23 @@ public class UIDrop : MonoBehaviour, IDropHandler
 			mUIDragAndDrop = eventData.pointerDrag.GetComponent<UIDragAndDrop>();		
 			if(mUIDragAndDrop.EnabledDrag)
 			{
-				Debug.Log(transform.parent.GetComponent<RectTransform>());
-				//seta a posicao da peca droppada, a posicao da area de drop
+				Debug.Log("if(mUIDragAndDrop.EnabledDrag)");
+				//Debug.Log(transform.parent.GetComponent<RectTransform>());
+				////seta a posicao da peca droppada, a posicao da area de drop
 				RectTransform r = eventData.pointerDrag.GetComponent<RectTransform>();
-				//Vector2 positionDest = new Vector2(transform.parent.GetComponent<RectTransform>().anchoredPosition.x, transform.parent.GetComponent<RectTransform>().anchoredPosition.y);
+				////Vector2 positionDest = new Vector2(transform.parent.GetComponent<RectTransform>().anchoredPosition.x, transform.parent.GetComponent<RectTransform>().anchoredPosition.y);
 
-				Debug.Log("Drop Anchored: " + transform.parent.GetComponent<RectTransform>().anchoredPosition + " - Square: " + r.anchoredPosition);
+				//Debug.Log("Drop Anchored: " + transform.parent.GetComponent<RectTransform>().anchoredPosition + " - Square: " + r.anchoredPosition);
 				
 				int PostionDragRow = Mathf.FloorToInt(r.anchoredPosition.x / 100);
 				int PostionDragColumn = Mathf.FloorToInt((r.anchoredPosition.y * -1) / 100);
 
-				//r.anchoredPosition = transform.parent.GetComponent<RectTransform>().anchoredPosition;
+				////r.anchoredPosition = transform.parent.GetComponent<RectTransform>().anchoredPosition;
 				r.anchoredPosition = new Vector2((PostionDragRow * 100) + 50, ((PostionDragColumn) * -100) - 50);
 
-				//Debug.Log(r);
-				//avisa ao board que a peca foi droppada
-				mUIBoardManager.SetPositionSquareBlank(eventData.pointerDrag);
+				Debug.Log(eventData.pointerDrag);
+				////avisa ao board que a peca foi droppada
+				mUIBoardManager.SetPositionSquareBlank(eventData.pointerDrag, transform.gameObject);
 			}
 
 		}

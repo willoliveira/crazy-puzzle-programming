@@ -19,19 +19,18 @@ namespace PrototypingGame
 		//posição vazia
 		[HideInInspector]
 		public Vector2 posBlank;
-
-
-		private struct Blank
+		public struct Blank
 		{
 			public int Row;
 			public int Column;
 		};
-		//TODO: Mudar pra isso
-		private Blank PositionBlank;
+		[HideInInspector]
+		public Blank PositionBlank;
 		//numero de colunas
 		[HideInInspector]
 		public int columns;
 		#endregion
+
 
 		#region PRIVATE VARS
 		private GameObject GameObjectPositionBlank;
@@ -62,6 +61,8 @@ namespace PrototypingGame
 			moveSquare = GetComponent<UIMoveSquare>();
 			//inicia a lista de struct com as pecas
 			listObjCropImages = new List<StructCrop>();
+			//
+
 			//Configura o board
 			ConfigGame();
 		}
@@ -87,43 +88,39 @@ namespace PrototypingGame
 		{
 			StartCoroutine(FadeInAndRandomPieces());
 		}
-
-		public void SetPositionSquareBlank(GameObject SquareGameObject)
+		
+		/// <summary>
+		/// 
+		/// 
+		/// OBS: o X em coordenada no plano cartesiano, aqui ele carecterizado como coluna e o Y como linha, pois,
+		///		movendo o objeto em X, você estara movendo ele horizontalmente, então, fazendo ele mudar a coluna, 
+		///		e no Y, mudando Verticalmente, então a linha
+		/// </summary>
+		/// <param name="SquareGameObject"></param>
+		/// <param name="DragDropArea"></param>
+		public void SetPositionSquareBlank(GameObject SquareGameObject, GameObject DragDropArea)
 		{
 			//reparte a string do nome
 			string[] arrName = SquareGameObject.name.Split(new string[] { "-", "" }, System.StringSplitOptions.None);
-			//
-			Debug.Log(SquareGameObject.name);
+			//pega referencia do objeto que foi draggado
 			RectTransform SquareRectTransform = SquareGameObject.GetComponent<RectTransform>();
-			//posicoes
+			//posicao antes do square antes de ser draggado
 			int PositionBeforeDragRow = int.Parse(arrName[1]),
 				PositionBeforeDragColumn = int.Parse(arrName[2]),
-
-				PostionAfterDragRow = Mathf.FloorToInt(SquareRectTransform.anchoredPosition.x / 100),
-				PostionAfterDragColumn = Mathf.FloorToInt((SquareRectTransform.anchoredPosition.y * -1) / 100);
-			//Atualiza a posicao vazia
-			posBlank.x = Mathf.FloorToInt((InstanceDropArea.anchoredPosition.y * -1) / 100);
-			posBlank.y = Mathf.FloorToInt(InstanceDropArea.anchoredPosition.x / 100);
-			//Atualiza a posicao da peca vazia
-			InstanceDropArea.anchoredPosition = new Vector2((PositionBeforeDragColumn * 100) + 50, ((PositionBeforeDragRow) * -100) - 50);
-
-			//Atualiza a posicao vazia
-			//posBlank.x = PositionBeforeDragRow;
-			//posBlank.y = PositionBeforeDragColumn;
-
-
+				//posicao antes do square depois de ser draggado
+				PostionAfterDragRow = Mathf.FloorToInt((SquareRectTransform.anchoredPosition.y * -1) / 100),
+				PostionAfterDragColumn = Mathf.FloorToInt(SquareRectTransform.anchoredPosition.x / 100);
+			//Atualiza o objecto do drop area e a posicao vazia
+			InstanceDropArea.anchoredPosition = new Vector2((PositionBeforeDragColumn * 100) + 50, ((PositionBeforeDragRow) * -100) - 50);			
+			PositionBlank.Row = PositionBeforeDragRow;
+			PositionBlank.Column = PositionBeforeDragColumn;
 			//Atualiza a propriedade de linha e colona do square
 			Square Square = SquareGameObject.GetComponent<Square>();
-			Square.Row = PostionAfterDragRow;
-			Square.Column = PositionBeforeDragColumn;
-			//Normaliza o nome do square
+			Square.Row = PostionAfterDragColumn;
+			Square.Column = PostionAfterDragRow;
+			////Normaliza o nome do square
 			Square.NormalizePieceName();
-
-
-
-			Debug.Log(posBlank);
-
-			//Ativa/Desativa
+			//Ativa/Desativa o dragg das pecas
 			ToogleDrag();
 		}
 
@@ -142,7 +139,7 @@ namespace PrototypingGame
 				Transform TransformSquare = Board.Find("square-" + row + "-" + column);
 				if (TransformSquare)
 				{
-					if (checkNeighbors(row, column, (int)posBlank.x, (int)posBlank.y))
+					if (checkNeighbors(row, column, (int)PositionBlank.Row, (int)PositionBlank.Column))
 					{
 						//Habilita o drag
 						TransformSquare.GetComponent<UIDragAndDrop>().EnabledDrag = true;
@@ -240,6 +237,8 @@ namespace PrototypingGame
 		{
 			//some com a ultima
 			yield return StartCoroutine(Fade(lastPiece.GetComponent<Image>(), 0.03f));
+			//
+			lastPiece.gameObject.SetActive(false);
 			//randomiza
 			//yield return StartCoroutine(RandomPieces());
 			RandomPieces();
@@ -335,8 +334,8 @@ namespace PrototypingGame
 				instance.transform.SetParent(Board, false);
 			}
 			//onde a peca vazia esta
-			posBlank.x = columns - 1;
-			posBlank.y = columns - 1;
+			PositionBlank.Row = columns - 1;
+			PositionBlank.Column = columns - 1;
 			//Instancia a posica da peca vazia
 			instance = Instantiate(DropArea, new Vector3(((columns - 1) * 100) + 50, ((columns - 1) * -100) - 50, 0), Quaternion.identity) as GameObject; // 50 por causa que é a metade da peca do puzzle
 			instance.transform.SetParent(Board, false);
@@ -410,8 +409,8 @@ namespace PrototypingGame
 				else
 				{
 					//seta a posição vazia
-					posBlank.x = columns - 1;
-					posBlank.y = columns - 1;
+					PositionBlank.Row = columns - 1;
+					PositionBlank.Column = columns - 1;
 					//Seta a posicao na area de drop das pecas
 					InstanceDropArea.anchoredPosition = new Vector3(((columns - 1) * 100) + 50, ((columns - 1) * -100) - 50, 0);
 				}

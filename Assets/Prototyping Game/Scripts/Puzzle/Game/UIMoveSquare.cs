@@ -84,7 +84,7 @@ namespace PrototypingGame
 		{
 			//pega o game object
 			Transform cacheGameObject;
-			cacheGameObject = mBoardManager.Board.Find("square-" + (mBoardManager.posBlank.x - dirY) + "-" + (mBoardManager.posBlank.y - dirX));
+			cacheGameObject = mBoardManager.Board.Find("square-" + (mBoardManager.PositionBlank.Row - dirY) + "-" + (mBoardManager.PositionBlank.Column - dirX));
 			//se houver uma gameobject
 			if (cacheGameObject == null)
 			{
@@ -93,13 +93,13 @@ namespace PrototypingGame
 				return;
 			}
 			//Muda a posicao da peca
-			cacheGameObject.localPosition = new Vector3((mBoardManager.posBlank.y * 100) + 50, (mBoardManager.posBlank.x * 100) - 50, 0);
-			cacheGameObject.name = "square-" + mBoardManager.posBlank.x + "-" + mBoardManager.posBlank.y;
+			cacheGameObject.localPosition = new Vector3((mBoardManager.PositionBlank.Column * 100) + 50, (mBoardManager.PositionBlank.Row * 100) - 50, 0);
+			cacheGameObject.name = "square-" + mBoardManager.PositionBlank.Row + "-" + mBoardManager.PositionBlank.Column;
 			//atualiza o x da peça vazia
-			mBoardManager.posBlank.x = mBoardManager.posBlank.x - dirY;
-			mBoardManager.posBlank.y = mBoardManager.posBlank.y - dirX;
+			mBoardManager.PositionBlank.Row = mBoardManager.PositionBlank.Row - dirY;
+			mBoardManager.PositionBlank.Column = mBoardManager.PositionBlank.Column - dirX;
 			//seta a posicao do PositionBlank GameObject
-			//GameObject.Find("PositionBlank").transform.position = new Vector3((mBoardManager.posBlank.y * 100) + 50, (mBoardManager.posBlank.x * 100) - 50, 0);
+			//GameObject.Find("PositionBlank").transform.position = new Vector3((mBoardManager.PositionBlank.Column * 100) + 50, (mBoardManager.PositionBlank.Row * 100) - 50, 0);
 			//Ativa e desativa os drag
 			mBoardManager.ToogleDrag();
 		}
