@@ -9,8 +9,9 @@ namespace PrototypingGame
 
 	public class UIMoveSquare : MonoBehaviour
 	{
+		#region TESTES UI
 		public Text getAxis;
-
+		#endregion
 		private bool axisHorizontalDown = false;
 		private bool axisVerticalDown = false;
 		private UIBoardManager mBoardManager;
@@ -96,7 +97,7 @@ namespace PrototypingGame
 			//pega o rect transform do square
 			SquareRectTransform = SquareTransform.GetComponent<RectTransform>();			
 			//Muda a posicao da peca
-			SquareRectTransform.anchoredPosition = new Vector3((mBoardManager.PositionBlank.Column * 100) + 50, (mBoardManager.PositionBlank.Row * - 100) - 50, 0);
+			SquareRectTransform.anchoredPosition = new Vector3((mBoardManager.PositionBlank.Column * mBoardManager.PieceSize) + mBoardManager.PieceSize/2, (mBoardManager.PositionBlank.Row * -mBoardManager.PieceSize) - mBoardManager.PieceSize/2, 0);
 			//seta a posicao do PositionBlank GameObject
 			mBoardManager.SetPositionSquareBlank(SquareTransform.gameObject);
 		}
