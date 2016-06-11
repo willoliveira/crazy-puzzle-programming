@@ -11,11 +11,17 @@ public class UIDragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 {
 	private GameObject itemBeingDragged;
 	[HideInInspector] public Vector3 PositionBeforeDrag;
-	[HideInInspector] public bool IsDropped;
+	[HideInInspector] public bool IsDropped = false;
 
-	public Text getAxis;
+	private Text getAxisTest;
 
 	public bool EnabledDrag;
+
+	void Start()
+	{
+		getAxisTest = GameObject.Find("GetAxisValue").GetComponent<Text>();
+	}
+
 	
 	public void OnBeginDrag(PointerEventData eventData)
 	{
@@ -32,19 +38,20 @@ public class UIDragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 		if (EnabledDrag)
 		{
 			transform.position = Input.mousePosition;
-
-			getAxis.text = "MX: " + CrossPlatformInputManager.GetAxis("Mouse X") + " - MY: " + CrossPlatformInputManager.GetAxis("Mouse Y");
+			//getAxisTest.text = "MX: " + CrossPlatformInputManager.GetAxis("Mouse X") + " - MY: " + CrossPlatformInputManager.GetAxis("Mouse Y");
 		}
 	}
 
 	public void OnEndDrag(PointerEventData eventData)
 	{
 		Debug.Log("OnEndDrag");
-		
-		//if (EnabledDrag && !IsDropped)
-		//{
-		//	transform.position = PositionBeforeDrag;
-		//}
+
+		if (EnabledDrag && !IsDropped)
+		{
+			IsDropped = false;
+			transform.position = PositionBeforeDrag;
+		}
+		IsDropped = false;
 		itemBeingDragged = null;
 	}
 }

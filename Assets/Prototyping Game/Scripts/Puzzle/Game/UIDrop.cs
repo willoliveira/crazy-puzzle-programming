@@ -24,6 +24,7 @@ public class UIDrop : MonoBehaviour, IDropHandler
 			if(mUIDragAndDrop.EnabledDrag)
 			{
 				Debug.Log("if(mUIDragAndDrop.EnabledDrag)");
+				mUIDragAndDrop.IsDropped = true;
 				//Debug.Log(transform.parent.GetComponent<RectTransform>());
 				////seta a posicao da peca droppada, a posicao da area de drop
 				RectTransform r = eventData.pointerDrag.GetComponent<RectTransform>();

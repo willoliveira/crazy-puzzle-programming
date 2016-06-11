@@ -25,7 +25,7 @@ namespace PrototypingGame
 				float scale = (Screen.width - 20) / 300; // esse -20 é a borda da tela. do lado esquerdo e direito
 
 				BoardContainer.localScale = new Vector2((Screen.width - 20f) / 300f, (Screen.width - 20f) / 300f);// esse -20 é a borda da tela. do lado esquerdo e direito
-				BoardContainer.localPosition = new Vector2((Screen.width / 2) - 10, 200f); // esse -10 é a borda da tela. do lado esquerdo só
+				BoardContainer.localPosition = new Vector2((Screen.width / 2) - 10, 250f); // esse -10 é a borda da tela. do lado esquerdo só
 
 				ScreenHeight = Screen.height;
 				ScreenWidth = Screen.width;

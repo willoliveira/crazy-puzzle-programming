@@ -116,8 +116,8 @@ namespace PrototypingGame
 			PositionBlank.Column = PositionBeforeDragColumn;
 			//Atualiza a propriedade de linha e colona do square
 			Square Square = SquareGameObject.GetComponent<Square>();
-			Square.Row = PostionAfterDragColumn;
-			Square.Column = PostionAfterDragRow;
+			Square.Row = PostionAfterDragRow;
+			Square.Column = PostionAfterDragColumn;
 			////Normaliza o nome do square
 			Square.NormalizePieceName();
 			//Ativa/Desativa o dragg das pecas
