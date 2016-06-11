@@ -34,7 +34,6 @@ namespace PrototypingGame
 		public int columns;
 		#endregion
 
-
 		#region PRIVATE VARS
 		private GameObject GameObjectPositionBlank;
 		private struct StructCrop
@@ -74,8 +73,7 @@ namespace PrototypingGame
 		{
 			Debug.Log("ScreenSize: " + new Vector3(Screen.width, Screen.height, 5));
 			ScreenSizeText.text = "width: " + Screen.width + " | height: " + Screen.height;
-		}
-		
+		}		
 
 		public void StartGame()
 		{
@@ -91,7 +89,7 @@ namespace PrototypingGame
 		/// </summary>
 		/// <param name="SquareGameObject"></param>
 		/// <param name="DragDropArea"></param>
-		public void SetPositionSquareBlank(GameObject SquareGameObject, GameObject DragDropArea)
+		public void SetPositionSquareBlank(GameObject SquareGameObject)
 		{
 			//reparte a string do nome
 			string[] arrName = SquareGameObject.name.Split(new string[] { "-", "" }, System.StringSplitOptions.None);
@@ -116,13 +114,15 @@ namespace PrototypingGame
 			//Ativa/Desativa o dragg das pecas
 			ToogleDrag();
 		}
+		#endregion
 
+		#region PRIVATE METHODS
 		/// <summary>
 		/// posBlank x referente a linha
 		///			 y referente a coluna
 		/// Habilita e desabilita o drag das peças
 		/// </summary>
-		public void ToogleDrag()
+		private void ToogleDrag()
 		{
 			for (int cont = 0; cont < (columns * columns); cont++)
 			{
@@ -145,10 +145,6 @@ namespace PrototypingGame
 				}
 			}
 		}
-		#endregion
-
-		#region PRIVATE METHODS
-
 		/// <summary>
 		/// Verifica os vizinhos das coordenadas que estou passando
 		/// </summary>
@@ -318,7 +314,7 @@ namespace PrototypingGame
 				squareImage = SquareGameObject.GetComponent<Image>();
 				squareImage.sprite = Sprite.Create(randomCropImage, new Rect(0, 0, randomCropImage.width, randomCropImage.height), new Vector2(0, 0), cropSize);
 				//Instancia o game object com a imagem recortada
-				instance = Instantiate(SquareGameObject, new Vector3((row * 100) + 50, ((column) * -100) - 50), Quaternion.identity) as GameObject;
+				instance = Instantiate(SquareGameObject, new Vector3((row * 100) + 50, (column * -100) - 50), Quaternion.identity) as GameObject;
 				instance.name = "square-" + column + "-" + row;
 				//seta a linha e coluna que essa imagem pertence
 				instance.GetComponent<Square>().Row = StructCropImage.row;
@@ -387,13 +383,13 @@ namespace PrototypingGame
 					//preenche a coluna e linha dessa peca
 					cacheSquare.GetComponent<Square>().Row = rowPosRandomized;
 					cacheSquare.GetComponent<Square>().Column = columnPosRandomized;
-//#if UNITY_EDITOR
+#if UNITY_EDITOR
 					//alternativa para quando nao quiser animacao
-					//cacheSquare.anchoredPosition = posEnd;
-//#else
+					cacheSquare.anchoredPosition = posEnd;
+#else
 					//anima e move a peca
 					StartCoroutine(moveSquare.AnimateAndMoveSmooth(cacheSquare, posEnd));
-//#endif
+#endif
 					//remove do array
 					arrayPieces.Remove(valueRandomPosition);
 					//espera um pouco
@@ -435,6 +431,6 @@ namespace PrototypingGame
 			}
 			renameLastPiece();
 		}
-		#endregion
+#endregion
 	}
 }

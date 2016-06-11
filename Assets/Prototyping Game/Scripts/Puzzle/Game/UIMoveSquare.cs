@@ -82,26 +82,23 @@ namespace PrototypingGame
 		/// <param name="dirY"></param>
 		private void MovePuzzle(int dirX, int dirY)
 		{
+			RectTransform SquareRectTransform;
+			Transform SquareTransform;
 			//pega o game object
-			Transform cacheGameObject;
-			cacheGameObject = mBoardManager.Board.Find("square-" + (mBoardManager.PositionBlank.Row - dirY) + "-" + (mBoardManager.PositionBlank.Column - dirX));
+			SquareTransform = mBoardManager.Board.Find("square-" + (mBoardManager.PositionBlank.Row - dirY) + "-" + (mBoardManager.PositionBlank.Column - dirX));
 			//se houver uma gameobject
-			if (cacheGameObject == null)
+			if (SquareTransform == null)
 			{
 				//nao pode mover a peca
 				Debug.Log("Não pode mover para essa direção");
 				return;
 			}
+			//pega o rect transform do square
+			SquareRectTransform = SquareTransform.GetComponent<RectTransform>();			
 			//Muda a posicao da peca
-			cacheGameObject.localPosition = new Vector3((mBoardManager.PositionBlank.Column * 100) + 50, (mBoardManager.PositionBlank.Row * 100) - 50, 0);
-			cacheGameObject.name = "square-" + mBoardManager.PositionBlank.Row + "-" + mBoardManager.PositionBlank.Column;
-			//atualiza o x da peça vazia
-			mBoardManager.PositionBlank.Row = mBoardManager.PositionBlank.Row - dirY;
-			mBoardManager.PositionBlank.Column = mBoardManager.PositionBlank.Column - dirX;
+			SquareRectTransform.anchoredPosition = new Vector3((mBoardManager.PositionBlank.Column * 100) + 50, (mBoardManager.PositionBlank.Row * - 100) - 50, 0);
 			//seta a posicao do PositionBlank GameObject
-			//GameObject.Find("PositionBlank").transform.position = new Vector3((mBoardManager.PositionBlank.Column * 100) + 50, (mBoardManager.PositionBlank.Row * 100) - 50, 0);
-			//Ativa e desativa os drag
-			mBoardManager.ToogleDrag();
+			mBoardManager.SetPositionSquareBlank(SquareTransform.gameObject);
 		}
 		/// <summary>
 		/// Anima e move a peca para a posicao desejada

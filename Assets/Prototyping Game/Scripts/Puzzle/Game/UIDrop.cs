@@ -40,7 +40,7 @@ public class UIDrop : MonoBehaviour, IDropHandler
 
 				Debug.Log(eventData.pointerDrag);
 				////avisa ao board que a peca foi droppada
-				mUIBoardManager.SetPositionSquareBlank(eventData.pointerDrag, transform.gameObject);
+				mUIBoardManager.SetPositionSquareBlank(eventData.pointerDrag);
 			}
 
 		}
