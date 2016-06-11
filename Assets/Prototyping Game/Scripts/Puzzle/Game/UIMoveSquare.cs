@@ -7,19 +7,19 @@ using UnityStandardAssets.CrossPlatformInput;
 namespace PrototypingGame
 {
 
-	public class MoveSquare : MonoBehaviour
+	public class UIMoveSquare : MonoBehaviour
 	{
 		public Text getAxis;
 
 		private bool axisHorizontalDown = false;
 		private bool axisVerticalDown = false;
-		private BoardManager mBoardManager;
+		private UIBoardManager mBoardManager;
 		/// <summary>
 		/// Inicia
 		/// </summary>
 		void Start()
 		{
-			mBoardManager = GetComponent<BoardManager>();
+			mBoardManager = GetComponent<UIBoardManager>();
 		}
 		/// <summary>
 		/// Metodo update
@@ -31,7 +31,7 @@ namespace PrototypingGame
 			int HorizontalAxis = RoudAxis(CrossPlatformInputManager.GetAxis("Horizontal"));
 			int VerticalAxis = RoudAxis(CrossPlatformInputManager.GetAxis("Vertical"));
 			//mostra na tela o get axis
-			getAxis.text = "HorizontalAxis: " + HorizontalAxis + " - VerticalAxis: " + VerticalAxis;
+			//getAxis.text = "HorizontalAxis: " + HorizontalAxis + " - VerticalAxis: " + VerticalAxis;
 			/*Horizontal*/
 			if (HorizontalAxis == 1 || HorizontalAxis == -1)
 			{
@@ -84,7 +84,7 @@ namespace PrototypingGame
 		{
 			//pega o game object
 			Transform cacheGameObject;
-			cacheGameObject = mBoardManager.Board.Find("square-" + (mBoardManager.posBlank.x - dirY) + "-" + (mBoardManager.posBlank.y - dirX));
+			cacheGameObject = mBoardManager.Board.Find("square-" + (mBoardManager.PositionBlank.Row - dirY) + "-" + (mBoardManager.PositionBlank.Column - dirX));
 			//se houver uma gameobject
 			if (cacheGameObject == null)
 			{
@@ -93,13 +93,13 @@ namespace PrototypingGame
 				return;
 			}
 			//Muda a posicao da peca
-			cacheGameObject.position = new Vector3(mBoardManager.posBlank.y * mBoardManager.Board.localScale.x, (mBoardManager.columns - 1 - mBoardManager.posBlank.x) * mBoardManager.Board.localScale.x, 0);
-			cacheGameObject.name = "square-" + mBoardManager.posBlank.x + "-" + mBoardManager.posBlank.y;
+			cacheGameObject.localPosition = new Vector3((mBoardManager.PositionBlank.Column * 100) + 50, (mBoardManager.PositionBlank.Row * 100) - 50, 0);
+			cacheGameObject.name = "square-" + mBoardManager.PositionBlank.Row + "-" + mBoardManager.PositionBlank.Column;
 			//atualiza o x da peça vazia
-			mBoardManager.posBlank.x = mBoardManager.posBlank.x - dirY;
-			mBoardManager.posBlank.y = mBoardManager.posBlank.y - dirX;
+			mBoardManager.PositionBlank.Row = mBoardManager.PositionBlank.Row - dirY;
+			mBoardManager.PositionBlank.Column = mBoardManager.PositionBlank.Column - dirX;
 			//seta a posicao do PositionBlank GameObject
-			GameObject.Find("PositionBlank").transform.position = new Vector3(mBoardManager.posBlank.y * mBoardManager.Board.localScale.x, (mBoardManager.columns - 1 - mBoardManager.posBlank.x) * mBoardManager.Board.localScale.y);
+			//GameObject.Find("PositionBlank").transform.position = new Vector3((mBoardManager.PositionBlank.Column * 100) + 50, (mBoardManager.PositionBlank.Row * 100) - 50, 0);
 			//Ativa e desativa os drag
 			mBoardManager.ToogleDrag();
 		}
@@ -113,7 +113,7 @@ namespace PrototypingGame
 		/// <param name="piece"></param>
 		/// <param name="end"></param>
 		/// <returns></returns>
-		public IEnumerator AnimateAndMoveSmooth(Transform piece, Vector3 end)
+		public IEnumerator AnimateAndMoveSmooth(RectTransform piece, Vector3 end)
 		{
 			//http://answers.unity3d.com/questions/628200/get-length-of-animator-statetransition.html
 			//faz a peca animar dando scale
@@ -133,26 +133,22 @@ namespace PrototypingGame
 		/// <param name="piece"></param>
 		/// <param name="end"></param>
 		/// <returns></returns>
-		public IEnumerator MovePieceSmooth(Transform piece, Vector3 end)
+		public IEnumerator MovePieceSmooth(RectTransform piece, Vector2 end)
 		{
 			// Calculate the remaining distance to move based on the square magnitude of the difference between current position and end parameter.
 			//Square magnitude is used instead of magnitude because it's computationally cheaper.
-			float sqrRemainingDistance = (piece.transform.position - end).sqrMagnitude;
+			float sqrRemainingDistance = (piece.anchoredPosition - end).sqrMagnitude;
 			//While that distance is greater than a very small amount (Epsilon, almost zero):
 			while (sqrRemainingDistance > float.Epsilon)
 			{
 				//Find a new position proportionally closer to the end, based on the moveTime
-				Vector3 newPostion = end;
-				newPostion = Vector3.MoveTowards(piece.position, end, 1f / 0.1f * Time.deltaTime);
-				//newPostion.z = 3f;
+				Vector3 newPostion = Vector3.MoveTowards(piece.anchoredPosition, end, 1f / 0.01f * Time.deltaTime);
 				//Call MovePosition on attached Rigidbody2D and move it to the calculated position.
-				piece.position = newPostion;
+				piece.anchoredPosition = newPostion;
 				//Recalculate the remaining distance after moving.
-				sqrRemainingDistance = (piece.transform.position - end).sqrMagnitude;
+				sqrRemainingDistance = (piece.anchoredPosition - end).sqrMagnitude;
 				//Return and loop until sqrRemainingDistance is close enough to zero to end the function
-				yield return new WaitForSeconds(0.01f);
-				//Debug.Log("sqrRemainingDistance > float.Epsilon");
-				//yield return null;
+				yield return null;
 			}
 			//yield return null;
 		}
