@@ -7,6 +7,18 @@ namespace PrototypingGame
 {
 	public class UIBoardManager : MonoBehaviour
 	{
+		public struct Blank
+		{
+			public int Row;
+			public int Column;
+		};
+		private struct StructCrop
+		{
+			public Texture2D crop;
+			public int row;
+			public int column;
+		};
+
 		#region PUBLIC VARS
 		//imagem de referencia
 		public Texture2D image;
@@ -16,33 +28,17 @@ namespace PrototypingGame
 		public GameObject SquareGameObject;
 		//Drop area
 		public GameObject DropArea;
+		
+		#region TESTES UI
 		//screen size
 		public Text ScreenSizeText;
-
-		//posição vazia
-		[HideInInspector]
-		public Vector2 posBlank;
-		public struct Blank
-		{
-			public int Row;
-			public int Column;
-		};
-		[HideInInspector]
-		public Blank PositionBlank;
-		//numero de colunas
-		[HideInInspector]
-		public int columns;
+		#endregion
 		#endregion
 
 		#region PRIVATE VARS
+		//GameObjectPositionBlank
 		private GameObject GameObjectPositionBlank;
-		private struct StructCrop
-		{
-			public Texture2D crop;
-			public int row;
-			public int column;
-		};
-		//
+		//mGameManger
 		private GameManager mGameManger;
 		//tamanho do recorte
 		private int cropSize;
@@ -52,8 +48,21 @@ namespace PrototypingGame
 		private UIMoveSquare moveSquare;
 		//Ultima peça
 		private Transform lastPiece;
-		//
+		//InstanceDropArea
 		private RectTransform InstanceDropArea;
+		#endregion
+
+		#region CONFIG BOARD
+		//tamanho do board
+		public int BoardSize = 300;
+		//tamanho das pecas
+		public int PieceSize;
+		//numero de colunas
+		[HideInInspector]
+		public int columns;
+		//posição vazia
+		[HideInInspector]
+		public Blank PositionBlank;
 		#endregion
 
 		// Use this for initialization
@@ -79,10 +88,7 @@ namespace PrototypingGame
 		{
 			StartCoroutine(FadeInAndRandomPieces());
 		}
-		
 		/// <summary>
-		/// 
-		/// 
 		/// OBS: o X em coordenada no plano cartesiano, aqui ele carecterizado como coluna e o Y como linha, pois,
 		///		movendo o objeto em X, você estara movendo ele horizontalmente, então, fazendo ele mudar a coluna, 
 		///		e no Y, mudando Verticalmente, então a linha
@@ -99,10 +105,10 @@ namespace PrototypingGame
 			int PositionBeforeDragRow = int.Parse(arrName[1]),
 				PositionBeforeDragColumn = int.Parse(arrName[2]),
 				//posicao antes do square depois de ser draggado
-				PostionAfterDragRow = Mathf.FloorToInt((SquareRectTransform.anchoredPosition.y * -1) / 100),
-				PostionAfterDragColumn = Mathf.FloorToInt(SquareRectTransform.anchoredPosition.x / 100);
+				PostionAfterDragRow = Mathf.FloorToInt((SquareRectTransform.anchoredPosition.y * -1) / PieceSize),
+				PostionAfterDragColumn = Mathf.FloorToInt(SquareRectTransform.anchoredPosition.x / PieceSize);
 			//Atualiza o objecto do drop area e a posicao vazia
-			InstanceDropArea.anchoredPosition = new Vector2((PositionBeforeDragColumn * 100) + 50, ((PositionBeforeDragRow) * -100) - 50);			
+			InstanceDropArea.anchoredPosition = new Vector2((PositionBeforeDragColumn * PieceSize) + PieceSize / 2, ((PositionBeforeDragRow) * -PieceSize) - PieceSize / 2);
 			PositionBlank.Row = PositionBeforeDragRow;
 			PositionBlank.Column = PositionBeforeDragColumn;
 			//Atualiza a propriedade de linha e colona do square
@@ -203,8 +209,10 @@ namespace PrototypingGame
 			{
 				columns = 4;
 			}
+			PieceSize = BoardSize / columns;
 			//pega o tamanho do recorte pelo numero de colunas
 			cropSize = (int)(image.width / columns);
+			GameObject.Find("GetAxisValue").GetComponent<Text>().text = "cropSize: " + cropSize + " - calculo: (" + image.width + " / " + columns +")";
 			//TODO: Preciso fazer os modos de jogo ainda
 			if (mGameManger.mSelectMode == SelectMode.Image)
 			{
@@ -310,11 +318,14 @@ namespace PrototypingGame
 				int randomPosition = (row * columns) + column;
 				StructCrop StructCropImage = listObjCropImages[randomPosition];
 				Texture2D randomCropImage = StructCropImage.crop;
+				//
+				SquareGameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(PieceSize, PieceSize);
+
 				//Seta a imagem como Sprite
 				squareImage = SquareGameObject.GetComponent<Image>();
-				squareImage.sprite = Sprite.Create(randomCropImage, new Rect(0, 0, randomCropImage.width, randomCropImage.height), new Vector2(0, 0), cropSize);
+				squareImage.sprite = Sprite.Create(randomCropImage, new Rect(0, 0, randomCropImage.width * Board.localScale.x, randomCropImage.height * Board.localScale.x), new Vector2(0, 0), cropSize);
 				//Instancia o game object com a imagem recortada
-				instance = Instantiate(SquareGameObject, new Vector3((row * 100) + 50, (column * -100) - 50), Quaternion.identity) as GameObject;
+				instance = Instantiate(SquareGameObject, new Vector3((row * PieceSize) + (PieceSize/2), (column * - PieceSize) - (PieceSize/2)), Quaternion.identity) as GameObject;
 				instance.name = "square-" + column + "-" + row;
 				//seta a linha e coluna que essa imagem pertence
 				instance.GetComponent<Square>().Row = StructCropImage.row;
@@ -326,7 +337,7 @@ namespace PrototypingGame
 			PositionBlank.Row = columns - 1;
 			PositionBlank.Column = columns - 1;
 			//Instancia a posica da peca vazia
-			instance = Instantiate(DropArea, new Vector3(((columns - 1) * 100) + 50, ((columns - 1) * -100) - 50, 0), Quaternion.identity) as GameObject; // 50 por causa que é a metade da peca do puzzle
+			instance = Instantiate(DropArea, new Vector3(((columns - 1) * PieceSize) + PieceSize/2, ((columns - 1) * - PieceSize) - PieceSize/2, 0), Quaternion.identity) as GameObject; // 50 por causa que é a metade da peca do puzzle
 			instance.transform.SetParent(Board, false);
 			//Pega a referencia do RectTransform da area de Drop e guarda
 			InstanceDropArea = instance.GetComponent<RectTransform>();
@@ -379,7 +390,7 @@ namespace PrototypingGame
 					int rowPosRandomized = (int)Mathf.Floor(valueRandomPosition / columns);
 					int columnPosRandomized = valueRandomPosition % columns;
 					//vetor com a posição final do recorte
-					Vector3 posEnd = new Vector3((columnPosRandomized * 100) + 50, ((rowPosRandomized) * -100) - 50);
+					Vector3 posEnd = new Vector3((columnPosRandomized * PieceSize) + PieceSize/2, ((rowPosRandomized) * -PieceSize) - PieceSize/2);
 					//preenche a coluna e linha dessa peca
 					cacheSquare.GetComponent<Square>().Row = rowPosRandomized;
 					cacheSquare.GetComponent<Square>().Column = columnPosRandomized;
@@ -401,7 +412,7 @@ namespace PrototypingGame
 					PositionBlank.Row = columns - 1;
 					PositionBlank.Column = columns - 1;
 					//Seta a posicao na area de drop das pecas
-					InstanceDropArea.anchoredPosition = new Vector3(((columns - 1) * 100) + 50, ((columns - 1) * -100) - 50, 0);
+					InstanceDropArea.anchoredPosition = new Vector3(((columns - 1) * PieceSize) + PieceSize/2, ((columns - 1) * -PieceSize) - PieceSize/2, 0);
 				}
 				//TODO: Tentar fazer isso depois somente depois que as animacoes acabarem
 				if (cont == (columns * columns) - 1)
