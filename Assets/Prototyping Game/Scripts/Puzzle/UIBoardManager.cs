@@ -16,6 +16,9 @@ namespace PrototypingGame
 		public GameObject SquareGameObject;
 		//Drop area
 		public GameObject DropArea;
+		//screen size
+		public Text ScreenSizeText;
+
 		//posição vazia
 		[HideInInspector]
 		public Vector2 posBlank;
@@ -61,28 +64,18 @@ namespace PrototypingGame
 			moveSquare = GetComponent<UIMoveSquare>();
 			//inicia a lista de struct com as pecas
 			listObjCropImages = new List<StructCrop>();
-			//
 
 			//Configura o board
 			ConfigGame();
 		}
 
 		#region PUBLIC METHODS
-		public void RecenterBoard()
+		public void ScreenSize()
 		{
-			//Vector3 worldPoint;
-			//worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, 5));
-			//worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 5));
-			//Board.transform.position = worldPoint;
-
 			Debug.Log("ScreenSize: " + new Vector3(Screen.width, Screen.height, 5));
-			//Debug.Log("Recenter: " + GameObject.Find("Recenter"));
+			ScreenSizeText.text = "width: " + Screen.width + " | height: " + Screen.height;
 		}
-
-		public void ResizeBoard()
-		{
-
-		}
+		
 
 		public void StartGame()
 		{
@@ -380,7 +373,7 @@ namespace PrototypingGame
 					do
 					{
 						//Debug.Log("do while");
-						//TODO quem sabe num é esse while que ta cagando tudo... Talvez nao...
+						//TODO: quem sabe é esse while que ta cagando tudo... [UPDATE] Talvez nao...
 						//randomiza a posição
 						indexRandomPosition = Random.Range(0, arrayPieces.Count - 1);
 					} while (arrayPieces[indexRandomPosition] == cont);
@@ -394,13 +387,13 @@ namespace PrototypingGame
 					//preenche a coluna e linha dessa peca
 					cacheSquare.GetComponent<Square>().Row = rowPosRandomized;
 					cacheSquare.GetComponent<Square>().Column = columnPosRandomized;
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
 					//alternativa para quando nao quiser animacao
-					cacheSquare.anchoredPosition = posEnd;
-#else
+					//cacheSquare.anchoredPosition = posEnd;
+//#else
 					//anima e move a peca
 					StartCoroutine(moveSquare.AnimateAndMoveSmooth(cacheSquare, posEnd));
-#endif
+//#endif
 					//remove do array
 					arrayPieces.Remove(valueRandomPosition);
 					//espera um pouco
