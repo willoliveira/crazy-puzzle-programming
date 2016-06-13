@@ -40,11 +40,36 @@ namespace PrototypingGame
 		/// </summary>
 		void RecizeBoard()
 		{
+			float scale;
 			RectTransform BoardContainer = GameObject.Find("UIBoardTransform").GetComponent<RectTransform>();
-			float scale = (Screen.width - BorderBord) / mBoardManager.BoardSize; // esse -20 é a borda da tela. do lado esquerdo e direito
-			//redimensiona o board
-			BoardContainer.localScale = new Vector2((Screen.width - BorderBord) / mBoardManager.BoardSize, (Screen.width - BorderBord) / mBoardManager.BoardSize);// esse -20 é a borda da tela. do lado esquerdo e direito
-			BoardContainer.localPosition = new Vector2((Screen.width / 2) - (BorderBord / 2), 250f); //esse 250 ta a caralha
+			Debug.Log("mBoardManager.BoardSize > Screen.height");
+			//landscape
+			if (Screen.width > Screen.height)
+			{
+				// deixando o board a 80 do tamanho da tela em altura
+				double scaleLandscape = (Screen.height * 0.8) / mBoardManager.BoardSize;
+
+				float BoardSizeWithScale = (float)(mBoardManager.BoardSize * scaleLandscape);
+				float positionY = (Screen.height / 2) - (Screen.height - BoardSizeWithScale) / 2;
+
+				//redimensiona o board
+				BoardContainer.localScale = new Vector2((float)scaleLandscape, (float)scaleLandscape);// esse -20 é a borda da tela. do lado esquerdo e direito
+				BoardContainer.anchoredPosition = new Vector2(Screen.width - (BorderBord / 2), positionY); //esse 250 ta a caralha
+			}
+			else {
+				//Screen.Heigth / 2 - ( ( Screen.Heigth -(Border.size * BoarderScale) ) / 2 )
+				//com local position
+				scale = (Screen.width - BorderBord) / mBoardManager.BoardSize; // esse -20 é a borda da tela. do lado esquerdo e direito
+				//redimensiona o board
+				BoardContainer.localScale = new Vector2((Screen.width - BorderBord) / mBoardManager.BoardSize, (Screen.width - BorderBord) / mBoardManager.BoardSize);// esse -20 é a borda da tela. do lado esquerdo e direito
+				BoardContainer.localPosition = new Vector2((Screen.width / 2) - (BorderBord / 2), 250f); //esse 250 ta a caralha
+
+
+				//scale = (Screen.width - BorderBord) / mBoardManager.BoardSize; // esse -20 é a borda da tela. do lado esquerdo e direito
+				////redimensiona o board
+				//BoardContainer.localScale = new Vector2((Screen.width - BorderBord) / mBoardManager.BoardSize, (Screen.width - BorderBord) / mBoardManager.BoardSize);// esse -20 é a borda da tela. do lado esquerdo e direito
+				//BoardContainer.localPosition = new Vector2((Screen.width / 2) - (BorderBord / 2), 250f); //esse 250 ta a caralha
+			}
 			//seta novamente o tamanho da tela
 			ScreenHeight = Screen.height;
 			ScreenWidth = Screen.width;
