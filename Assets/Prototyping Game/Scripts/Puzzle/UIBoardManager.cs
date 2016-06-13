@@ -82,8 +82,10 @@ namespace PrototypingGame
 		{
 			Debug.Log("ScreenSize: " + new Vector3(Screen.width, Screen.height, 5));
 			ScreenSizeText.text = "width: " + Screen.width + " | height: " + Screen.height;
-		}		
-
+		}
+		/// <summary>
+		/// Inicia o game comecando dando um fade da ultima peca e randomizacao as pecas
+		/// </summary>
 		public void StartGame()
 		{
 			StartCoroutine(FadeInAndRandomPieces());
@@ -222,10 +224,7 @@ namespace PrototypingGame
 				CreatePieces();
 			}
 		}
-		/// <summary>
-		/// Inicia o game comecando dando um fade da ultima peca e randomizacao as pecas
-		/// </summary>
-
+		
 		/// <summary>
 		/// Faz o fade e randomiza as pecas, em sequencia
 		/// </summary>
