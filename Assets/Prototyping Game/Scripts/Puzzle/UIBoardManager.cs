@@ -377,13 +377,12 @@ namespace PrototypingGame
 				{
 					int indexRandomPosition;
 					//não deixa a posição ser a mesma da posição atual
-					do
-					{
-						//Debug.Log("do while");
-						//TODO: quem sabe é esse while que ta cagando tudo... [UPDATE] Talvez nao...
+					//do
+					//{
+						//TODO: quem sabe é esse while que ta cagando tudo... [UPDATE] Talvez nao... [UPDATE 1] era esse while mesmo que tava travando meu jogo
 						//randomiza a posição
 						indexRandomPosition = Random.Range(0, arrayPieces.Count - 1);
-					} while (arrayPieces[indexRandomPosition] == cont);
+					//} while (arrayPieces[indexRandomPosition] == cont && arrayPieces.Count > 1) ;
 					//index da posição randomizada
 					int valueRandomPosition = arrayPieces[indexRandomPosition];
 					//linha e coluna da posição randomizada
