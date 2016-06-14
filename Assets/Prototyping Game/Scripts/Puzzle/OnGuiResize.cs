@@ -7,7 +7,14 @@ namespace PrototypingGame
 	public class OnGuiResize : MonoBehaviour {
 		#region CONFIG GUI RESIZE
 		//Tamanho da borda
-		public float BorderBord = 20f;
+		public float BorderPortrait = 40f;
+		public float BorderLandscapeLeft = 30f;
+		//Porcentagem do tamanho do board quando a tela esta em landscape
+		[Range (0,1)] public float PorcentBordLandscape = 0.8f;
+		//Porcentagem do tamanho do boarder top quando a tela esta em portrait
+		[Range (0,1)] public float PorcentBorderTopPortrait = 0.3f;
+		//Tempo
+		public RectTransform TimeText;
 		#endregion
 
 		//Tamanho da tela
@@ -40,35 +47,47 @@ namespace PrototypingGame
 		/// </summary>
 		void RecizeBoard()
 		{
-			float scale;
 			RectTransform BoardContainer = GameObject.Find("UIBoardTransform").GetComponent<RectTransform>();
-			Debug.Log("mBoardManager.BoardSize > Screen.height");
-			//landscape
+			//Landscape
 			if (Screen.width > Screen.height)
 			{
-				// deixando o board a 80 do tamanho da tela em altura
-				double scaleLandscape = (Screen.height * 0.8) / mBoardManager.BoardSize;
-
+				//Formula
+				//Screen.Heigth / 2 - ( ( Screen.Heigth - ( Border.size * BoarderScale ) ) / 2 )
+				// deixando o board com 80 do tamanho da tela em altura
+				double scaleLandscape = (Screen.height * PorcentBordLandscape) / mBoardManager.BoardSize;
+				//Aplica o scale no board
 				float BoardSizeWithScale = (float)(mBoardManager.BoardSize * scaleLandscape);
-				float positionY = (Screen.height / 2) - (Screen.height - BoardSizeWithScale) / 2;
-
+				//Posicionamento do board
+				float PositionLandscapeY = (Screen.height / 2) - (Screen.height - BoardSizeWithScale) / 2;
 				//redimensiona o board
-				BoardContainer.localScale = new Vector2((float)scaleLandscape, (float)scaleLandscape);// esse -20 é a borda da tela. do lado esquerdo e direito
-				BoardContainer.anchoredPosition = new Vector2(Screen.width - (BorderBord / 2), positionY); //esse 250 ta a caralha
+				BoardContainer.localScale = new Vector2((float)scaleLandscape, (float)scaleLandscape);
+				BoardContainer.anchoredPosition = new Vector2(Screen.width - BorderLandscapeLeft, PositionLandscapeY);
+
+				//posiciona a 15% do bottom da tela
+				float TimeTextPositionXLandscape = ( Screen.width - ( BoardSizeWithScale + BorderLandscapeLeft ) ) / 2;
+				TimeText.anchoredPosition = new Vector2(TimeTextPositionXLandscape, 0);
+				//altera o anchor pressets
+				TimeText.anchorMin = new Vector2(0, 0.5f);
+				TimeText.anchorMax = new Vector2(0, 0.5f);
+				TimeText.pivot = new Vector2(0.5f, 0.5f);
 			}
-			else {
-				//Screen.Heigth / 2 - ( ( Screen.Heigth -(Border.size * BoarderScale) ) / 2 )
-				//com local position
-				scale = (Screen.width - BorderBord) / mBoardManager.BoardSize; // esse -20 é a borda da tela. do lado esquerdo e direito
+			//Portrait
+			else
+			{
+				//Multiplico a borda por dois, para a imagem conseguir ficar no meio
+				float ScalePortrait = (Screen.width - (BorderPortrait * 2)) / mBoardManager.BoardSize;
+				//Posicionamento do board
+				double positionPortraitY = (Screen.height / 2) - (Screen.height * PorcentBorderTopPortrait) / 2;
 				//redimensiona o board
-				BoardContainer.localScale = new Vector2((Screen.width - BorderBord) / mBoardManager.BoardSize, (Screen.width - BorderBord) / mBoardManager.BoardSize);// esse -20 é a borda da tela. do lado esquerdo e direito
-				BoardContainer.localPosition = new Vector2((Screen.width / 2) - (BorderBord / 2), 250f); //esse 250 ta a caralha
-
-
-				//scale = (Screen.width - BorderBord) / mBoardManager.BoardSize; // esse -20 é a borda da tela. do lado esquerdo e direito
-				////redimensiona o board
-				//BoardContainer.localScale = new Vector2((Screen.width - BorderBord) / mBoardManager.BoardSize, (Screen.width - BorderBord) / mBoardManager.BoardSize);// esse -20 é a borda da tela. do lado esquerdo e direito
-				//BoardContainer.localPosition = new Vector2((Screen.width / 2) - (BorderBord / 2), 250f); //esse 250 ta a caralha
+				BoardContainer.localScale = new Vector2(ScalePortrait, ScalePortrait);				
+				BoardContainer.anchoredPosition = new Vector2(Screen.width - BorderPortrait, (float) positionPortraitY);
+				
+				//posiciona a 15% do bottom da tela
+				TimeText.anchoredPosition = new Vector2(0, ScreenHeight * 0.15f);
+				//altera o anchor pressets
+				TimeText.anchorMin = new Vector2(0.5f, 0);
+				TimeText.anchorMax = new Vector2(0.5f, 0);
+				TimeText.pivot = new Vector2(0.5f, 0.5f);
 			}
 			//seta novamente o tamanho da tela
 			ScreenHeight = Screen.height;

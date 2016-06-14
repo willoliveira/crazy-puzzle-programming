@@ -16,30 +16,23 @@ public class UIDrop : MonoBehaviour, IDropHandler
 
 	public void OnDrop(PointerEventData eventData)
 	{
-		Debug.Log("OnDrop");
 		if (eventData.pointerDrag)
 		{
 			//Pega a referencia do objeto que estava sendo draggado
-			mUIDragAndDrop = eventData.pointerDrag.GetComponent<UIDragAndDrop>();		
+			mUIDragAndDrop = eventData.pointerDrag.GetComponent<UIDragAndDrop>();
+			//verifica se essa peca possui o drag habilitado
 			if(mUIDragAndDrop.EnabledDrag)
 			{
-				Debug.Log("if(mUIDragAndDrop.EnabledDrag)");
+				//seta a peca dragada como dropada, indicando que ela foi colocada no drop area
 				mUIDragAndDrop.IsDropped = true;
-				//Debug.Log(transform.parent.GetComponent<RectTransform>());
-				////seta a posicao da peca droppada, a posicao da area de drop
-				RectTransform r = eventData.pointerDrag.GetComponent<RectTransform>();
-				////Vector2 positionDest = new Vector2(transform.parent.GetComponent<RectTransform>().anchoredPosition.x, transform.parent.GetComponent<RectTransform>().anchoredPosition.y);
-
-				//Debug.Log("Drop Anchored: " + transform.parent.GetComponent<RectTransform>().anchoredPosition + " - Square: " + r.anchoredPosition);
-				
-				int PostionDragRow = Mathf.FloorToInt(r.anchoredPosition.x / 100);
-				int PostionDragColumn = Mathf.FloorToInt((r.anchoredPosition.y * -1) / 100);
-
-				////r.anchoredPosition = transform.parent.GetComponent<RectTransform>().anchoredPosition;
-				r.anchoredPosition = new Vector2((PostionDragRow * 100) + 50, ((PostionDragColumn) * -100) - 50);
-
-				Debug.Log(eventData.pointerDrag);
-				////avisa ao board que a peca foi droppada
+				//seta a posicao da peca droppada, a posicao da area de drop
+				RectTransform SquareDropped = eventData.pointerDrag.GetComponent<RectTransform>();
+				//pega as posicoes da linha e coluna
+				int PostionDragRow = Mathf.FloorToInt(SquareDropped.anchoredPosition.x / mUIBoardManager.PieceSize);
+				int PostionDragColumn = Mathf.FloorToInt((SquareDropped.anchoredPosition.y * -1) / mUIBoardManager.PieceSize);
+				//seta a posicao na peca
+				SquareDropped.anchoredPosition = new Vector2((PostionDragRow * mUIBoardManager.PieceSize) + (mUIBoardManager.PieceSize / 2), ((PostionDragColumn) * - mUIBoardManager.PieceSize) - (mUIBoardManager.PieceSize / 2));
+				//avisa ao board que a peca foi droppada
 				mUIBoardManager.SetPositionSquareBlank(eventData.pointerDrag);
 			}
 
