@@ -28,7 +28,7 @@ namespace PrototypingGame
 		public GameObject SquareGameObject;
 		//Drop area
 		public GameObject DropArea;
-		
+
 		#region TESTES UI
 		//screen size
 		public Text ScreenSizeText;
@@ -88,6 +88,10 @@ namespace PrototypingGame
 		/// </summary>
 		public void StartGame()
 		{
+			//Autamente provisorio, se for ser assim, fazer direito.
+			GameObject mInitGame = GameObject.Find("InitGame");
+			mInitGame.SetActive(false);
+			//Começa o jogo
 			StartCoroutine(FadeInAndRandomPieces());
 		}
 		/// <summary>
@@ -117,20 +121,26 @@ namespace PrototypingGame
 			Square Square = SquareGameObject.GetComponent<Square>();
 			Square.Row = PostionAfterDragRow;
 			Square.Column = PostionAfterDragColumn;
-			////Normaliza o nome do square
+			//Normaliza o nome do square
 			Square.NormalizePieceName();
-			//Ativa/Desativa o dragg das pecas
-			ToogleDrag();
+
+			//Testa se acertou tudo
+			if (ValidBoard())
+			{
+				Debug.Log("Tudo certo!!!");
+				ToogleDrag(true);
+			}
+			else
+			{
+				Debug.Log("Ainda errado!!!");
+				//Ativa/Desativa o dragg das pecas
+				ToogleDrag();
+			}
 		}
 		#endregion
 
 		#region PRIVATE METHODS
-		/// <summary>
-		/// posBlank x referente a linha
-		///			 y referente a coluna
-		/// Habilita e desabilita o drag das peças
-		/// </summary>
-		private void ToogleDrag()
+		private bool ValidBoard()
 		{
 			for (int cont = 0; cont < (columns * columns); cont++)
 			{
@@ -140,15 +150,51 @@ namespace PrototypingGame
 				Transform TransformSquare = Board.Find("square-" + row + "-" + column);
 				if (TransformSquare)
 				{
-					if (checkNeighbors(row, column, (int)PositionBlank.Row, (int)PositionBlank.Column))
+					Square square = TransformSquare.GetComponent<Square>();
+					if (square.Row != square.RowCorrect || square.Column != square.ColumnCorrect)
 					{
-						//Habilita o drag
-						TransformSquare.GetComponent<UIDragAndDrop>().EnabledDrag = true;
+						return false;
 					}
-					else
+				}
+			}
+			return true;
+		}
+		/// <summary>
+		/// 
+		/// posBlank x referente a linha
+		///			 y referente a coluna
+		/// Habilita e desabilita o drag das peças
+		/// 
+		/// TODO: Adaptar o metodo para o modo livre, em que ele não precisa validar os vizinhos e nao desliga nenhum drag. Talvez ate nao precise ser aqui, ser em quem chama esse metodo
+		/// </summary>
+		/// <param name="DesactiveAll"></param>
+		private void ToogleDrag(bool DesactiveAll = false)
+		{
+			for (int cont = 0; cont < (columns * columns); cont++)
+			{
+				int row = Mathf.FloorToInt(cont / (columns));
+				int column = cont % columns;
+				//pega o gameobject do quadrado
+				Transform TransformSquare = Board.Find("square-" + row + "-" + column);
+				if (TransformSquare)
+				{
+					if (DesactiveAll)
 					{
 						//Desabilita o drag
 						TransformSquare.GetComponent<UIDragAndDrop>().EnabledDrag = false;
+					}
+					else
+					{
+						//if (checkNeighbors(row, column, (int)PositionBlank.Row, (int)PositionBlank.Column))
+						//{
+							//Habilita o drag
+							TransformSquare.GetComponent<UIDragAndDrop>().EnabledDrag = true;
+						//}
+						//else
+						//{
+						//	//Desabilita o drag
+						//	TransformSquare.GetComponent<UIDragAndDrop>().EnabledDrag = false;
+						//}
 					}
 				}
 			}
@@ -200,7 +246,6 @@ namespace PrototypingGame
 		/// </summary>
 		private void ConfigGame()
 		{
-			//
 			mGameManger = GameObject.Find("GameManager").GetComponent<GameManager>();
 			//Seta a dificuldade do jogo
 			if (mGameManger.mDiffilcultyMode == DiffilcultyMode.Normal)
@@ -214,7 +259,7 @@ namespace PrototypingGame
 			PieceSize = BoardSize / columns;
 			//pega o tamanho do recorte pelo numero de colunas
 			cropSize = (int)(image.width / columns);
-			GameObject.Find("GetAxisValue").GetComponent<Text>().text = "cropSize: " + cropSize + " - calculo: (" + image.width + " / " + columns +")";
+			//GameObject.Find("GetAxisValue").GetComponent<Text>().text = "cropSize: " + cropSize + " - calculo: (" + image.width + " / " + columns +")";
 			//TODO: Preciso fazer os modos de jogo ainda
 			if (mGameManger.mSelectMode == SelectMode.Image)
 			{
@@ -224,7 +269,7 @@ namespace PrototypingGame
 				CreatePieces();
 			}
 		}
-		
+
 		/// <summary>
 		/// Faz o fade e randomiza as pecas, em sequencia
 		/// </summary>
@@ -241,6 +286,8 @@ namespace PrototypingGame
 		}
 		/// <summary>
 		/// Faz um fade na peca
+		/// 
+		/// TODO: Posso separar esse metodo depois em uma classe, assim qualquer coisa no jogo poderá usar ele
 		/// </summary>
 		/// <param name="sprite"></param>
 		/// <param name="fadeAmount"></param>
@@ -280,6 +327,7 @@ namespace PrototypingGame
 		/// <summary>
 		/// Cropa a imagem
 		/// </summary>
+
 		private void CropImage()
 		{
 			for (int cont = 0; cont < (columns * columns); cont++)
@@ -324,20 +372,23 @@ namespace PrototypingGame
 				squareImage = SquareGameObject.GetComponent<Image>();
 				squareImage.sprite = Sprite.Create(randomCropImage, new Rect(0, 0, randomCropImage.width * Board.localScale.x, randomCropImage.height * Board.localScale.x), new Vector2(0, 0), cropSize);
 				//Instancia o game object com a imagem recortada
-				instance = Instantiate(SquareGameObject, new Vector3((row * PieceSize) + (PieceSize/2), (column * - PieceSize) - (PieceSize/2)), Quaternion.identity) as GameObject;
+				instance = Instantiate(SquareGameObject, new Vector3((row * PieceSize) + (PieceSize / 2), (column * -PieceSize) - (PieceSize / 2)), Quaternion.identity) as GameObject;
 				instance.name = "square-" + column + "-" + row;
-				//seta a linha e coluna que essa imagem pertence
-				instance.GetComponent<Square>().Row = StructCropImage.row;
-				instance.GetComponent<Square>().Column = StructCropImage.column;
+				//seta a linha e coluna que essa imagem 
+				Square CacheSquare = instance.GetComponent<Square>();
+				CacheSquare.Row = CacheSquare.RowCorrect = StructCropImage.row;
+				CacheSquare.Column = CacheSquare.ColumnCorrect = StructCropImage.column;
 				//Adiciona no Board
 				instance.transform.SetParent(Board, false);
+				instance.transform.SetAsFirstSibling();
 			}
 			//onde a peca vazia esta
 			PositionBlank.Row = columns - 1;
 			PositionBlank.Column = columns - 1;
 			//Instancia a posica da peca vazia
-			instance = Instantiate(DropArea, new Vector3(((columns - 1) * PieceSize) + PieceSize/2, ((columns - 1) * - PieceSize) - PieceSize/2, 0), Quaternion.identity) as GameObject; // 50 por causa que é a metade da peca do puzzle
+			instance = Instantiate(DropArea, new Vector3(((columns - 1) * PieceSize) + PieceSize / 2, ((columns - 1) * -PieceSize) - PieceSize / 2, 0), Quaternion.identity) as GameObject; // 50 por causa que é a metade da peca do puzzle
 			instance.transform.SetParent(Board, false);
+			instance.transform.SetAsFirstSibling();
 			//Pega a referencia do RectTransform da area de Drop e guarda
 			InstanceDropArea = instance.GetComponent<RectTransform>();
 			//rename na ultima peça
@@ -378,9 +429,9 @@ namespace PrototypingGame
 					//não deixa a posição ser a mesma da posição atual
 					//do
 					//{
-						//TODO: quem sabe é esse while que ta cagando tudo... [UPDATE] Talvez nao... [UPDATE 1] era esse while mesmo que tava travando meu jogo
-						//randomiza a posição
-						indexRandomPosition = Random.Range(0, arrayPieces.Count - 1);
+					//TODO: quem sabe é esse while que ta cagando tudo... [UPDATE] Talvez nao... [UPDATE 1] era esse while mesmo que tava travando meu jogo
+					//randomiza a posição
+					indexRandomPosition = Random.Range(0, arrayPieces.Count - 1);
 					//} while (arrayPieces[indexRandomPosition] == cont && arrayPieces.Count > 1) ;
 					//index da posição randomizada
 					int valueRandomPosition = arrayPieces[indexRandomPosition];
@@ -388,7 +439,7 @@ namespace PrototypingGame
 					int rowPosRandomized = (int)Mathf.Floor(valueRandomPosition / columns);
 					int columnPosRandomized = valueRandomPosition % columns;
 					//vetor com a posição final do recorte
-					Vector3 posEnd = new Vector3((columnPosRandomized * PieceSize) + PieceSize/2, ((rowPosRandomized) * -PieceSize) - PieceSize/2);
+					Vector3 posEnd = new Vector3((columnPosRandomized * PieceSize) + PieceSize / 2, ((rowPosRandomized) * -PieceSize) - PieceSize / 2);
 					//preenche a coluna e linha dessa peca
 					cacheSquare.GetComponent<Square>().Row = rowPosRandomized;
 					cacheSquare.GetComponent<Square>().Column = columnPosRandomized;
@@ -410,7 +461,7 @@ namespace PrototypingGame
 					PositionBlank.Row = columns - 1;
 					PositionBlank.Column = columns - 1;
 					//Seta a posicao na area de drop das pecas
-					InstanceDropArea.anchoredPosition = new Vector3(((columns - 1) * PieceSize) + PieceSize/2, ((columns - 1) * -PieceSize) - PieceSize/2, 0);
+					InstanceDropArea.anchoredPosition = new Vector3(((columns - 1) * PieceSize) + PieceSize / 2, ((columns - 1) * -PieceSize) - PieceSize / 2, 0);
 				}
 				//TODO: Tentar fazer isso depois somente depois que as animacoes acabarem
 				if (cont == (columns * columns) - 1)
@@ -440,6 +491,6 @@ namespace PrototypingGame
 			}
 			renameLastPiece();
 		}
-#endregion
+		#endregion
 	}
 }

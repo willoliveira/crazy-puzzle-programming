@@ -79,7 +79,7 @@ namespace PrototypingGame
 				//Posicionamento do board
 				double positionPortraitY = (Screen.height / 2) - (Screen.height * PorcentBorderTopPortrait) / 2;
 				//redimensiona o board
-				BoardContainer.localScale = new Vector2(ScalePortrait, ScalePortrait);				
+				BoardContainer.localScale = new Vector2(ScalePortrait, ScalePortrait);
 				BoardContainer.anchoredPosition = new Vector2(Screen.width - BorderPortrait, (float) positionPortraitY);
 				
 				//posiciona a 15% do bottom da tela

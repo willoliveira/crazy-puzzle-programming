@@ -90,6 +90,7 @@ namespace PrototypingGame
 			//se houver uma gameobject
 			if (SquareTransform == null)
 			{
+				//TODO: colocar um audio de error
 				//nao pode mover a peca
 				Debug.Log("Não pode mover para essa direção");
 				return;

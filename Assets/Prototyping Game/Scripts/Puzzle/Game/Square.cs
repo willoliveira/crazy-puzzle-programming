@@ -7,6 +7,10 @@ namespace PrototypingGame
 	{
 		private int row;
 		private int column;
+
+		private int rowCorrect;
+		private int columnCorrect;
+
 		private int order;
 		/// <summary>
 		/// Informacao da linha que a peca esta
@@ -24,6 +28,24 @@ namespace PrototypingGame
 			get { return column; }
 			set { column = value; }
 		}
+
+		/// <summary>
+		/// Informacao da linha que a peca esta
+		/// </summary>
+		public int RowCorrect
+		{
+			get { return rowCorrect; }
+			set { rowCorrect = value; }
+		}
+		/// <summary>
+		/// Informacao da coluna que a peca esta
+		/// </summary>
+		public int ColumnCorrect
+		{
+			get { return columnCorrect; }
+			set { columnCorrect = value; }
+		}
+
 		/// <summary>
 		/// Nao lembro por que coloquei isso...
 		/// </summary>

@@ -19,7 +19,7 @@ public class UIDragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
 	void Start()
 	{
-		getAxisTest = GameObject.Find("GetAxisValue").GetComponent<Text>();
+		//getAxisTest = GameObject.Find("GetAxisValue").GetComponent<Text>();
 	}
 
 	
