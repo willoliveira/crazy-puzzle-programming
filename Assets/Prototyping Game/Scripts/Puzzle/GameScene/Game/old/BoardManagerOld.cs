@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PrototypingGame
 {
-	public class BoardManager : MonoBehaviour
+	public class BoardManagerOld : MonoBehaviour
 	{
 		#region PUBLIC VARS
 		//imagem de referencia

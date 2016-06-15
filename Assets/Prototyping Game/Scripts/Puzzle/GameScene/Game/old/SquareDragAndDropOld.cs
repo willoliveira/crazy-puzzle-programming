@@ -2,7 +2,7 @@
 using PrototypingGame;
 
 [RequireComponent(typeof(DragAndDrop))]
-public class SquareDragAndDrop : MonoBehaviour
+public class SquareDragAndDropOld : MonoBehaviour
 {
 	private DragAndDrop mDragAndDrop;
 	private BoardManager mBoardManager;

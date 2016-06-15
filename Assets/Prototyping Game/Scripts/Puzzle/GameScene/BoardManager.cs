@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PrototypingGame
 {
-	public class UIBoardManager : MonoBehaviour
+	public class BoardManager : MonoBehaviour
 	{
 		public struct Blank
 		{
@@ -45,7 +45,7 @@ namespace PrototypingGame
 		//Lista de crop images
 		private List<StructCrop> listObjCropImages;
 		//referencia da classe de movimento
-		private UIMoveSquare moveSquare;
+		private MoveSquare moveSquare;
 		//Ultima peça
 		private Transform lastPiece;
 		//InstanceDropArea
@@ -69,7 +69,7 @@ namespace PrototypingGame
 		void Start()
 		{
 			//pega o move square
-			moveSquare = GetComponent<UIMoveSquare>();
+			moveSquare = GetComponent<MoveSquare>();
 			//inicia a lista de struct com as pecas
 			listObjCropImages = new List<StructCrop>();
 
@@ -181,19 +181,19 @@ namespace PrototypingGame
 					if (DesactiveAll)
 					{
 						//Desabilita o drag
-						TransformSquare.GetComponent<UIDragAndDrop>().EnabledDrag = false;
+						TransformSquare.GetComponent<SquareDrag>().EnabledDrag = false;
 					}
 					else
 					{
 						//if (checkNeighbors(row, column, (int)PositionBlank.Row, (int)PositionBlank.Column))
 						//{
 							//Habilita o drag
-							TransformSquare.GetComponent<UIDragAndDrop>().EnabledDrag = true;
+							TransformSquare.GetComponent<SquareDrag>().EnabledDrag = true;
 						//}
 						//else
 						//{
 						//	//Desabilita o drag
-						//	TransformSquare.GetComponent<UIDragAndDrop>().EnabledDrag = false;
+						//	TransformSquare.GetComponent<SquareDrag>().EnabledDrag = false;
 						//}
 					}
 				}
