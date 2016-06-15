@@ -16,6 +16,7 @@ public class SquareDrop : MonoBehaviour, IDropHandler
 
 	public void OnDrop(PointerEventData eventData)
 	{
+		Debug.Log("OnDrop");
 		if (eventData.pointerDrag)
 		{
 			//Pega a referencia do objeto que estava sendo draggado
