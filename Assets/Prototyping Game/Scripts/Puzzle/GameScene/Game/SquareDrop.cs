@@ -4,27 +4,28 @@ using System.Collections;
 using System;
 using PrototypingGame;
 
-public class UIDrop : MonoBehaviour, IDropHandler
+public class SquareDrop : MonoBehaviour, IDropHandler
 {
-	private UIBoardManager mUIBoardManager;
-	private UIDragAndDrop mUIDragAndDrop;
+	private BoardManager mUIBoardManager;
+	private SquareDrag mSquareDrag;
 
 	void Start()
 	{
-		mUIBoardManager = GameObject.Find("BoardManager").GetComponent<UIBoardManager>();
+		mUIBoardManager = GameObject.Find("BoardManager").GetComponent<BoardManager>();
 	}
 
 	public void OnDrop(PointerEventData eventData)
 	{
+		Debug.Log("OnDrop");
 		if (eventData.pointerDrag)
 		{
 			//Pega a referencia do objeto que estava sendo draggado
-			mUIDragAndDrop = eventData.pointerDrag.GetComponent<UIDragAndDrop>();
+			mSquareDrag = eventData.pointerDrag.GetComponent<SquareDrag>();
 			//verifica se essa peca possui o drag habilitado
-			if(mUIDragAndDrop.EnabledDrag)
+			if(mSquareDrag.EnabledDrag)
 			{
 				//seta a peca dragada como dropada, indicando que ela foi colocada no drop area
-				mUIDragAndDrop.IsDropped = true;
+				mSquareDrag.IsDropped = true;
 				//seta a posicao da peca droppada, a posicao da area de drop
 				RectTransform SquareDropped = eventData.pointerDrag.GetComponent<RectTransform>();
 				//pega as posicoes da linha e coluna

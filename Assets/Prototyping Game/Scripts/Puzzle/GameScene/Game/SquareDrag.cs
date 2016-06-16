@@ -7,7 +7,7 @@ using UnityStandardAssets.CrossPlatformInput;
 using System.Collections;
 using System;
 
-public class UIDragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class SquareDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
 	private GameObject itemBeingDragged;
 	[HideInInspector] public Vector3 PositionBeforeDrag;

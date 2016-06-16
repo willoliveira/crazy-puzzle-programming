@@ -7,20 +7,20 @@ using UnityStandardAssets.CrossPlatformInput;
 namespace PrototypingGame
 {
 
-	public class UIMoveSquare : MonoBehaviour
+	public class MoveSquare : MonoBehaviour
 	{
 		#region TESTES UI
 		public Text getAxis;
 		#endregion
 		private bool axisHorizontalDown = false;
 		private bool axisVerticalDown = false;
-		private UIBoardManager mBoardManager;
+		private BoardManager mBoardManager;
 		/// <summary>
 		/// Inicia
 		/// </summary>
 		void Start()
 		{
-			mBoardManager = GetComponent<UIBoardManager>();
+			mBoardManager = GetComponent<BoardManager>();
 		}
 		/// <summary>
 		/// Metodo update

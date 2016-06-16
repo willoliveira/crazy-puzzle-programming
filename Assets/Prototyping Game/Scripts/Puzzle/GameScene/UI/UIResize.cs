@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace PrototypingGame
 {
-	public class OnGuiResize : MonoBehaviour {
+	public class UIResize : MonoBehaviour {
 		#region CONFIG GUI RESIZE
 		//Tamanho da borda
 		public float BorderPortrait = 40f;
@@ -22,7 +22,7 @@ namespace PrototypingGame
 		private int ScreenWidth;
 		//Referencia do Board
 		private GameObject mBoard;
-		private UIBoardManager mBoardManager;
+		private BoardManager mBoardManager;
 
 		void Start() {
 			ScreenHeight = 0;
@@ -30,7 +30,7 @@ namespace PrototypingGame
 			//Board
 			mBoard = GameObject.Find("BoardManager");
 			//BoardManager
-			mBoardManager = mBoard.GetComponent<UIBoardManager>();
+			mBoardManager = mBoard.GetComponent<BoardManager>();
 		}
 
 		// Update is called once per frame
