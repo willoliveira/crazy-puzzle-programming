@@ -140,6 +140,12 @@ namespace PrototypingGame
 		#endregion
 
 		#region PRIVATE METHODS
+
+		#region BOARDMANAGER TOOLS
+		/// <summary>
+		/// Valida se o jogador acabou de montar o board
+		/// </summary>
+		/// <returns>Retorna se montou ou nao</returns>
 		private bool ValidBoard()
 		{
 			for (int cont = 0; cont < (columns * columns); cont++)
@@ -241,6 +247,9 @@ namespace PrototypingGame
 			}
 			return false;
 		}
+		#endregion
+
+		#region ORDEM DE EXECUCAO START GAME
 		/// <summary>
 		/// Configura o jogo com base nas escolhas
 		/// </summary>
@@ -269,65 +278,10 @@ namespace PrototypingGame
 				CreatePieces();
 			}
 		}
-
 		/// <summary>
-		/// Faz o fade e randomiza as pecas, em sequencia
+		/// Corta a image
+		/// TODO: Talvez separar isso em uma classo, assim qualquer outra coisa no game podera usar isso
 		/// </summary>
-		/// <returns></returns>
-		private IEnumerator FadeInAndRandomPieces()
-		{
-			//some com a ultima
-			yield return StartCoroutine(Fade(lastPiece.GetComponent<Image>(), 0.03f));
-			//
-			lastPiece.gameObject.SetActive(false);
-			//randomiza
-			//yield return StartCoroutine(RandomPieces());
-			RandomPieces();
-		}
-		/// <summary>
-		/// Faz um fade na peca
-		/// 
-		/// TODO: Posso separar esse metodo depois em uma classe, assim qualquer coisa no jogo poderá usar ele
-		/// </summary>
-		/// <param name="sprite"></param>
-		/// <param name="fadeAmount"></param>
-		/// <returns></returns>
-		private IEnumerator Fade(Image sprite, float fadeAmount)
-		{
-			bool fade;
-			float a;
-			//verifica se é fadeIn ou fadeOut
-			if (sprite.color.a == 0)
-			{
-				fade = true;
-				a = 0f;
-			}
-			else
-			{
-				fade = false;
-				a = 1f;
-				fadeAmount *= -1f;
-			}
-			Image rendererLastPiece = sprite.GetComponent<Image>();
-			while ((fade && rendererLastPiece.color.a != 1f) || (!fade && rendererLastPiece.color.a > 0))
-			{
-				//se a peca ficar invisivel, para a rotina
-				if ((fade && rendererLastPiece.color.a == 1f) || (!fade && rendererLastPiece.color.a <= 0))
-				{
-					break;
-				}
-				//a += fadeAmount;
-				a -= 0.03f;
-				rendererLastPiece.color = new Color(rendererLastPiece.color.r, rendererLastPiece.color.g, rendererLastPiece.color.b, a);
-				//yield return new WaitForSeconds(5f);
-				yield return new WaitForSeconds(0.01f);
-			}
-			yield return null;
-		}
-		/// <summary>
-		/// Cropa a imagem
-		/// </summary>
-
 		private void CropImage()
 		{
 			for (int cont = 0; cont < (columns * columns); cont++)
@@ -388,26 +342,19 @@ namespace PrototypingGame
 			//Instancia a posica da peca vazia
 			instance = Instantiate(DropArea, new Vector3(((columns - 1) * PieceSize) + PieceSize / 2, ((columns - 1) * -PieceSize) - PieceSize / 2, 0), Quaternion.identity) as GameObject; // 50 por causa que é a metade da peca do puzzle
 			instance.transform.SetParent(Board, false);
-			instance.transform.SetAsFirstSibling();
+			instance.transform.SetAsLastSibling();
 			//Pega a referencia do RectTransform da area de Drop e guarda
 			InstanceDropArea = instance.GetComponent<RectTransform>();
 			//rename na ultima peça
 			renameLastPiece();
 		}
 		/// <summary>
-		/// Renomeia a ultima peca
+		/// Cropa a imagem
 		/// </summary>
-		private void renameLastPiece()
-		{
-			//pega a ultima peça
-			lastPiece = Board.Find("square-" + (columns - 1) + "-" + (columns - 1)) as Transform;
-			lastPiece.name = "lastPiece";
-		}
 		/// <summary>
 		/// Randomiza as pecas antes do inicio do jogo
 		/// 
-		/// TODO: liberar o game realmente após acabar o randmo, se não me engano ele não estao acabando o tempo mudou por conta das animacoes, arrumar isso
-		/// TODO: Esse metodo que esta cagando o unity e fazendo ele fechar
+		/// TODO: liberar o game realmente após acabar o random, se não me engano ele não estao acabando o tempo mudou por conta das animacoes, arrumar isso
 		/// </summary>
 		/// <returns></returns>
 		private void RandomPieces()
@@ -475,6 +422,60 @@ namespace PrototypingGame
 			}
 		}
 		/// <summary>
+		/// Faz o fade e randomiza as pecas, em sequencia
+		/// </summary>
+		/// <returns></returns>
+		private IEnumerator FadeInAndRandomPieces()
+		{
+			//some com a ultima
+			yield return StartCoroutine(Fade(lastPiece.GetComponent<Image>(), 0.03f));
+			//
+			lastPiece.gameObject.SetActive(false);
+			//randomiza
+			//yield return StartCoroutine(RandomPieces());
+			RandomPieces();
+		}
+		/// <summary>
+		/// Faz um fade na peca
+		/// 
+		/// TODO: Posso separar esse metodo depois em uma classe, assim qualquer coisa no jogo poderá usar ele
+		/// </summary>
+		/// <param name="sprite"></param>
+		/// <param name="fadeAmount"></param>
+		/// <returns></returns>
+		private IEnumerator Fade(Image sprite, float fadeAmount)
+		{
+			bool fade;
+			float a;
+			//verifica se é fadeIn ou fadeOut
+			if (sprite.color.a == 0)
+			{
+				fade = true;
+				a = 0f;
+			}
+			else
+			{
+				fade = false;
+				a = 1f;
+				fadeAmount *= -1f;
+			}
+			Image rendererLastPiece = sprite.GetComponent<Image>();
+			while ((fade && rendererLastPiece.color.a != 1f) || (!fade && rendererLastPiece.color.a > 0))
+			{
+				//se a peca ficar invisivel, para a rotina
+				if ((fade && rendererLastPiece.color.a == 1f) || (!fade && rendererLastPiece.color.a <= 0))
+				{
+					break;
+				}
+				//a += fadeAmount;
+				a -= 0.03f;
+				rendererLastPiece.color = new Color(rendererLastPiece.color.r, rendererLastPiece.color.g, rendererLastPiece.color.b, a);
+				//yield return new WaitForSeconds(5f);
+				yield return new WaitForSeconds(0.01f);
+			}
+			yield return null;
+		}
+		/// <summary>
 		/// Normaliza os nomes das pecas
 		/// </summary>
 		private void NormalizePiece()
@@ -491,6 +492,17 @@ namespace PrototypingGame
 			}
 			renameLastPiece();
 		}
+		/// <summary>
+		/// Renomeia a ultima peca
+		/// </summary>
+		private void renameLastPiece()
+		{
+			//pega a ultima peça
+			lastPiece = Board.Find("square-" + (columns - 1) + "-" + (columns - 1)) as Transform;
+			lastPiece.name = "lastPiece";
+		}
+		#endregion
+
 		#endregion
 	}
 }
