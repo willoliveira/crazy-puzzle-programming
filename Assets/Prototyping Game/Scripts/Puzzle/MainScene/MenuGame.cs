@@ -8,7 +8,7 @@ namespace PrototypingGame
 		public GameObject MainMenu;
 		public GameObject ModeSelect;
 		public GameObject DifficultySelect;
-		//Botam boltar
+		//Botao boltar
 		public GameObject buttonBack;
 		//Game Manager
 		public GameObject gameManagerObject;
