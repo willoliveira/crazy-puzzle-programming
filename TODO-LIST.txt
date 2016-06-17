@@ -1,3 +1,4 @@
+- fazer o timer.
 - mostrar o feedback quando o cara acerta tudo, mostrar aquela pop up com o feed.
 - fazer funcionar o menu de config, pra dar mudo nos audio e tals.
 - fazer voltar pra home do game.

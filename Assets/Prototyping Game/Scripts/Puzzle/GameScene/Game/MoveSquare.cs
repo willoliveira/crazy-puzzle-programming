@@ -15,13 +15,19 @@ namespace PrototypingGame
 		private bool axisHorizontalDown = false;
 		private bool axisVerticalDown = false;
 		private BoardManager mBoardManager;
+
+		private int SquareAnimationsEnd = 0;
+		private int columns;
 		/// <summary>
 		/// Inicia
 		/// </summary>
 		void Start()
 		{
 			mBoardManager = GetComponent<BoardManager>();
+			columns = mBoardManager.columns;
 		}
+
+		#region PRIVATE METHODS
 		/// <summary>
 		/// Metodo update
 		/// Pega o eixo pressionado e passa para a funcao que move a peca
@@ -103,6 +109,30 @@ namespace PrototypingGame
 			mBoardManager.SetPositionSquareBlank(SquareTransform.gameObject);
 		}
 		/// <summary>
+		/// Seta o fim da animacao de movimento
+		/// </summary>
+		private void SetEndMoveAnimationSquare()
+		{
+			SquareAnimationsEnd += 1;
+			if ((columns * columns) - 2 == SquareAnimationsEnd)
+			{
+				gameObject.SetActive(true);
+				
+				mBoardManager.EndRandomPieces();
+				
+			}
+		}
+		#endregion
+
+		#region PUBLIC METHODS
+		/// <summary>
+		/// TODO: Nao sei se é o melhor lugar pra isso ficar, mas no board ia ficar meio zoneado demais
+		/// </summary>
+		public void InitRandomPieces()
+		{
+			SquareAnimationsEnd = 0;
+		}
+		/// <summary>
 		/// Anima e move a peca para a posicao desejada
 		/// - Anima o scaleIn da peca
 		/// - Muda ela para a posicao randomizada
@@ -121,10 +151,12 @@ namespace PrototypingGame
 			yield return new WaitForSeconds(1f);
 			//faz a peça se mover
 			yield return StartCoroutine(MovePieceSmooth(piece, end));
-			//
-			//yield return new WaitForSeconds(0.2f);
 			//faz a peca se dar o scale de volta
 			piece.GetComponent<Animator>().SetTrigger("ScaleOut");
+			//espera o tempod a animacao acabar
+			yield return new WaitForSeconds(1f);
+			//seta o fim da movimentacao
+			SetEndMoveAnimationSquare();
 		}
 		/// <summary>
 		/// Move a peca com smooth
@@ -151,5 +183,6 @@ namespace PrototypingGame
 			}
 			//yield return null;
 		}
+		#endregion
 	}
 }

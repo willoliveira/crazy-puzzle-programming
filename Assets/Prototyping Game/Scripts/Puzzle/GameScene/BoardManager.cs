@@ -20,6 +20,7 @@ namespace PrototypingGame
 		};
 
 		#region PUBLIC VARS
+
 		//imagem de referencia
 		public Texture2D image;
 		//referencia de onde vai adicionar as peças
@@ -33,6 +34,7 @@ namespace PrototypingGame
 		//screen size
 		public Text ScreenSizeText;
 		#endregion
+
 		#endregion
 
 		#region PRIVATE VARS
@@ -72,7 +74,6 @@ namespace PrototypingGame
 			moveSquare = GetComponent<MoveSquare>();
 			//inicia a lista de struct com as pecas
 			listObjCropImages = new List<StructCrop>();
-
 			//Configura o board
 			ConfigGame();
 		}
@@ -137,6 +138,16 @@ namespace PrototypingGame
 				ToogleDrag();
 			}
 		}
+		/// <summary>
+		/// depois que acabar o random das peças, libera o jogo
+		/// </summary>
+		public void EndRandomPieces()
+		{
+			moveSquare.enabled = true;
+			NormalizePiece();
+			ToogleDrag();
+			Debug.Log("EndRandomPieces");
+		}
 		#endregion
 
 		#region PRIVATE METHODS
@@ -193,8 +204,8 @@ namespace PrototypingGame
 					{
 						//if (checkNeighbors(row, column, (int)PositionBlank.Row, (int)PositionBlank.Column))
 						//{
-							//Habilita o drag
-							TransformSquare.GetComponent<SquareDrag>().EnabledDrag = true;
+						//Habilita o drag
+						TransformSquare.GetComponent<SquareDrag>().EnabledDrag = true;
 						//}
 						//else
 						//{
@@ -359,6 +370,8 @@ namespace PrototypingGame
 		/// <returns></returns>
 		private void RandomPieces()
 		{
+			//seta o inicio da randomizacao
+			moveSquare.InitRandomPieces();
 			//preenche o array de apoio para ajudar no random
 			List<int> arrayPieces = new List<int>();
 			for (int cont = 0; cont < (columns * columns); cont++)
@@ -378,7 +391,7 @@ namespace PrototypingGame
 					//{
 					//TODO: quem sabe é esse while que ta cagando tudo... [UPDATE] Talvez nao... [UPDATE 1] era esse while mesmo que tava travando meu jogo
 					//randomiza a posição
-					indexRandomPosition = Random.Range(0, arrayPieces.Count - 1);
+						indexRandomPosition = Random.Range(0, arrayPieces.Count - 1);
 					//} while (arrayPieces[indexRandomPosition] == cont && arrayPieces.Count > 1) ;
 					//index da posição randomizada
 					int valueRandomPosition = arrayPieces[indexRandomPosition];
@@ -390,17 +403,15 @@ namespace PrototypingGame
 					//preenche a coluna e linha dessa peca
 					cacheSquare.GetComponent<Square>().Row = rowPosRandomized;
 					cacheSquare.GetComponent<Square>().Column = columnPosRandomized;
-#if UNITY_EDITOR
-					//alternativa para quando nao quiser animacao
-					cacheSquare.anchoredPosition = posEnd;
-#else
+//#if UNITY_EDITOR
+//					//alternativa para quando nao quiser animacao
+//					cacheSquare.anchoredPosition = posEnd;
+//#else
 					//anima e move a peca
 					StartCoroutine(moveSquare.AnimateAndMoveSmooth(cacheSquare, posEnd));
-#endif
+//#endif
 					//remove do array
 					arrayPieces.Remove(valueRandomPosition);
-					//espera um pouco
-					//yield return new WaitForSeconds(0.5f);
 				}
 				else
 				{
@@ -410,15 +421,6 @@ namespace PrototypingGame
 					//Seta a posicao na area de drop das pecas
 					InstanceDropArea.anchoredPosition = new Vector3(((columns - 1) * PieceSize) + PieceSize / 2, ((columns - 1) * -PieceSize) - PieceSize / 2, 0);
 				}
-				//TODO: Tentar fazer isso depois somente depois que as animacoes acabarem
-				if (cont == (columns * columns) - 1)
-				{
-					//depois que acabar o random das peças, libera o jogo
-					moveSquare.enabled = true;
-					NormalizePiece();
-					ToogleDrag();
-				}
-				//yield return null;
 			}
 		}
 		/// <summary>

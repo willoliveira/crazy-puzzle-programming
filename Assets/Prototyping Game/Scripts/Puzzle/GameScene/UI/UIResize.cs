@@ -83,7 +83,7 @@ namespace PrototypingGame
 				BoardContainer.anchoredPosition = new Vector2(Screen.width - BorderPortrait, (float) positionPortraitY);
 				
 				//posiciona a 15% do bottom da tela
-				TimeText.anchoredPosition = new Vector2(0, ScreenHeight * 0.15f);
+				TimeText.anchoredPosition = new Vector2(0, Screen.height * 0.15f);
 				//altera o anchor pressets
 				TimeText.anchorMin = new Vector2(0.5f, 0);
 				TimeText.anchorMax = new Vector2(0.5f, 0);
