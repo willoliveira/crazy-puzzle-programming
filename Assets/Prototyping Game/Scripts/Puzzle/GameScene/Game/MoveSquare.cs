@@ -18,13 +18,14 @@ namespace PrototypingGame
 
 		private int SquareAnimationsEnd = 0;
 		private int columns;
+
+		public bool IsEnable = false;
 		/// <summary>
 		/// Inicia
 		/// </summary>
 		void Start()
 		{
 			mBoardManager = GetComponent<BoardManager>();
-			columns = mBoardManager.columns;
 		}
 
 		#region PRIVATE METHODS
@@ -34,38 +35,41 @@ namespace PrototypingGame
 		/// </summary>
 		void Update()
 		{
-			//pega a direção do movimento
-			int HorizontalAxis = RoudAxis(CrossPlatformInputManager.GetAxis("Horizontal"));
-			int VerticalAxis = RoudAxis(CrossPlatformInputManager.GetAxis("Vertical"));
-			//mostra na tela o get axis
-			//getAxis.text = "HorizontalAxis: " + HorizontalAxis + " - VerticalAxis: " + VerticalAxis;
-			/*Horizontal*/
-			if (HorizontalAxis == 1 || HorizontalAxis == -1)
+			if (IsEnable)
 			{
-				if (!axisHorizontalDown)
+				//pega a direção do movimento
+				int HorizontalAxis = RoudAxis(CrossPlatformInputManager.GetAxis("Horizontal"));
+				int VerticalAxis = RoudAxis(CrossPlatformInputManager.GetAxis("Vertical"));
+				//mostra na tela o get axis
+				//getAxis.text = "HorizontalAxis: " + HorizontalAxis + " - VerticalAxis: " + VerticalAxis;
+				/*Horizontal*/
+				if (HorizontalAxis == 1 || HorizontalAxis == -1)
 				{
-					int dir = HorizontalAxis;
-					MovePuzzle(dir, 0);
-					axisHorizontalDown = true;
+					if (!axisHorizontalDown)
+					{
+						int dir = HorizontalAxis;
+						MovePuzzle(dir, 0);
+						axisHorizontalDown = true;
+					}
 				}
-			}
-			else if (HorizontalAxis == 0)
-			{
-				axisHorizontalDown = false;
-			}
-			/*Vertical*/
-			if (VerticalAxis == 1 || VerticalAxis == -1)
-			{
-				if (!axisVerticalDown)
+				else if (HorizontalAxis == 0)
 				{
-					int dir = VerticalAxis;
-					MovePuzzle(0, dir * -1);
-					axisVerticalDown = true;
+					axisHorizontalDown = false;
 				}
-			}
-			else if (VerticalAxis == 0)
-			{
-				axisVerticalDown = false;
+				/*Vertical*/
+				if (VerticalAxis == 1 || VerticalAxis == -1)
+				{
+					if (!axisVerticalDown)
+					{
+						int dir = VerticalAxis;
+						MovePuzzle(0, dir * -1);
+						axisVerticalDown = true;
+					}
+				}
+				else if (VerticalAxis == 0)
+				{
+					axisVerticalDown = false;
+				}
 			}
 		}
 		/// <summary>
@@ -102,7 +106,7 @@ namespace PrototypingGame
 				return;
 			}
 			//pega o rect transform do square
-			SquareRectTransform = SquareTransform.GetComponent<RectTransform>();			
+			SquareRectTransform = SquareTransform.GetComponent<RectTransform>();
 			//Muda a posicao da peca
 			SquareRectTransform.anchoredPosition = new Vector3((mBoardManager.PositionBlank.Column * mBoardManager.PieceSize) + mBoardManager.PieceSize/2, (mBoardManager.PositionBlank.Row * -mBoardManager.PieceSize) - mBoardManager.PieceSize/2, 0);
 			//seta a posicao do PositionBlank GameObject
@@ -114,12 +118,10 @@ namespace PrototypingGame
 		private void SetEndMoveAnimationSquare()
 		{
 			SquareAnimationsEnd += 1;
-			if ((columns * columns) - 2 == SquareAnimationsEnd)
+			if ((mBoardManager.columns * mBoardManager.columns) - 1 == SquareAnimationsEnd)
 			{
-				gameObject.SetActive(true);
-				
+				Debug.Log("SetEndMoveAnimationSquare");
 				mBoardManager.EndRandomPieces();
-				
 			}
 		}
 		#endregion

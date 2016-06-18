@@ -29,6 +29,25 @@ namespace PrototypingGame
 		public GameObject SquareGameObject;
 		//Drop area
 		public GameObject DropArea;
+		//Referencia da classe de timer
+		public Timer mTimer;
+		//Referencia da classe de movimento
+		public MoveSquare mMoveSquare;
+		//Janela de finish
+		public FinishScreen mFinishScreen;
+
+		#region CONFIG BOARD
+		//tamanho do board
+		public int BoardSize = 300;
+		//tamanho das pecas
+		public int PieceSize;
+		//numero de colunas
+		[HideInInspector]
+		public int columns;
+		//posição vazia
+		[HideInInspector]
+		public Blank PositionBlank;
+		#endregion
 
 		#region TESTES UI
 		//screen size
@@ -46,32 +65,19 @@ namespace PrototypingGame
 		private int cropSize;
 		//Lista de crop images
 		private List<StructCrop> listObjCropImages;
-		//referencia da classe de movimento
-		private MoveSquare moveSquare;
 		//Ultima peça
 		private Transform lastPiece;
 		//InstanceDropArea
 		private RectTransform InstanceDropArea;
 		#endregion
 
-		#region CONFIG BOARD
-		//tamanho do board
-		public int BoardSize = 300;
-		//tamanho das pecas
-		public int PieceSize;
-		//numero de colunas
-		[HideInInspector]
-		public int columns;
-		//posição vazia
-		[HideInInspector]
-		public Blank PositionBlank;
-		#endregion
+		
 
 		// Use this for initialization
 		void Start()
 		{
 			//pega o move square
-			moveSquare = GetComponent<MoveSquare>();
+			//mMoveSquare = GetComponent<MoveSquare>();
 			//inicia a lista de struct com as pecas
 			listObjCropImages = new List<StructCrop>();
 			//Configura o board
@@ -129,7 +135,12 @@ namespace PrototypingGame
 			if (ValidBoard())
 			{
 				Debug.Log("Tudo certo!!!");
+				//Desativa o timer
+				mTimer.IsEnable = false;
+				//Desativa o drag de todas a pecas
 				ToogleDrag(true);
+				//Mostra o feed
+				mFinishScreen.Show(mTimer.TimerFormatted());
 			}
 			else
 			{
@@ -143,10 +154,15 @@ namespace PrototypingGame
 		/// </summary>
 		public void EndRandomPieces()
 		{
-			moveSquare.enabled = true;
+			//habilita a movimentação
+			mMoveSquare.IsEnable = true;
+			//Limpa o tempo e começa a contagem
+			mTimer.ClearTimer();
+			mTimer.IsEnable = true;
+			//normaliza o nome das peças
 			NormalizePiece();
+			//Habilita/desabilita o drag
 			ToogleDrag();
-			Debug.Log("EndRandomPieces");
 		}
 		#endregion
 
@@ -184,7 +200,7 @@ namespace PrototypingGame
 		/// 
 		/// TODO: Adaptar o metodo para o modo livre, em que ele não precisa validar os vizinhos e nao desliga nenhum drag. Talvez ate nao precise ser aqui, ser em quem chama esse metodo
 		/// </summary>
-		/// <param name="DesactiveAll"></param>
+		/// <param name="DesactiveAll"></param>mMoveSquare
 		private void ToogleDrag(bool DesactiveAll = false)
 		{
 			for (int cont = 0; cont < (columns * columns); cont++)
@@ -360,6 +376,20 @@ namespace PrototypingGame
 			renameLastPiece();
 		}
 		/// <summary>
+		/// Faz o fade e randomiza as pecas, em sequencia
+		/// </summary>
+		/// <returns></returns>
+		private IEnumerator FadeInAndRandomPieces()
+		{
+			//some com a ultima
+			yield return StartCoroutine(Fade(lastPiece.GetComponent<Image>(), 0.03f));
+			//
+			lastPiece.gameObject.SetActive(false);
+			//randomiza
+			//yield return StartCoroutine(RandomPieces());
+			RandomPieces();
+		}
+		/// <summary>
 		/// Cropa a imagem
 		/// </summary>
 		/// <summary>
@@ -371,7 +401,7 @@ namespace PrototypingGame
 		private void RandomPieces()
 		{
 			//seta o inicio da randomizacao
-			moveSquare.InitRandomPieces();
+			mMoveSquare.InitRandomPieces();
 			//preenche o array de apoio para ajudar no random
 			List<int> arrayPieces = new List<int>();
 			for (int cont = 0; cont < (columns * columns); cont++)
@@ -408,7 +438,7 @@ namespace PrototypingGame
 //					cacheSquare.anchoredPosition = posEnd;
 //#else
 					//anima e move a peca
-					StartCoroutine(moveSquare.AnimateAndMoveSmooth(cacheSquare, posEnd));
+					StartCoroutine(mMoveSquare.AnimateAndMoveSmooth(cacheSquare, posEnd));
 //#endif
 					//remove do array
 					arrayPieces.Remove(valueRandomPosition);
@@ -422,21 +452,7 @@ namespace PrototypingGame
 					InstanceDropArea.anchoredPosition = new Vector3(((columns - 1) * PieceSize) + PieceSize / 2, ((columns - 1) * -PieceSize) - PieceSize / 2, 0);
 				}
 			}
-		}
-		/// <summary>
-		/// Faz o fade e randomiza as pecas, em sequencia
-		/// </summary>
-		/// <returns></returns>
-		private IEnumerator FadeInAndRandomPieces()
-		{
-			//some com a ultima
-			yield return StartCoroutine(Fade(lastPiece.GetComponent<Image>(), 0.03f));
-			//
-			lastPiece.gameObject.SetActive(false);
-			//randomiza
-			//yield return StartCoroutine(RandomPieces());
-			RandomPieces();
-		}
+		}		
 		/// <summary>
 		/// Faz um fade na peca
 		/// 
