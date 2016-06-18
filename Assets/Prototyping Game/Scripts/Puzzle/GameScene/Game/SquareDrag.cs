@@ -44,7 +44,7 @@ public class SquareDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
 	public void OnEndDrag(PointerEventData eventData)
 	{
-		Debug.Log("OnEndDrag");
+		//Debug.Log("OnEndDrag");
 
 		if (EnabledDrag && !IsDropped)
 		{

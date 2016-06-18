@@ -8,9 +8,8 @@ namespace PrototypingGame
 	/// </summary>
 	public enum SelectMode
 	{
-		Image,
-		Word,
-		Number
+		Classic,
+		Free
 	}
 	/// <summary>
 	/// Enum para o niveis de dificuldade
@@ -33,7 +32,7 @@ namespace PrototypingGame
 		/// </summary>
 		void Start()
 		{
-			mSelectMode = SelectMode.Image;
+			mSelectMode = SelectMode.Free;
 			mDiffilcultyMode = DiffilcultyMode.Normal;
 		}
 	}

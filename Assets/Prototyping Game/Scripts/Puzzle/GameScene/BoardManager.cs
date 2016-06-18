@@ -71,13 +71,9 @@ namespace PrototypingGame
 		private RectTransform InstanceDropArea;
 		#endregion
 
-		
-
 		// Use this for initialization
 		void Start()
 		{
-			//pega o move square
-			//mMoveSquare = GetComponent<MoveSquare>();
 			//inicia a lista de struct com as pecas
 			listObjCropImages = new List<StructCrop>();
 			//Configura o board
@@ -134,17 +130,11 @@ namespace PrototypingGame
 			//Testa se acertou tudo
 			if (ValidBoard())
 			{
-				Debug.Log("Tudo certo!!!");
-				//Desativa o timer
-				mTimer.IsEnable = false;
-				//Desativa o drag de todas a pecas
-				ToogleDrag(true);
-				//Mostra o feed
-				mFinishScreen.Show(mTimer.TimerFormatted());
+				//FinishGame();
+				StartCoroutine(FadeInAndFinishGame());
 			}
-			else
+			else if (mGameManger.mSelectMode == SelectMode.Classic)
 			{
-				Debug.Log("Ainda errado!!!");
 				//Ativa/Desativa o dragg das pecas
 				ToogleDrag();
 			}
@@ -211,23 +201,30 @@ namespace PrototypingGame
 				Transform TransformSquare = Board.Find("square-" + row + "-" + column);
 				if (TransformSquare)
 				{
+					//se for pra desabilitar tudo
 					if (DesactiveAll)
 					{
 						//Desabilita o drag
 						TransformSquare.GetComponent<SquareDrag>().EnabledDrag = false;
 					}
+					//caso for pra habilitar e for o FREE Mode
+					else if (mGameManger.mSelectMode == SelectMode.Free)
+					{
+						TransformSquare.GetComponent<SquareDrag>().EnabledDrag = true;
+					}
+					//Caso contrario, só habilita os vizinho
 					else
 					{
-						//if (checkNeighbors(row, column, (int)PositionBlank.Row, (int)PositionBlank.Column))
-						//{
-						//Habilita o drag
-						TransformSquare.GetComponent<SquareDrag>().EnabledDrag = true;
-						//}
-						//else
-						//{
-						//	//Desabilita o drag
-						//	TransformSquare.GetComponent<SquareDrag>().EnabledDrag = false;
-						//}
+						if (checkNeighbors(row, column, (int)PositionBlank.Row, (int)PositionBlank.Column))
+						{
+							//Habilita o drag
+							TransformSquare.GetComponent<SquareDrag>().EnabledDrag = true;
+						}
+						else
+						{
+							//Desabilita o drag
+							TransformSquare.GetComponent<SquareDrag>().EnabledDrag = false;
+						}
 					}
 				}
 			}
@@ -274,6 +271,19 @@ namespace PrototypingGame
 			}
 			return false;
 		}
+		/// <summary>
+		/// Quando o game termina
+		/// </summary>
+		private void FinishGame()
+		{
+			Debug.Log("Tudo certo!!!");
+			//Desativa o timer
+			mTimer.IsEnable = false;
+			//Desativa o drag de todas a pecas
+			ToogleDrag(true);
+			//Mostra o feed
+			mFinishScreen.Show(mTimer.TimerFormatted());
+		}
 		#endregion
 
 		#region ORDEM DE EXECUCAO START GAME
@@ -293,21 +303,18 @@ namespace PrototypingGame
 				columns = 4;
 			}
 			PieceSize = BoardSize / columns;
+			//seta a escala da drop area do board
+			DropArea.GetComponent<RectTransform>().localScale = new Vector2((float) PieceSize / 100, (float) PieceSize / 100);
 			//pega o tamanho do recorte pelo numero de colunas
 			cropSize = (int)(image.width / columns);
-			//GameObject.Find("GetAxisValue").GetComponent<Text>().text = "cropSize: " + cropSize + " - calculo: (" + image.width + " / " + columns +")";
-			//TODO: Preciso fazer os modos de jogo ainda
-			if (mGameManger.mSelectMode == SelectMode.Image)
-			{
-				//Corta a imagem
-				CropImage();
-				//Create pieces
-				CreatePieces();
-			}
+			//Corta a imagem
+			CropImage();
+			//Create pieces
+			CreatePieces();
 		}
 		/// <summary>
 		/// Corta a image
-		/// TODO: Talvez separar isso em uma classo, assim qualquer outra coisa no game podera usar isso
+		/// TODO: Talvez separar isso em uma classe, assim qualquer outra coisa no game podera usar isso
 		/// </summary>
 		private void CropImage()
 		{
@@ -384,7 +391,7 @@ namespace PrototypingGame
 			//some com a ultima
 			yield return StartCoroutine(Fade(lastPiece.GetComponent<Image>(), 0.03f));
 			//
-			lastPiece.gameObject.SetActive(false);
+			//lastPiece.gameObject.SetActive(false);
 			//randomiza
 			//yield return StartCoroutine(RandomPieces());
 			RandomPieces();
@@ -421,7 +428,7 @@ namespace PrototypingGame
 					//{
 					//TODO: quem sabe é esse while que ta cagando tudo... [UPDATE] Talvez nao... [UPDATE 1] era esse while mesmo que tava travando meu jogo
 					//randomiza a posição
-						indexRandomPosition = Random.Range(0, arrayPieces.Count - 1);
+					indexRandomPosition = Random.Range(0, arrayPieces.Count - 1);
 					//} while (arrayPieces[indexRandomPosition] == cont && arrayPieces.Count > 1) ;
 					//index da posição randomizada
 					int valueRandomPosition = arrayPieces[indexRandomPosition];
@@ -433,13 +440,13 @@ namespace PrototypingGame
 					//preenche a coluna e linha dessa peca
 					cacheSquare.GetComponent<Square>().Row = rowPosRandomized;
 					cacheSquare.GetComponent<Square>().Column = columnPosRandomized;
-//#if UNITY_EDITOR
-//					//alternativa para quando nao quiser animacao
-//					cacheSquare.anchoredPosition = posEnd;
-//#else
+					//#if UNITY_EDITOR
+					//					//alternativa para quando nao quiser animacao
+					//					cacheSquare.anchoredPosition = posEnd;
+					//#else
 					//anima e move a peca
 					StartCoroutine(mMoveSquare.AnimateAndMoveSmooth(cacheSquare, posEnd));
-//#endif
+					//#endif
 					//remove do array
 					arrayPieces.Remove(valueRandomPosition);
 				}
@@ -452,7 +459,7 @@ namespace PrototypingGame
 					InstanceDropArea.anchoredPosition = new Vector3(((columns - 1) * PieceSize) + PieceSize / 2, ((columns - 1) * -PieceSize) - PieceSize / 2, 0);
 				}
 			}
-		}		
+		}
 		/// <summary>
 		/// Faz um fade na peca
 		/// 
@@ -476,20 +483,24 @@ namespace PrototypingGame
 				fade = false;
 				a = 1f;
 				fadeAmount *= -1f;
-			}
+			}			
 			Image rendererLastPiece = sprite.GetComponent<Image>();
-			while ((fade && rendererLastPiece.color.a != 1f) || (!fade && rendererLastPiece.color.a > 0))
+			Debug.Log("Fade: " + fade + " - Alpha: " + rendererLastPiece.color.a);
+			while ((fade && rendererLastPiece.color.a < 1) || (!fade && rendererLastPiece.color.a > 0))
 			{
+				a += fadeAmount;
+				rendererLastPiece.color = new Color(rendererLastPiece.color.r, rendererLastPiece.color.g, rendererLastPiece.color.b, (float) a);
 				//se a peca ficar invisivel, para a rotina
-				if ((fade && rendererLastPiece.color.a == 1f) || (!fade && rendererLastPiece.color.a <= 0))
+				if ((fade && rendererLastPiece.color.a >= 1f) || (!fade && rendererLastPiece.color.a <= 0))
 				{
+					if (fade) a = 1f;
+					else a = 0f;
+					//seta um valor de alpha arredondado
+					rendererLastPiece.color = new Color(rendererLastPiece.color.r, rendererLastPiece.color.g, rendererLastPiece.color.b, (float)a);
 					break;
 				}
-				//a += fadeAmount;
-				a -= 0.03f;
-				rendererLastPiece.color = new Color(rendererLastPiece.color.r, rendererLastPiece.color.g, rendererLastPiece.color.b, a);
 				//yield return new WaitForSeconds(5f);
-				yield return new WaitForSeconds(0.01f);
+				yield return new WaitForSeconds(0.02f);
 			}
 			yield return null;
 		}
@@ -518,6 +529,19 @@ namespace PrototypingGame
 			//pega a ultima peça
 			lastPiece = Board.Find("square-" + (columns - 1) + "-" + (columns - 1)) as Transform;
 			lastPiece.name = "lastPiece";
+		}
+		/// <summary>
+		/// Volta a peça ao normal e finaliza o jogo
+		/// </summary>
+		/// <returns></returns>
+		private IEnumerator FadeInAndFinishGame()
+		{
+			//some com a ultima
+			yield return StartCoroutine(Fade(lastPiece.GetComponent<Image>(), 0.03f));
+			//espero um pouco
+			yield return new WaitForSeconds(1.5f);
+			//chama o fim do jogo
+			FinishGame();
 		}
 		#endregion
 
