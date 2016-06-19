@@ -130,7 +130,7 @@ namespace PrototypingGame
 			//Testa se acertou tudo
 			if (ValidBoard())
 			{
-				//FinishGame();
+				mTimer.IsEnable = false;
 				StartCoroutine(FadeInAndFinishGame());
 			}
 			else if (mGameManger.mSelectMode == SelectMode.Classic)
@@ -182,6 +182,7 @@ namespace PrototypingGame
 			}
 			return true;
 		}
+
 		/// <summary>
 		/// 
 		/// posBlank x referente a linha
