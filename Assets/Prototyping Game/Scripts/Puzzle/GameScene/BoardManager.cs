@@ -182,7 +182,6 @@ namespace PrototypingGame
 			}
 			return true;
 		}
-
 		/// <summary>
 		/// 
 		/// posBlank x referente a linha

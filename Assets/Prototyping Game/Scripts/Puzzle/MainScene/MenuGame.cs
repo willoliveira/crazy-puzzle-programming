@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 namespace PrototypingGame
 {
@@ -8,6 +9,9 @@ namespace PrototypingGame
 		public GameObject MainMenu;
 		public GameObject ModeSelect;
 		public GameObject DifficultySelect;
+		public GameObject ImageModeSelect;
+
+
 		//Botao boltar
 		public GameObject buttonBack;
 		//Game Manager
@@ -20,7 +24,8 @@ namespace PrototypingGame
 		{
 			MainMenu,
 			SelectMode,
-			DiffilcultyMode
+			DiffilcultyMode,
+			ImageMode
 		}
 		private MenuScreen mMenuScreen;
 		/// <summary>
@@ -38,6 +43,7 @@ namespace PrototypingGame
 			MainMenu.SetActive(true);
 			ModeSelect.SetActive(false);
 			DifficultySelect.SetActive(false);
+			ImageModeSelect.SetActive(false);
 		}
 		/// <summary>
 		/// Botao jogar no menu principal
@@ -73,8 +79,23 @@ namespace PrototypingGame
 		{
 			//atribui o modo de jogo selecionado ao GameManager
 			gameManager.mDiffilcultyMode = (DiffilcultyMode)mode;
-			//
+
 			DifficultySelect.SetActive(false);
+			ImageModeSelect.SetActive(true);
+			//
+			mMenuScreen = MenuScreen.ImageMode;
+			DifficultySelect.SetActive(false);
+		}
+		/// <summary>
+		/// Botao de selecao do tipo de modo de imagem
+		/// </summary>
+		/// <param name="mode"></param>
+		public void btImageMode(int mode)
+		{
+			//atribui o modo de jogo selecionado ao GameManager
+			gameManager.mImageMode = (ImageMode)mode;
+			//
+			//ImageModeSelect.SetActive(false);
 		}
 
 		/// <summary>
@@ -87,6 +108,7 @@ namespace PrototypingGame
 				MainMenu.SetActive(true);
 				ModeSelect.SetActive(false);
 				DifficultySelect.SetActive(false);
+				ImageModeSelect.SetActive(false);
 				//
 				mMenuScreen = MenuScreen.MainMenu;
 				buttonBack.SetActive(false);
@@ -96,9 +118,20 @@ namespace PrototypingGame
 				MainMenu.SetActive(false);
 				ModeSelect.SetActive(true);
 				DifficultySelect.SetActive(false);
+				ImageModeSelect.SetActive(false);
 				//
 				mMenuScreen = MenuScreen.SelectMode;
 			}
+			else if (mMenuScreen == MenuScreen.ImageMode)
+			{
+				MainMenu.SetActive(false);
+				ModeSelect.SetActive(false);
+				DifficultySelect.SetActive(true);
+				ImageModeSelect.SetActive(false);
+				//
+				mMenuScreen = MenuScreen.SelectMode;
+			}
+
 		}
 	}
 }

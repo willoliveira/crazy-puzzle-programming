@@ -19,14 +19,26 @@ namespace PrototypingGame
 		Normal,
 		Hard
 	}
-		
+
+	/// <summary>
+	/// Enum para o niveis de dificuldade
+	/// </summary>
+	public enum ImageMode
+	{
+		Default,
+		Local,
+		Internet,
+	}
+
 	public class GameManager : MonoBehaviour
 	{
 
 		[HideInInspector]
 		public SelectMode mSelectMode;
-		[HideInInspector]
+		[HideInInspector]		
 		public DiffilcultyMode mDiffilcultyMode;
+		[HideInInspector]
+		public ImageMode mImageMode;
 		/// <summary>
 		/// Inicializa valores default para os modos de jogo
 		/// </summary>
