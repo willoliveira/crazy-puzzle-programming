@@ -3,43 +3,81 @@ using UnityEngine.UI;
 using System.Collections;
 
 using SimpleJSON;
+using UnityEngine.EventSystems;
 
 public class SearchImages : MonoBehaviour
 {
-
 	public ImageServiceAPI mImageServiceAPI;
-
 	public InputField mInputField;
-
 	public GameObject ImageContainer;
 	public GameObject ImagePrefab;
 
-	struct ImageObject
-	{
 
-	}
+	private int page = 0;
+
+	private ObjectImage SelectedObjectImage;
 
 	// Use this for initialization
 	void Start()
 	{
 
 	}
-
-	public void OnSearchImage()
+	
+	#region PUBLIC METHODS
+	/// <summary>
+	/// TODO: partir daqui agora
+	/// </summary>
+	public void OnSelectImage()
 	{
+		Debug.Log(transform);
+		//SelectedObjectImage = data.pointerPress.transform.GetComponent<ObjectImage>();
+	}
+	/// <summary>
+	/// 
+	/// </summary>
+	public void OnSearchImages()
+	{
+		ClearSearch();
+
 		StartCoroutine(GetImages());
 	}
+	/// <summary>
+	/// 
+	/// </summary>
+	public void OnGetMore()
+	{
+		page += 1;
+		//Chama o metodo que carrega as imagens
+		StartCoroutine(GetImages());
+	}
+	#endregion
 
-
-	IEnumerator GetImages()
+	#region PRIVATE METHODS
+	/// <summary>
+	/// 
+	/// </summary>
+	private void ClearSearch()
+	{
+		//zera a pagina
+		page = 1;
+		//limpa o container
+		foreach (Transform child in ImageContainer.transform)
+		{
+			Destroy(child.gameObject);
+		}
+	}
+	/// <summary>
+	/// Chama o metodo que carrega as imagens
+	/// </summary>
+	/// <returns></returns>
+	private IEnumerator GetImages()
 	{
 		string strResult = null;
 		//Chama a rotina que carrega o json das imagens
-		yield return StartCoroutine(mImageServiceAPI.GetImages(mInputField.text, 1, value => strResult = value));
+		yield return StartCoroutine(mImageServiceAPI.GetImages(mInputField.text, page, value => strResult = value));
 		//Processa o objeto de imagens que foi carregado
 		ProcessImages(JSON.Parse(strResult));
 	}
-
 	/// <summary>
 	/// formato a resposta
 	/// {
@@ -91,12 +129,17 @@ public class SearchImages : MonoBehaviour
 			float PositionY = (CacheRectTransformImagePrefab.rect.height / 2) * -1;
 			//Instancia um prefab para colocar a imagem
 			GameObject ImagePrefabInstance = Instantiate(ImagePrefab, new Vector2(PositionX, PositionY), Quaternion.identity) as GameObject;
+			ObjectImage ObjectImagePrefabInstance = ImagePrefabInstance.GetComponent<ObjectImage>();
 			//Get components
 			Image Image = ImagePrefabInstance.transform.Find("Container/Image").GetComponent<Image>();
 			Text ImageTitle = ImagePrefabInstance.transform.Find("ImageTags").GetComponent<Text>();
-
-
-			//
+			
+			//Propriedades da imagem
+			ObjectImagePrefabInstance.WebformatWidth = arrImages[cont]["webformatWidth"].AsInt;
+			ObjectImagePrefabInstance.WebformatHeight = arrImages[cont]["webformatHeight"].AsInt;
+			ObjectImagePrefabInstance.WebformatURL = arrImages[cont]["webformatURL"].Value;
+			
+			//Carrega o thumbnail
 			StartCoroutine(GetImage(arrImages[cont]["webformatURL"].Value, Image));
 
 			//coloca o nome da tag
@@ -105,8 +148,13 @@ public class SearchImages : MonoBehaviour
 			ImagePrefabInstance.transform.SetParent(ImageContainer.transform, false);
 		}
 	}
-
-	IEnumerator GetImage(string UrlImage, Image ImageSearch)
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="UrlImage"></param>
+	/// <param name="ImageSearch"></param>
+	/// <returns></returns>
+	private IEnumerator GetImage(string UrlImage, Image ImageSearch)
 	{
 		Texture2D TextureImageSearch = null;
 		//Chama a rotina que carrega o json das imagens
@@ -114,4 +162,5 @@ public class SearchImages : MonoBehaviour
 		//Carrega a imagem 
 		ImageSearch.sprite = Sprite.Create(TextureImageSearch, new Rect(new Vector2(0, 0), new Vector2(TextureImageSearch.width, TextureImageSearch.height)), new Vector2(0, 0));
 	}
+	#endregion
 }
