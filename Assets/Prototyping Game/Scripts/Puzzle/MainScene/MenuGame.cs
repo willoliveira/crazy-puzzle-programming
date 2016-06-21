@@ -10,7 +10,10 @@ namespace PrototypingGame
 		public GameObject ModeSelect;
 		public GameObject DifficultySelect;
 		public GameObject ImageModeSelect;
-
+		
+		public GameObject SearchImageContainer;
+		public GameObject DefaultImageContainer;
+		public GameObject LocalImageContainer;
 
 		//Botao boltar
 		public GameObject buttonBack;
@@ -96,6 +99,20 @@ namespace PrototypingGame
 			gameManager.mImageMode = (ImageMode)mode;
 			//
 			//ImageModeSelect.SetActive(false);
+
+			if (gameManager.mImageMode == ImageMode.Default)
+			{
+				Debug.Log("DefaultImageContainer");
+				DefaultImageContainer.SetActive(true);
+				SearchImageContainer.SetActive(false);
+			}
+			else if (gameManager.mImageMode == ImageMode.Internet)
+			{
+				Debug.Log("SearchImageContainer");
+				DefaultImageContainer.SetActive(false);
+				SearchImageContainer.SetActive(true);
+			}
+
 		}
 
 		/// <summary>
@@ -128,6 +145,9 @@ namespace PrototypingGame
 				ModeSelect.SetActive(false);
 				DifficultySelect.SetActive(true);
 				ImageModeSelect.SetActive(false);
+				//os container de imagem
+				LocalImageContainer.SetActive(false);
+				SearchImageContainer.SetActive(false);
 				//
 				mMenuScreen = MenuScreen.SelectMode;
 			}
