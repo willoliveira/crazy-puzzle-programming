@@ -20,24 +20,31 @@ public class CropImage : MonoBehaviour
 		imgCrop = AreaCrop.GetComponent<Image>();
 	}
 
+	void Update()
+	{
+		OnCrop();
+	}
+
 	public void OnCrop()
 	{
-		//Debug.Log("Image: " + Camera.main.ViewportToWorldPoint(Image.transform.position) + " - Border" + Camera.main.ViewportToWorldPoint(AreaCrop.transform.position));
-		Debug.Log("ImagelocalPosition: " + Image.transform.localPosition+ " - BorderlocalPosition" + Camera.main.ViewportToWorldPoint(AreaCrop.transform.localPosition));
-
-
-
-
-		//Image img = Image.GetComponent<Image>();
-		//Texture2D texture = Image.GetComponent<Image>().mainTexture as Texture2D; //.GetComponent<Texture2D>();
-
-		//Color[] pixels = texture.GetPixels(0, 0, 100, 100);
-
-		//Texture2D textureCrop = new Texture2D(100, 100);
-		//textureCrop.SetPixels(pixels);
-		//textureCrop.wrapMode = TextureWrapMode.Clamp;
-		//textureCrop.Apply();
-
-		//ImageCrop.GetComponent<Image>().sprite = Sprite.Create(textureCrop, new Rect(0, 0, textureCrop.width, textureCrop.height), new Vector2(0, 0));
+		//Referencia da image,
+		Image imageUI = Image.GetComponent<Image>();
+		//Textura da imagem
+		Sprite spriteToCropSprite = imageUI.sprite;
+		//Textura da area do crop
+		Texture2D spriteTexture = spriteToCropSprite.texture;
+		//Porcentagem relativa do rectTransform sobre a o RectTransform da image para conseguir as coordenadas em pixesl da imagem
+		float porcentX = AreaCrop.anchoredPosition.x / imageUI.rectTransform.rect.width,
+			  porcentY = (AreaCrop.anchoredPosition.y) / imageUI.rectTransform.rect.height,
+			  porcentWidth = AreaCrop.rect.width / imageUI.rectTransform.rect.width,
+			  porcentHeight = AreaCrop.rect.height / imageUI.rectTransform.rect.height;
+		//Construção do rect de recorte
+		Rect cropRect = new Rect();
+		cropRect.x = porcentX * spriteTexture.width;
+		cropRect.y = spriteTexture.height + (porcentY * spriteTexture.height) - (porcentHeight * spriteTexture.height);
+		cropRect.width = porcentWidth * spriteTexture.width;
+		cropRect.height = porcentHeight * spriteTexture.height;
+		//Cria o sprite de crop
+		ImageCrop.GetComponent<Image>().sprite = Sprite.Create(spriteTexture, cropRect, new Vector2(0, 0));
 	}
 }
