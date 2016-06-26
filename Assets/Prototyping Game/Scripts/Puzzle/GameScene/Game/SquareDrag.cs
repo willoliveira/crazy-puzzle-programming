@@ -2,11 +2,6 @@
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-using UnityStandardAssets.CrossPlatformInput;
-
-using System.Collections;
-using System;
-
 public class SquareDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
 	private GameObject itemBeingDragged;
@@ -25,6 +20,7 @@ public class SquareDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 	
 	public void OnBeginDrag(PointerEventData eventData)
 	{
+		Debug.Log("OnBeginDrag");
 		if (EnabledDrag)
 		{
 			//guarda uma referencia para o game object que comecou a ser draggado
