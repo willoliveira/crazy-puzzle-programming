@@ -8,11 +8,9 @@ namespace PrototypingGame
 		//Menus
 		public GameObject MainMenu;
 		public GameObject ModeSelect;
-		public GameObject DifficultySelect;
-		public GameObject ImageModeSelect;
-		
-		public GameObject SearchImageContainer;
+				
 		public GameObject DefaultImageContainer;
+		public GameObject InternetImageContainer;
 		public GameObject LocalImageContainer;
 
 		//Botao boltar
@@ -26,9 +24,7 @@ namespace PrototypingGame
 		private enum MenuScreen
 		{
 			MainMenu,
-			SelectMode,
-			DiffilcultyMode,
-			ImageMode
+			SelectMode
 		}
 		private MenuScreen mMenuScreen;
 		/// <summary>
@@ -45,8 +41,6 @@ namespace PrototypingGame
 			//Seta a tela Main como ativa no inicio
 			MainMenu.SetActive(true);
 			ModeSelect.SetActive(false);
-			DifficultySelect.SetActive(false);
-			ImageModeSelect.SetActive(false);
 		}
 		/// <summary>
 		/// Botao jogar no menu principal
@@ -67,54 +61,39 @@ namespace PrototypingGame
 		{
 			//atribui o modo de jogo selecionado ao GameManager
 			gameManager.mSelectMode = (SelectMode)mode;
-
-			ModeSelect.SetActive(false);
-			DifficultySelect.SetActive(true);
-			//
-			mMenuScreen = MenuScreen.DiffilcultyMode;
+			
 			buttonBack.SetActive(true);
 		}
-		/// <summary>
-		/// Botao de selecao do nivel de dificuldade
-		/// </summary>
-		/// <param name="mode"></param>
-		public void btSelectDifficulty(int mode)
-		{
-			//atribui o modo de jogo selecionado ao GameManager
-			gameManager.mDiffilcultyMode = (DiffilcultyMode)mode;
 
-			DifficultySelect.SetActive(false);
-			ImageModeSelect.SetActive(true);
-			//
-			mMenuScreen = MenuScreen.ImageMode;
-			DifficultySelect.SetActive(false);
+		/// <summary>
+		/// 
+		/// </summary>
+		public void btLocalSearchImage()
+		{
+			Debug.Log("btLocalSearchImage");
+			LocalImageContainer.SetActive(true);
+			InternetImageContainer.SetActive(false);
+			DefaultImageContainer.SetActive(false);
 		}
 		/// <summary>
-		/// Botao de selecao do tipo de modo de imagem
+		/// 
 		/// </summary>
-		/// <param name="mode"></param>
-		public void btImageMode(int mode)
+		public void btInternetSearchImage()
 		{
-			//atribui o modo de jogo selecionado ao GameManager
-			gameManager.mImageMode = (ImageMode)mode;
-			//
-			//ImageModeSelect.SetActive(false);
-
-			if (gameManager.mImageMode == ImageMode.Default)
-			{
-				Debug.Log("DefaultImageContainer");
-				DefaultImageContainer.SetActive(true);
-				SearchImageContainer.SetActive(false);
-			}
-			else if (gameManager.mImageMode == ImageMode.Internet)
-			{
-				Debug.Log("SearchImageContainer");
-				DefaultImageContainer.SetActive(false);
-				SearchImageContainer.SetActive(true);
-			}
-
+			LocalImageContainer.SetActive(false);
+			InternetImageContainer.SetActive(true);
+			DefaultImageContainer.SetActive(false);
 		}
-
+		/// <summary>
+		/// 
+		/// </summary>
+		public void btDefaultSearchImage()
+		{
+			LocalImageContainer.SetActive(false);
+			InternetImageContainer.SetActive(false);
+			DefaultImageContainer.SetActive(true);
+		}
+		
 		/// <summary>
 		/// Botao voltar do menu principal do jogo
 		/// </summary>
@@ -124,32 +103,9 @@ namespace PrototypingGame
 			{
 				MainMenu.SetActive(true);
 				ModeSelect.SetActive(false);
-				DifficultySelect.SetActive(false);
-				ImageModeSelect.SetActive(false);
 				//
 				mMenuScreen = MenuScreen.MainMenu;
 				buttonBack.SetActive(false);
-			}
-			else if (mMenuScreen == MenuScreen.DiffilcultyMode)
-			{
-				MainMenu.SetActive(false);
-				ModeSelect.SetActive(true);
-				DifficultySelect.SetActive(false);
-				ImageModeSelect.SetActive(false);
-				//
-				mMenuScreen = MenuScreen.SelectMode;
-			}
-			else if (mMenuScreen == MenuScreen.ImageMode)
-			{
-				MainMenu.SetActive(false);
-				ModeSelect.SetActive(false);
-				DifficultySelect.SetActive(true);
-				ImageModeSelect.SetActive(false);
-				//os container de imagem
-				LocalImageContainer.SetActive(false);
-				SearchImageContainer.SetActive(false);
-				//
-				mMenuScreen = MenuScreen.SelectMode;
 			}
 
 		}

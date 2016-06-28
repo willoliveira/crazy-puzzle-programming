@@ -13,7 +13,9 @@ public class SearchImagesWeb : MonoBehaviour
 	public GameObject ImagePrefab;
 
 
-	private int page = 0;
+	private int Page = 0;
+	private int ImagensTotal = 0;
+	private int ImagensLoaded = 0;
 
 	private ObjectImage SelectedObjectImage;
 
@@ -22,8 +24,15 @@ public class SearchImagesWeb : MonoBehaviour
 	{
 
 	}
-	
+
 	#region PUBLIC METHODS
+	/// <summary>
+	/// 
+	/// </summary>
+	public void btLinkPixabay()
+	{
+		Application.OpenURL("https://pixabay.com/");
+	}
 	/// <summary>
 	/// TODO: partir daqui agora
 	/// </summary>
@@ -41,13 +50,20 @@ public class SearchImagesWeb : MonoBehaviour
 		StartCoroutine(GetImages());
 	}
 	/// <summary>
-	/// 
+	/// TODO: Implementar um loading depois
 	/// </summary>
 	public void OnGetMore()
 	{
-		page += 1;
+		Page += 1;
 		//Chama o metodo que carrega as imagens
 		StartCoroutine(GetImages());
+		//se nao houver mais imagens a serem carregadas, desativa o botao
+		if (Page * 10 >= ImagensTotal)
+		{
+			//desativa o botao
+			GameObject.Find("GetMore").GetComponent<Button>().interactable = false;
+		}
+
 	}
 	#endregion
 
@@ -58,7 +74,7 @@ public class SearchImagesWeb : MonoBehaviour
 	private void ClearSearch()
 	{
 		//zera a pagina
-		page = 1;
+		Page = 1;
 		//limpa o container
 		foreach (Transform child in ImageContainer.transform)
 		{
@@ -73,7 +89,7 @@ public class SearchImagesWeb : MonoBehaviour
 	{
 		string strResult = null;
 		//Chama a rotina que carrega o json das imagens
-		yield return StartCoroutine(mImageServiceAPI.GetImages(mInputField.text, page, value => strResult = value));
+		yield return StartCoroutine(mImageServiceAPI.GetImages(mInputField.text, Page, value => strResult = value));
 		//Processa o objeto de imagens que foi carregado
 		ProcessImages(JSON.Parse(strResult));
 	}
@@ -115,16 +131,21 @@ public class SearchImagesWeb : MonoBehaviour
 	/// <param name="JsonImages"></param>
 	private void ProcessImages(JSONNode JsonImages)
 	{
+		Debug.Log(JsonImages);
 		//pega o array da resposta das imagens
 		JSONArray arrImages = JsonImages["hits"].AsArray;
+		//Adiciona o numero de imagens carregado
+		ImagensLoaded += arrImages.Count;
+		//Guarda o total
+		ImagensTotal = JsonImages["totalHits"].AsInt;
 		for (int cont = 0, len = arrImages.Count; cont < len; cont++)
 		{
 			//Instancia um prefab para colocar a imagem
 			GameObject ImagePrefabInstance = Instantiate(ImagePrefab, new Vector2(0, 0), Quaternion.identity) as GameObject;
 			ObjectImage ObjectImagePrefabInstance = ImagePrefabInstance.GetComponent<ObjectImage>();
 			//Get components
-			Image Image = ImagePrefabInstance.transform.Find("Container/Image").GetComponent<Image>();
-			Text ImageTitle = ImagePrefabInstance.transform.Find("ImageTags").GetComponent<Text>();
+			Image Image = ImagePrefabInstance.transform.Find("Image").GetComponent<Image>();
+			//Text ImageTitle = ImagePrefabInstance.transform.Find("ImageTags").GetComponent<Text>();
 			
 			//Propriedades da imagem
 			ObjectImagePrefabInstance.WebformatWidth = arrImages[cont]["webformatWidth"].AsInt;
@@ -135,7 +156,7 @@ public class SearchImagesWeb : MonoBehaviour
 			StartCoroutine(GetImage(arrImages[cont]["webformatURL"].Value, Image));
 
 			//coloca o nome da tag
-			ImageTitle.text = arrImages[cont]["tags"].Value;
+			//ImageTitle.text = arrImages[cont]["tags"].Value;
 			//Adiciona a imagem ao container
 			ImagePrefabInstance.transform.SetParent(ImageContainer.transform, false);
 		}
