@@ -133,7 +133,7 @@ namespace PrototypingGame
 				mTimer.IsEnable = false;
 				StartCoroutine(FadeInAndFinishGame());
 			}
-			else if (mGameManger.mSelectMode == SelectMode.Classic)
+			else if (mGameManger.mGameMode == GameMode.Classic)
 			{
 				//Ativa/Desativa o dragg das pecas
 				ToogleDrag();
@@ -208,7 +208,7 @@ namespace PrototypingGame
 						TransformSquare.GetComponent<SquareDrag>().EnabledDrag = false;
 					}
 					//caso for pra habilitar e for o FREE Mode
-					else if (mGameManger.mSelectMode == SelectMode.Free)
+					else if (mGameManger.mGameMode == GameMode.Free)
 					{
 						TransformSquare.GetComponent<SquareDrag>().EnabledDrag = true;
 					}
@@ -294,13 +294,13 @@ namespace PrototypingGame
 		{
 			mGameManger = GameObject.Find("GameManager").GetComponent<GameManager>();
 			//Seta a dificuldade do jogo
-			if (mGameManger.mDiffilcultyMode == DiffilcultyMode.Normal)
-			{
-				columns = 3;
-			}
-			else if (mGameManger.mDiffilcultyMode == DiffilcultyMode.Hard)
+			if (mGameManger.mGameMode == GameMode.Hard)
 			{
 				columns = 4;
+			}
+			else
+			{
+				columns = 3;
 			}
 			PieceSize = BoardSize / columns;
 			//seta a escala da drop area do board

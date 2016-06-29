@@ -1,22 +1,26 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+
 namespace PrototypingGame
 {
 	public class MenuGame : MonoBehaviour
 	{
+		#region PUBLIC VARS
 		//Menus
 		public GameObject MainMenu;
-		public GameObject ModeSelect;
-				
-		public GameObject DefaultImageContainer;
-		public GameObject InternetImageContainer;
-		public GameObject LocalImageContainer;
+		public GameObject SelectMode;
+		public GameObject SelectImages;
+		public GameObject ConfirmationScreen;
+
 
 		//Botao boltar
 		public GameObject buttonBack;
+		public GameObject buttonNext;
 		//Game Manager
 		public GameObject gameManagerObject;
+		#endregion
+
 		private GameManager gameManager;
 		/// <summary>
 		/// Enum para as telas do menu
@@ -24,9 +28,18 @@ namespace PrototypingGame
 		private enum MenuScreen
 		{
 			MainMenu,
-			SelectMode
+			SelectMode,
+			SelectImages,
+			ConfirmationScreen
 		}
 		private MenuScreen mMenuScreen;
+		private enum ImageMode
+		{
+			Local,
+			Default,
+			Internet
+		}
+		private ImageMode mImageMode;		
 		/// <summary>
 		/// Da o setup inicial do menu
 		/// </summary>
@@ -38,76 +51,91 @@ namespace PrototypingGame
 			mMenuScreen = MenuScreen.MainMenu;
 			//Seta o botao voltar como inativo no inicio
 			buttonBack.SetActive(false);
+			buttonNext.SetActive(false);
 			//Seta a tela Main como ativa no inicio
 			MainMenu.SetActive(true);
-			ModeSelect.SetActive(false);
+			SelectMode.SetActive(false);
+			SelectImages.SetActive(false);
+			ConfirmationScreen.SetActive(false);
 		}
+
+		#region PUBLIC METHODS
 		/// <summary>
 		/// Botao jogar no menu principal
 		/// </summary>
 		public void btJogar()
 		{
 			MainMenu.SetActive(false);
-			ModeSelect.SetActive(true);
+			SelectMode.SetActive(true);
 			//
 			mMenuScreen = MenuScreen.SelectMode;
 			buttonBack.SetActive(true);
-		}
-		/// <summary>
-		/// Botao de selecao do tipo de jogo
-		/// </summary>
-		/// <param name="mode"></param>
-		public void btSelectMode(int mode)
-		{
-			//atribui o modo de jogo selecionado ao GameManager
-			gameManager.mSelectMode = (SelectMode)mode;
-			
-			buttonBack.SetActive(true);
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		public void btLocalSearchImage()
-		{
-			Debug.Log("btLocalSearchImage");
-			LocalImageContainer.SetActive(true);
-			InternetImageContainer.SetActive(false);
-			DefaultImageContainer.SetActive(false);
-		}
-		/// <summary>
-		/// 
-		/// </summary>
-		public void btInternetSearchImage()
-		{
-			LocalImageContainer.SetActive(false);
-			InternetImageContainer.SetActive(true);
-			DefaultImageContainer.SetActive(false);
-		}
-		/// <summary>
-		/// 
-		/// </summary>
-		public void btDefaultSearchImage()
-		{
-			LocalImageContainer.SetActive(false);
-			InternetImageContainer.SetActive(false);
-			DefaultImageContainer.SetActive(true);
+			buttonNext.SetActive(true);
 		}
 		
+
 		/// <summary>
 		/// Botao voltar do menu principal do jogo
 		/// </summary>
 		public void btBack()
 		{
+			Debug.Log("btBack" + mMenuScreen);
 			if (mMenuScreen == MenuScreen.SelectMode)
 			{
 				MainMenu.SetActive(true);
-				ModeSelect.SetActive(false);
+				SelectMode.SetActive(false);
+				SelectImages.SetActive(false);
+				ConfirmationScreen.SetActive(false);
 				//
 				mMenuScreen = MenuScreen.MainMenu;
 				buttonBack.SetActive(false);
+				buttonNext.SetActive(false);
 			}
-
+			else if (mMenuScreen == MenuScreen.SelectImages)
+			{
+				MainMenu.SetActive(false);
+				SelectMode.SetActive(true);
+				SelectImages.SetActive(false);
+				ConfirmationScreen.SetActive(false);
+				//
+				mMenuScreen = MenuScreen.SelectMode;
+			}
+			else if (mMenuScreen == MenuScreen.ConfirmationScreen)
+			{
+				MainMenu.SetActive(false);
+				SelectMode.SetActive(false);
+				SelectImages.SetActive(true);
+				ConfirmationScreen.SetActive(false);
+				//
+				mMenuScreen = MenuScreen.SelectImages;
+				buttonNext.SetActive(true);
+			}
 		}
+		/// <summary>
+		/// Botao avancar do menu principal do jogo
+		/// </summary>
+		public void btNext()
+		{
+			 if (mMenuScreen == MenuScreen.SelectMode)
+			{
+				MainMenu.SetActive(false);
+				SelectMode.SetActive(false);
+				SelectImages.SetActive(true);
+				ConfirmationScreen.SetActive(false);
+				//
+				mMenuScreen = MenuScreen.SelectImages;
+			}
+			else if (mMenuScreen == MenuScreen.SelectImages)
+			{
+				MainMenu.SetActive(false);
+				SelectMode.SetActive(false);
+				SelectImages.SetActive(false);
+				ConfirmationScreen.SetActive(true);
+				//
+				mMenuScreen = MenuScreen.ConfirmationScreen;
+				buttonNext.SetActive(false);
+			}
+		}
+		#endregion
 	}
 }

@@ -6,37 +6,27 @@ namespace PrototypingGame
 	/// <summary>
 	/// Enum para os tipos de jogo
 	/// </summary>
-	public enum SelectMode
+	public enum GameMode
 	{
 		Classic,
-		Free
-	}
-	/// <summary>
-	/// Enum para o niveis de dificuldade
-	/// </summary>
-	public enum DiffilcultyMode
-	{
-		Normal,
+		Free,
 		Hard
 	}
-
 	/// <summary>
 	/// Enum para o niveis de dificuldade
 	/// </summary>
 	public enum ImageMode
-	{
-		Default,
+	{		
 		Local,
 		Internet,
+		Default
 	}
 
 	public class GameManager : MonoBehaviour
 	{
 
 		[HideInInspector]
-		public SelectMode mSelectMode;
-		[HideInInspector]		
-		public DiffilcultyMode mDiffilcultyMode;
+		public GameMode mGameMode;
 		[HideInInspector]
 		public ImageMode mImageMode;
 		/// <summary>
@@ -44,8 +34,7 @@ namespace PrototypingGame
 		/// </summary>
 		void Start()
 		{
-			mSelectMode = SelectMode.Free;
-			mDiffilcultyMode = DiffilcultyMode.Normal;
+			//mSelectMode = GameMode.Free;
 		}
 	}
 }
