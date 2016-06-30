@@ -16,10 +16,7 @@ public class SelectImage : MonoBehaviour {
 		//
 		SetActiveImageContainerMode(mGameManager.mImageMode);
 	}
-
-
-
-
+	
 	private void SetActiveImageContainerMode(ImageMode imageMode)
 	{
 		Debug.Log(imageMode);
@@ -43,29 +40,8 @@ public class SelectImage : MonoBehaviour {
 		}
 	}
 
-	//public void btLocalSearchImage()
-	//{
-	//	Debug.Log("btLocalSearchImage");
-	//	LocalImageContainer.SetActive(true);
-	//	InternetImageContainer.SetActive(false);
-	//	DefaultImageContainer.SetActive(false);
-	//}
-	///// <summary>
-	///// 
-	///// </summary>
-	//public void btInternetSearchImage()
-	//{
-	//	LocalImageContainer.SetActive(false);
-	//	InternetImageContainer.SetActive(true);
-	//	DefaultImageContainer.SetActive(false);
-	//}
-	///// <summary>
-	///// 
-	///// </summary>
-	//public void btDefaultSearchImage()
-	//{
-	//	LocalImageContainer.SetActive(false);
-	//	InternetImageContainer.SetActive(false);
-	//	DefaultImageContainer.SetActive(true);
-	//}
+	public void SetImageChoice(ObjectImage mObjectImage)
+	{
+
+	}
 }

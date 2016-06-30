@@ -19,13 +19,17 @@ public class SearchImagesDefault : MonoBehaviour {
 		{
 			//Instancia um prefab para colocar a imagem
 			GameObject ImagePrefabInstance = Instantiate(ImagePrefab, new Vector2(0, 0), Quaternion.identity) as GameObject;
+			//pega a referencia do object image
+			ObjectImage mObjectImage = ImagePrefabInstance.GetComponent<ObjectImage>();
+
 			//Get components
 			Image Image = ImagePrefabInstance.transform.Find("Image").GetComponent<Image>();
 			//Text ImageTitle = ImagePrefabInstance.transform.Find("ImageTags").GetComponent<Text>();
 			//
 			Image.sprite = LocalImages[cont];
+			//
+			mObjectImage.ImageSprite = Image.sprite;
 
-			
 			//Adiciona a imagem ao container
 			ImagePrefabInstance.transform.SetParent(ImageContainer.transform, false);
 		}
