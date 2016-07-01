@@ -159,6 +159,7 @@ public class SearchImagesWeb : MonoBehaviour
 			ObjectImagePrefabInstance.WebformatHeight = arrImages[cont]["webformatHeight"].AsInt;
 			ObjectImagePrefabInstance.WebformatURL = arrImages[cont]["webformatURL"].Value;
 			
+
 			//Carrega o thumbnail
 			StartCoroutine(GetImage(arrImages[cont]["webformatURL"].Value, Image));
 
@@ -183,4 +184,11 @@ public class SearchImagesWeb : MonoBehaviour
 		ImageSearch.sprite = Sprite.Create(TextureImageSearch, new Rect(new Vector2(0, 0), new Vector2(TextureImageSearch.width, TextureImageSearch.height)), new Vector2(0, 0));
 	}
 	#endregion
+
+
+	//void OnDisable()
+	//{
+	//	//
+	//	ObjectImagePrefabInstance.ImageTexture = Image.sprite.texture;
+	//}
 }

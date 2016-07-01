@@ -41,6 +41,10 @@ public class ObjectImage : MonoBehaviour, IPointerDownHandler
 		mSelectImages = GameObject.Find("Select Images").GetComponent<SelectImage>();
 	}
 
+	/// <summary>
+	/// TODO: Fazer o tratamento de quando for imagem da net, ele baixar imagem grande
+	/// </summary>
+	/// <param name="data"></param>
 	public void OnPointerDown(PointerEventData data)
 	{
 		Debug.Log("OnPointerDown");
