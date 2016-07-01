@@ -2,12 +2,12 @@
 using System.Collections;
 using UnityEngine.EventSystems;
 
-public class ObjectImage : MonoBehaviour
+public class ObjectImage : MonoBehaviour, IPointerDownHandler
 {
 	private int webformatWidth;
 	private int webformatHeight;
 	private string webformatURL;
-	private Sprite imageSprite;
+	private Texture2D imageTexture;
 
 	private SelectImage mSelectImages;
 
@@ -29,10 +29,10 @@ public class ObjectImage : MonoBehaviour
 		set { webformatURL = value; }
 	}
 
-	public Sprite ImageSprite
+	public Texture2D ImageTexture
 	{
-		get { return imageSprite; }
-		set { imageSprite = value; }
+		get { return imageTexture; }
+		set { imageTexture = value; }
 	}
 
 
@@ -44,7 +44,7 @@ public class ObjectImage : MonoBehaviour
 	public void OnPointerDown(PointerEventData data)
 	{
 		Debug.Log("OnPointerDown");
-		mSelectImages.SetImageChoice(gameObject.GetComponent<ObjectImage>());
+		mSelectImages.SetImageChoice(gameObject);
 	}
 
 }

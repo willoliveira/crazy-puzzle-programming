@@ -29,6 +29,8 @@ namespace PrototypingGame
 		public GameMode mGameMode;
 		[HideInInspector]
 		public ImageMode mImageMode;
+
+		public Texture2D ImageSelect;
 		/// <summary>
 		/// Inicializa valores default para os modos de jogo
 		/// </summary>

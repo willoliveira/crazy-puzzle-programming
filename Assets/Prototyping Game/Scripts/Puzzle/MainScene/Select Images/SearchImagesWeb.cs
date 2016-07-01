@@ -25,6 +25,13 @@ public class SearchImagesWeb : MonoBehaviour
 
 	}
 
+	void OnDisable()
+	{
+		Debug.Log("OnDisable");
+		//quando desabilitar a pagina, limpa a busca
+		ClearSearch();
+	}
+
 	#region PUBLIC METHODS
 	/// <summary>
 	/// 

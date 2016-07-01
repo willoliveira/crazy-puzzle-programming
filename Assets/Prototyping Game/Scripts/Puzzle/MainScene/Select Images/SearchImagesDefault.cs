@@ -28,7 +28,7 @@ public class SearchImagesDefault : MonoBehaviour {
 			//
 			Image.sprite = LocalImages[cont];
 			//
-			mObjectImage.ImageSprite = Image.sprite;
+			mObjectImage.ImageTexture = Image.sprite.texture;
 
 			//Adiciona a imagem ao container
 			ImagePrefabInstance.transform.SetParent(ImageContainer.transform, false);
