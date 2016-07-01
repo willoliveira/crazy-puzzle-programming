@@ -14,7 +14,7 @@ namespace PrototypingGame
 		};
 		private struct StructCrop
 		{
-			public Texture2D crop;
+			public Sprite crop;
 			public int row;
 			public int column;
 		};
@@ -306,7 +306,11 @@ namespace PrototypingGame
 			//seta a escala da drop area do board
 			DropArea.GetComponent<RectTransform>().localScale = new Vector2((float) PieceSize / 100, (float) PieceSize / 100);
 			//pega o tamanho do recorte pelo numero de colunas
-			cropSize = (int)(image.width / columns);
+			cropSize = (int)(mGameManger.ImageCropRect.width / columns);
+
+
+			//Debug.Log("cropSize: " + cropSize + " | Image width: " + mGameManger.ImageCropSelect.width + " height: " + mGameManger.ImageCropSelect.height + " | mult: " + (cropSize * columns));
+
 			//Corta a imagem
 			CropImage();
 			//Create pieces
@@ -323,15 +327,16 @@ namespace PrototypingGame
 				int row = Mathf.FloorToInt(cont / (columns));
 				int column = cont % columns;
 				//Pega os pixels do recorte que quero fazer
-				Color[] pix = image.GetPixels(image.width - cropSize - ((columns - 1 - row) * cropSize), image.height - cropSize - (column * cropSize), cropSize, cropSize);
-				//Cria uma textura com o recorte
-				Texture2D squareTexture2d = new Texture2D(cropSize, cropSize);
-				squareTexture2d.SetPixels(pix);
-				squareTexture2d.wrapMode = TextureWrapMode.Clamp;
-				squareTexture2d.Apply();
+				//Color[] pix = mGameManger.ImageCropSelect.GetPixels(mGameManger.ImageCropSelect.width - cropSize - ((columns - 1 - row) * cropSize), mGameManger.ImageCropSelect.height - cropSize - (column * cropSize), cropSize, cropSize);
+				////Cria uma textura com o recorte
+				//Texture2D squareTexture2d = new Texture2D(cropSize, cropSize);
+				//squareTexture2d.SetPixels(pix);
+				//squareTexture2d.wrapMode = TextureWrapMode.Clamp;
+				//squareTexture2d.Apply();
 				//monta o struct
 				StructCrop structCrop;
-				structCrop.crop = squareTexture2d;
+				//structCrop.crop = squareTexture2d;
+				structCrop.crop = Sprite.Create(mGameManger.ImageCropSelect, new Rect(mGameManger.ImageCropRect.width - cropSize - ((columns - 1 - row) * cropSize), mGameManger.ImageCropRect.height - cropSize - (column * cropSize), cropSize, cropSize), new Vector2(0, 0));
 				structCrop.row = column;
 				structCrop.column = row;
 				//adiciona no array o recorte
@@ -352,13 +357,15 @@ namespace PrototypingGame
 				//randomiza a imagem
 				int randomPosition = (row * columns) + column;
 				StructCrop StructCropImage = listObjCropImages[randomPosition];
-				Texture2D randomCropImage = StructCropImage.crop;
+				//Texture2D randomCropImage = StructCropImage.crop;
+				Sprite randomCropImage = StructCropImage.crop;
 				//
 				SquareGameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(PieceSize, PieceSize);
 
 				//Seta a imagem como Sprite
 				squareImage = SquareGameObject.GetComponent<Image>();
-				squareImage.sprite = Sprite.Create(randomCropImage, new Rect(0, 0, randomCropImage.width * Board.localScale.x, randomCropImage.height * Board.localScale.x), new Vector2(0, 0), cropSize);
+				squareImage.sprite = randomCropImage;
+				//squareImage.sprite = Sprite.Create(randomCropImage, new Rect(0, 0, randomCropImage.width * Board.localScale.x, randomCropImage.height * Board.localScale.x), new Vector2(0, 0), cropSize);
 				//Instancia o game object com a imagem recortada
 				instance = Instantiate(SquareGameObject, new Vector3((row * PieceSize) + (PieceSize / 2), (column * -PieceSize) - (PieceSize / 2)), Quaternion.identity) as GameObject;
 				instance.name = "square-" + column + "-" + row;
