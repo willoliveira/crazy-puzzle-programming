@@ -82,17 +82,23 @@ namespace PrototypingGame
 			Debug.Log("btBack" + mMenuScreen);
 			if (mMenuScreen == MenuScreen.SelectMode)
 			{
+				//desativa os botoes
+				buttonBack.SetActive(false);
+				buttonNext.SetActive(false);
+				//
 				MainMenu.SetActive(true);
 				SelectMode.SetActive(false);
 				SelectImages.SetActive(false);
 				ConfirmationScreen.SetActive(false);
 				//
 				mMenuScreen = MenuScreen.MainMenu;
-				buttonBack.SetActive(false);
-				buttonNext.SetActive(false);
 			}
 			else if (mMenuScreen == MenuScreen.SelectImages)
 			{
+				//ativa os botoes
+				buttonBack.SetActive(true);
+				buttonNext.SetActive(true);
+				//ativa/desativa as telas
 				MainMenu.SetActive(false);
 				SelectMode.SetActive(true);
 				SelectImages.SetActive(false);
@@ -102,13 +108,16 @@ namespace PrototypingGame
 			}
 			else if (mMenuScreen == MenuScreen.ConfirmationScreen)
 			{
+				//ativa os botoes
+				buttonBack.SetActive(true);
+				buttonNext.SetActive(true);
+				//ativa/desativa as telas
 				MainMenu.SetActive(false);
 				SelectMode.SetActive(false);
 				SelectImages.SetActive(true);
 				ConfirmationScreen.SetActive(false);
 				//
 				mMenuScreen = MenuScreen.SelectImages;
-				buttonNext.SetActive(true);
 			}
 		}
 		/// <summary>
@@ -118,22 +127,31 @@ namespace PrototypingGame
 		{
 			 if (mMenuScreen == MenuScreen.SelectMode)
 			{
+				//ativa os botoes
+				buttonBack.SetActive(true);
+				buttonNext.SetActive(true);
+				//ativa/desativa as telas
 				MainMenu.SetActive(false);
 				SelectMode.SetActive(false);
 				SelectImages.SetActive(true);
 				ConfirmationScreen.SetActive(false);
 				//
 				mMenuScreen = MenuScreen.SelectImages;
+				
 			}
 			else if (mMenuScreen == MenuScreen.SelectImages)
 			{
+				//ativa/desativa os botoes
+				buttonBack.SetActive(true);
+				buttonNext.SetActive(false);
+				//ativa/desativa as telas
 				MainMenu.SetActive(false);
 				SelectMode.SetActive(false);
 				SelectImages.SetActive(false);
 				ConfirmationScreen.SetActive(true);
 				//
 				mMenuScreen = MenuScreen.ConfirmationScreen;
-				buttonNext.SetActive(false);
+				
 			}
 		}
 		#endregion

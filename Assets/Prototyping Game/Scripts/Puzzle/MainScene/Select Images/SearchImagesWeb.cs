@@ -27,9 +27,8 @@ public class SearchImagesWeb : MonoBehaviour
 
 	void OnDisable()
 	{
-		Debug.Log("OnDisable");
 		//quando desabilitar a pagina, limpa a busca
-		ClearSearch();
+		//ClearSearch();
 	}
 
 	#region PUBLIC METHODS
@@ -152,19 +151,10 @@ public class SearchImagesWeb : MonoBehaviour
 			ObjectImage ObjectImagePrefabInstance = ImagePrefabInstance.GetComponent<ObjectImage>();
 			//Get components
 			Image Image = ImagePrefabInstance.transform.Find("Image").GetComponent<Image>();
-			//Text ImageTitle = ImagePrefabInstance.transform.Find("ImageTags").GetComponent<Text>();
-			
 			//Propriedades da imagem
-			ObjectImagePrefabInstance.WebformatWidth = arrImages[cont]["webformatWidth"].AsInt;
-			ObjectImagePrefabInstance.WebformatHeight = arrImages[cont]["webformatHeight"].AsInt;
-			ObjectImagePrefabInstance.WebformatURL = arrImages[cont]["webformatURL"].Value;
-			
-
+			ObjectImagePrefabInstance.ImageURL = arrImages[cont]["webformatURL"].Value;
 			//Carrega o thumbnail
 			StartCoroutine(GetImage(arrImages[cont]["webformatURL"].Value, Image));
-
-			//coloca o nome da tag
-			//ImageTitle.text = arrImages[cont]["tags"].Value;
 			//Adiciona a imagem ao container
 			ImagePrefabInstance.transform.SetParent(ImageContainer.transform, false);
 		}
@@ -184,11 +174,4 @@ public class SearchImagesWeb : MonoBehaviour
 		ImageSearch.sprite = Sprite.Create(TextureImageSearch, new Rect(new Vector2(0, 0), new Vector2(TextureImageSearch.width, TextureImageSearch.height)), new Vector2(0, 0));
 	}
 	#endregion
-
-
-	//void OnDisable()
-	//{
-	//	//
-	//	ObjectImagePrefabInstance.ImageTexture = Image.sprite.texture;
-	//}
 }

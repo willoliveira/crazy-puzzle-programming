@@ -30,16 +30,23 @@ namespace PrototypingGame
 		[HideInInspector]
 		public ImageMode mImageMode;
 		//imagem selecionada
+		[HideInInspector]
 		public Texture2D ImageSelect;
+		[HideInInspector]
+		public string ImageURL;
 		//imagem cropada selecionada
+		[HideInInspector]
 		public Texture2D ImageCropSelect;
 		//retangulo de recorte da image
+		[HideInInspector]
 		public Rect ImageCropRect;
 		/// <summary>
 		/// Inicializa valores default para os modos de jogo
 		/// </summary>
-		void Start()
+		void Awake()
 		{
+			//tira o mult touch
+			Input.multiTouchEnabled = false;
 			//mSelectMode = GameMode.Free;
 		}
 	}

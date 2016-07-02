@@ -6,27 +6,16 @@ public class ObjectImage : MonoBehaviour, IPointerDownHandler
 {
 	private int webformatWidth;
 	private int webformatHeight;
-	private string webformatURL;
+	private string imageURL;
 	private Texture2D imageTexture;
 
 	private SelectImage mSelectImages;
+	
 
-	public int WebformatWidth
+	public string ImageURL
 	{
-		get { return webformatWidth; }
-		set { webformatWidth = value; }
-	}
-
-	public int WebformatHeight
-	{
-		get { return webformatHeight; }
-		set { webformatHeight = value; }
-	}
-
-	public string WebformatURL
-	{
-		get { return webformatURL; }
-		set { webformatURL = value; }
+		get { return imageURL; }
+		set { imageURL = value; }
 	}
 
 	public Texture2D ImageTexture

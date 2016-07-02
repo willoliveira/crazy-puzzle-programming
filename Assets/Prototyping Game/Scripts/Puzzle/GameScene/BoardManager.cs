@@ -71,7 +71,12 @@ namespace PrototypingGame
 		private RectTransform InstanceDropArea;
 		#endregion
 
-		// Use this for initialization
+		void Awake()
+		{
+			//tira o mult touch
+			Input.multiTouchEnabled = false;
+		}
+
 		void Start()
 		{
 			//inicia a lista de struct com as pecas
@@ -83,7 +88,6 @@ namespace PrototypingGame
 		#region PUBLIC METHODS
 		public void ScreenSize()
 		{
-			Debug.Log("ScreenSize: " + new Vector3(Screen.width, Screen.height, 5));
 			ScreenSizeText.text = "width: " + Screen.width + " | height: " + Screen.height;
 		}
 		/// <summary>
@@ -276,7 +280,6 @@ namespace PrototypingGame
 		/// </summary>
 		private void FinishGame()
 		{
-			Debug.Log("Tudo certo!!!");
 			//Desativa o timer
 			mTimer.IsEnable = false;
 			//Desativa o drag de todas a pecas
@@ -307,10 +310,6 @@ namespace PrototypingGame
 			DropArea.GetComponent<RectTransform>().localScale = new Vector2((float) PieceSize / 100, (float) PieceSize / 100);
 			//pega o tamanho do recorte pelo numero de colunas
 			cropSize = (int)(mGameManger.ImageCropRect.width / columns);
-
-
-			//Debug.Log("cropSize: " + cropSize + " | Image width: " + mGameManger.ImageCropSelect.width + " height: " + mGameManger.ImageCropSelect.height + " | mult: " + (cropSize * columns));
-
 			//Corta a imagem
 			CropImage();
 			//Create pieces
@@ -382,6 +381,7 @@ namespace PrototypingGame
 			PositionBlank.Column = columns - 1;
 			//Instancia a posica da peca vazia
 			instance = Instantiate(DropArea, new Vector3(((columns - 1) * PieceSize) + PieceSize / 2, ((columns - 1) * -PieceSize) - PieceSize / 2, 0), Quaternion.identity) as GameObject; // 50 por causa que é a metade da peca do puzzle
+			instance.name = "DropArea";
 			instance.transform.SetParent(Board, false);
 			instance.transform.SetAsLastSibling();
 			//Pega a referencia do RectTransform da area de Drop e guarda
@@ -431,12 +431,14 @@ namespace PrototypingGame
 				{
 					int indexRandomPosition;
 					//não deixa a posição ser a mesma da posição atual
-					//do
-					//{
-					//TODO: quem sabe é esse while que ta cagando tudo... [UPDATE] Talvez nao... [UPDATE 1] era esse while mesmo que tava travando meu jogo
-					//randomiza a posição
-					indexRandomPosition = Random.Range(0, arrayPieces.Count - 1);
-					//} while (arrayPieces[indexRandomPosition] == cont && arrayPieces.Count > 1) ;
+					do
+					{
+						//TODO: quem sabe é esse while que ta cagando tudo... [UPDATE] Talvez nao... [UPDATE 1] era esse while mesmo que tava travando meu jogo
+						//randomiza a posição
+						indexRandomPosition = Random.Range(0, arrayPieces.Count - 1);
+						//se ele repetir a peca apenas na ultima, deixa queto. deixar pensar em algo pra isso
+						if (arrayPieces.Count == 1) break;
+					} while (arrayPieces[indexRandomPosition] == cont) ;
 					//index da posição randomizada
 					int valueRandomPosition = arrayPieces[indexRandomPosition];
 					//linha e coluna da posição randomizada
@@ -492,7 +494,6 @@ namespace PrototypingGame
 				fadeAmount *= -1f;
 			}			
 			Image rendererLastPiece = sprite.GetComponent<Image>();
-			Debug.Log("Fade: " + fade + " - Alpha: " + rendererLastPiece.color.a);
 			while ((fade && rendererLastPiece.color.a < 1) || (!fade && rendererLastPiece.color.a > 0))
 			{
 				a += fadeAmount;

@@ -14,7 +14,6 @@ public class SelectImage : MonoBehaviour {
 	#endregion
 
 	#region PRIVATE VARS
-	private GameObject ImageSelect;
 	//
 	private GameObject PreviousImageSelect = null;
 	private GameObject ActualImageSelect = null;
@@ -22,11 +21,19 @@ public class SelectImage : MonoBehaviour {
 
 	// Use this for initialization
 	void OnEnable () {
-		//sempre que habiltar a tela, zera		
-		PreviousImageSelect = null;
-		ActualImageSelect = null;
+		if (ActualImageSelect == null)
+		{
+			GameObject.Find("btNext").GetComponent<Button>().interactable = false;
+		}
 		//seta o tipo do modo
 		SetActiveImageContainerMode(mGameManager.mImageMode);
+	}
+
+	void OnDisable()
+	{
+		//volta o botao de proximo
+		GameObject btNext = GameObject.Find("btNext");
+		btNext.GetComponent<Button>().interactable = true;
 	}
 	/// <summary>
 	/// 
@@ -34,18 +41,11 @@ public class SelectImage : MonoBehaviour {
 	/// <param name="imageMode"></param>
 	private void SetActiveImageContainerMode(ImageMode imageMode)
 	{
-		Debug.Log(imageMode);
 		if (imageMode == ImageMode.Local)
 		{
 			LocalImageContainer.SetActive(true);
 			InternetImageContainer.SetActive(false);
 			DefaultImageContainer.SetActive(false);
-			//se ouver uma imagem selecionada
-			if (ImageSelect != null)
-			{
-				//quando for local, seta como selecao atual
-				ActualImageSelect = ImageSelect;
-			}
 		}
 		else if (imageMode == ImageMode.Internet)
 		{
@@ -53,9 +53,12 @@ public class SelectImage : MonoBehaviour {
 			InternetImageContainer.SetActive(true);
 			DefaultImageContainer.SetActive(false);
 			//zera quando for da net, faz escolher de novo
-			mGameManager.ImageSelect = null;
+			//mGameManager.ImageSelect = null;
+			////sempre que habiltar a tela no modo internet, zera
+			//PreviousImageSelect = null;
+			//ActualImageSelect = null;
 			//desabilita o botao
-			GameObject.Find("btNext").GetComponent<Button>().interactable = false;
+			//GameObject.Find("btNext").GetComponent<Button>().interactable = false;
 		}
 		else if (imageMode == ImageMode.Default)
 		{
@@ -85,11 +88,12 @@ public class SelectImage : MonoBehaviour {
 			GameObject.Find("btNext").GetComponent<Button>().interactable = false;
 			//
 			ActualImageSelect.GetComponent<Image>().color = Color.white;
-			//
+			//zera
 			ActualImageSelect = null;
 			PreviousImageSelect = null;
-			//
+
 			mGameManager.ImageSelect = null;
+			mGameManager.ImageURL = null;
 		}
 		else
 		{
@@ -99,8 +103,17 @@ public class SelectImage : MonoBehaviour {
 			ActualImageSelect = imageSelect;
 			Debug.Log(ActualImageSelect);
 			imageSelect.GetComponent<Image>().color = Color.black;
-			//salva a imagem escolhida
-			mGameManager.ImageSelect = mObjectImage.ImageTexture;
+			//se houver url
+			if (string.IsNullOrEmpty(mObjectImage.ImageURL))
+			{
+				//salva a imagem escolhida
+				mGameManager.ImageSelect = mObjectImage.ImageTexture;
+			}
+			else
+			{
+				//Salva a url
+				mGameManager.ImageURL = mObjectImage.ImageURL;
+			}
 		}
 		//se houver um anterior, volta a cor dele
 		if (PreviousImageSelect != null)
