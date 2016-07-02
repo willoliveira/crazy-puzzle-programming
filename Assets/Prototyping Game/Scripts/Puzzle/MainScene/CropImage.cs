@@ -54,7 +54,26 @@ public class CropImage : MonoBehaviour
 		cropRect.y = spriteTexture.height - (porcentHeight * spriteTexture.height) - (porcentY * spriteTexture.height);
 		cropRect.width = porcentWidth * spriteTexture.width;
 		cropRect.height = porcentHeight * spriteTexture.height;
+
+		//Debug.Log("Screen.width: " + Screen.width);
+		////rect
+		//Debug.Log("Image.rect.width: " + Image.rect.width + " | Image.rect.height: " + Image.rect.height);
+		////image
+		//Debug.Log("spriteTexture.width : " + spriteTexture.width + " | spriteTexture.height: " + spriteTexture.height);
+		
+
 		//Cria o sprite de crop
 		ImageCrop.GetComponent<Image>().sprite = Sprite.Create(spriteTexture, cropRect, new Vector2(0, 0));
+	}
+
+	public void AdjustRect()
+	{
+		//porcentagem para ser aplicado lado desproporcional do retangulo
+		float ImageRatio = ((float)Image.GetComponent<Image>().sprite.texture.width / (float)Image.GetComponent<Image>().sprite.texture.height);
+		//aplica, usando razao e proporcao
+		Image.sizeDelta = new Vector2(Image.sizeDelta.x, Image.sizeDelta.x / ImageRatio);
+
+		//Debug.Log(Image.GetComponent<Image>().sprite.texture.width + " / " + Image.GetComponent<Image>().sprite.texture.height);
+		//Debug.Log("Image.sizeDelta.x: " + Image.sizeDelta.x + " | Image.sizeDelta.y: " + Image.sizeDelta.y + " | ImageRatio: " + ImageRatio + " | sum: " + (float)Image.rect.height / ImageRatio + " | formula: " + Image.rect.height + " / " + "( " + Image.GetComponent<Image>().sprite.texture.width + " / " + Image.GetComponent<Image>().sprite.texture.height + ")");
 	}
 }

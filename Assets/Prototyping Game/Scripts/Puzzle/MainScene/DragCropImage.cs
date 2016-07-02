@@ -29,7 +29,6 @@ using UnityEngine;
 
 	public void OnPointerDown(PointerEventData ped)
 	{
-		Debug.Log("OnBeginDrag");
 		mouseDown = true;
 		startPos = transform.position;
 		startMousePos = Input.mousePosition;
@@ -37,10 +36,8 @@ using UnityEngine;
 
 	public void OnPointerUp(PointerEventData ped)
 	{
-		Debug.Log("OnEndDrag");
 		mouseDown = false;
 	}
-
 
 	void Update()
 	{
