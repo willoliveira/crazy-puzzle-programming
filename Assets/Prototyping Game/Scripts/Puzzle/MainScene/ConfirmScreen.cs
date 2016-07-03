@@ -110,8 +110,7 @@ public class ConfirmScreen : MonoBehaviour {
 		//Debug.Log(ImageCrop.ma);
 		mGameManager.ImageCropSelect = ImageCropSprite.texture;
 		mGameManager.ImageCropRect = ImageCropSprite.textureRect;
-
-		Debug.Log("mGameManager.ImageCropSelect.width: " + mGameManager.ImageCropSelect.width + " | mGameManager.ImageCropSelect.height: " + mGameManager.ImageCropSelect.height);
+		//Debug.Log("mGameManager.ImageCropSelect.width: " + mGameManager.ImageCropSelect.width + " | mGameManager.ImageCropSelect.height: " + mGameManager.ImageCropSelect.height);
 	}
 	/// <summary>
 	/// 

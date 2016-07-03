@@ -12,13 +12,13 @@ public class SquareAnimation : MonoBehaviour {
 
 	public void EndScaleInAnimation()
 	{
-		Debug.Log("EndScaleInAnimation");
+		//Debug.Log("EndScaleInAnimation");
 		//mAnimation.SetTrigger("ScaleIn");
 	}
 
 	public void EndScaleOutAnimation()
 	{
-		Debug.Log("EndScaleOutAnimation");
+		//Debug.Log("EndScaleOutAnimation");
 		//mAnimation.SetTrigger("ScaleOut");
 	}
 }

@@ -120,7 +120,6 @@ namespace PrototypingGame
 			SquareAnimationsEnd += 1;
 			if ((mBoardManager.columns * mBoardManager.columns) - 1 == SquareAnimationsEnd)
 			{
-				Debug.Log("SetEndMoveAnimationSquare");
 				mBoardManager.EndRandomPieces();
 			}
 		}

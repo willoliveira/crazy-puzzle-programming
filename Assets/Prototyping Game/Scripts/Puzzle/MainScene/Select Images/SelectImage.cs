@@ -102,7 +102,6 @@ public class SelectImage : MonoBehaviour {
 			GameObject.Find("btNext").GetComponent<Button>().interactable = true;
 			//seta o clicado como atual
 			ActualImageSelect = imageSelect;
-			Debug.Log(ActualImageSelect);
 			imageSelect.GetComponent<Image>().color = Color.black;
 			//se houver url
 			if (string.IsNullOrEmpty(mObjectImage.ImageURL))

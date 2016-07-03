@@ -86,7 +86,8 @@ public class ImageServiceAPI : MonoBehaviour
 		}
 		else
 		{
-			Debug.Log("Error GetImages: " + www.error);
+			//TODO: fazer algo quando der erro aqui
+			Debug.Log("Error GetImage: " + www.error);
 			result(Texture2D.whiteTexture);
 		}
 	}

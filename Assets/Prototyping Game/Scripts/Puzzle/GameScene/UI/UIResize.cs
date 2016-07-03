@@ -37,7 +37,7 @@ namespace PrototypingGame
 		void Update() {
 			if (ScreenHeight != Screen.height || ScreenWidth != Screen.width)
 			{
-				Debug.Log("Change Resolution");
+				//Debug.Log("Change Resolution");
 				//Redimensiona o board
 				RecizeBoard();
 			}

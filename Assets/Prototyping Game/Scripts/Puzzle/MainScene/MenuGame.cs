@@ -79,7 +79,6 @@ namespace PrototypingGame
 		/// </summary>
 		public void btBack()
 		{
-			Debug.Log("btBack" + mMenuScreen);
 			if (mMenuScreen == MenuScreen.SelectMode)
 			{
 				//desativa os botoes

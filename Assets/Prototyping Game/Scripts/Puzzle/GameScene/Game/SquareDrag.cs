@@ -20,8 +20,7 @@ public class SquareDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 	
 	public void OnBeginDrag(PointerEventData eventData)
 	{
-		Debug.Log("OnBeginDrag");
-		if (EnabledDrag)
+			if (EnabledDrag)
 		{
 			//guarda uma referencia para o game object que comecou a ser draggado
 			itemBeingDragged = gameObject;

@@ -42,8 +42,6 @@ public class SelectMode : MonoBehaviour
 		//atualiza o modo de jogo no game manager
 		gameManager.mGameMode = (GameMode)(indexMode + selectionMode);
 
-		//Debug.Log("indexMode: " + indexMode + " | mGameMode: " + (int)gameManager.mGameMode);
-
 		//Desativa a selecao anterior
 		OptionsMode[indexMode].SetActive(false);
 		//Ativa a selecao atual
@@ -54,7 +52,5 @@ public class SelectMode : MonoBehaviour
 	{
 		//Seta o classico com Classic
 		gameManager.mImageMode = (ImageMode) ImageMode;
-
-		Debug.Log(gameManager.mImageMode);
 	}
 }
