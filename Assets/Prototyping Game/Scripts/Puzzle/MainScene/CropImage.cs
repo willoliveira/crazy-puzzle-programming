@@ -71,18 +71,22 @@ public class CropImage : MonoBehaviour
 		Image.sizeDelta = new Vector2(ContainerCrop.sizeDelta.x, ContainerCrop.sizeDelta.y);
 		//se o width da imagem for maior que o height
 		if (ImageCache.sprite.texture.width > ImageCache.sprite.texture.height) {
-			//porcentagem para ser aplicado lado desproporcional do retangulo
+			//porcentagem para ser aplicado proporcional ao retangulo da imagem
 			ImageRatio = ((float)ImageCache.sprite.texture.width / (float)ImageCache.sprite.texture.height);
 			//aplica, usando razao e proporcao
 			Image.sizeDelta = new Vector2(Image.sizeDelta.x, Image.sizeDelta.x / ImageRatio);
+			//deixa a area de crop do tamanho do lado menor
+			AreaCrop.sizeDelta = new Vector2(Image.sizeDelta.y - 5, Image.sizeDelta.y - 5);
 		}
 		//se o height da imagem for maior que o width, ou ate se for igual
 		else
 		{
-			//porcentagem para ser aplicado lado desproporcional do retangulo
+			//porcentagem para ser aplicado proporcional ao retangulo da imagem
 			ImageRatio = ((float)ImageCache.sprite.texture.height / (float)ImageCache.sprite.texture.width);
 			//aplica, usando razao e proporcao
 			Image.sizeDelta = new Vector2(Image.sizeDelta.y / ImageRatio, Image.sizeDelta.y);
+			//deixa a area de crop do tamanho do lado menor
+			AreaCrop.sizeDelta = new Vector2(Image.sizeDelta.x - 5, Image.sizeDelta.x - 5);
 		}
 		//Coloca a area de crop no meio da imagem de novo
 		AreaCrop.anchoredPosition = new Vector2(Image.sizeDelta.x / 2, (Image.sizeDelta.y / 2) * -1);
