@@ -82,7 +82,6 @@ public class ImageServiceAPI : MonoBehaviour
 
 		if (www.error == null)
 		{
-			Debug.Log(www.texture);
 			result(www.texture);
 		}
 		else

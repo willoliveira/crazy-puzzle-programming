@@ -12,6 +12,7 @@ public class SearchImagesWeb : MonoBehaviour
 	public GameObject ImageContainer;
 	public GameObject ImagePrefab;
 
+	public GameObject ErrorLoading;
 
 	private int Page = 0;
 	private int ImagensTotal = 0;
@@ -22,7 +23,8 @@ public class SearchImagesWeb : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-
+		//deixa a mensagem de erro no inicio desabilitada
+		ErrorLoading.SetActive(false);
 	}
 
 	void OnDisable()
@@ -97,7 +99,7 @@ public class SearchImagesWeb : MonoBehaviour
 		//Chama a rotina que carrega o json das imagens
 		yield return StartCoroutine(mImageServiceAPI.GetImages(mInputField.text, Page, value => strResult = value));
 		//Processa o objeto de imagens que foi carregado
-		ProcessImages(JSON.Parse(strResult));
+		ProcessImages(strResult);
 	}
 	/// <summary>
 	/// formato a resposta
@@ -135,28 +137,38 @@ public class SearchImagesWeb : MonoBehaviour
 	///}
 	/// </summary>
 	/// <param name="JsonImages"></param>
-	private void ProcessImages(JSONNode JsonImages)
+	private void ProcessImages(string response)
 	{
-		Debug.Log(JsonImages);
-		//pega o array da resposta das imagens
-		JSONArray arrImages = JsonImages["hits"].AsArray;
-		//Adiciona o numero de imagens carregado
-		ImagensLoaded += arrImages.Count;
-		//Guarda o total
-		ImagensTotal = JsonImages["totalHits"].AsInt;
-		for (int cont = 0, len = arrImages.Count; cont < len; cont++)
+		//se nao houve resposta, quer dizer que houver algum erro
+		if (string.IsNullOrEmpty(response))
 		{
-			//Instancia um prefab para colocar a imagem
-			GameObject ImagePrefabInstance = Instantiate(ImagePrefab, new Vector2(0, 0), Quaternion.identity) as GameObject;
-			ObjectImage ObjectImagePrefabInstance = ImagePrefabInstance.GetComponent<ObjectImage>();
-			//Get components
-			Image Image = ImagePrefabInstance.transform.Find("Image").GetComponent<Image>();
-			//Propriedades da imagem
-			ObjectImagePrefabInstance.ImageURL = arrImages[cont]["webformatURL"].Value;
-			//Carrega o thumbnail
-			StartCoroutine(GetImage(arrImages[cont]["webformatURL"].Value, Image));
-			//Adiciona a imagem ao container
-			ImagePrefabInstance.transform.SetParent(ImageContainer.transform, false);
+			ErrorLoading.SetActive(true);
+		}
+		else
+		{
+			ErrorLoading.SetActive(false);
+			//Transforma a string
+			JSONNode JsonImages = JSON.Parse(response);
+			//pega o array da resposta das imagens
+			JSONArray arrImages = JsonImages["hits"].AsArray;
+			//Adiciona o numero de imagens carregado
+			ImagensLoaded += arrImages.Count;
+			//Guarda o total
+			ImagensTotal = JsonImages["totalHits"].AsInt;
+			for (int cont = 0, len = arrImages.Count; cont < len; cont++)
+			{
+				//Instancia um prefab para colocar a imagem
+				GameObject ImagePrefabInstance = Instantiate(ImagePrefab, new Vector2(0, 0), Quaternion.identity) as GameObject;
+				ObjectImage ObjectImagePrefabInstance = ImagePrefabInstance.GetComponent<ObjectImage>();
+				//Get components
+				Image Image = ImagePrefabInstance.transform.Find("Image").GetComponent<Image>();
+				//Propriedades da imagem
+				ObjectImagePrefabInstance.ImageURL = arrImages[cont]["webformatURL"].Value;
+				//Carrega o thumbnail
+				StartCoroutine(GetImage(arrImages[cont]["webformatURL"].Value, Image));
+				//Adiciona a imagem ao container
+				ImagePrefabInstance.transform.SetParent(ImageContainer.transform, false);
+			}
 		}
 	}
 	/// <summary>

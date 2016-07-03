@@ -19,11 +19,14 @@ public class CropImage : MonoBehaviour
 		imgCrop = AreaCrop.GetComponent<Image>();
 	}
 
+	//TODO: tentar com OnDrag
 	void Update()
 	{
 		OnCrop();
 	}
-
+	/// <summary>
+	/// 
+	/// </summary>
 	public void OnCrop()
 	{
 		//Referencia da image,
@@ -38,17 +41,17 @@ public class CropImage : MonoBehaviour
 			  porcentY = ((float)Math.Round((AreaCrop.anchoredPosition.y*-1) - AreaCrop.rect.height / 2, 2)) / (float)Math.Round(imageUI.rectTransform.rect.height, 2), //+ AreaCrop.rect.height / 2,
 			  porcentWidth = AreaCrop.rect.width / imageUI.rectTransform.rect.width,
 			  porcentHeight = AreaCrop.rect.height / imageUI.rectTransform.rect.height;
-		//Construção do rect de recorte		
-		Rect cropRect = new Rect();		
+		//Construção do rect de recorte
+		Rect cropRect = new Rect();
 		cropRect.x = (porcentX * spriteTexture.width);
 		//tamanho da image - tamanho da area de crop - posicao do recorte
 		//invertendo o Y da razao e proporcao da area de crop para a imagem, pois no unity, o ponto de registro da imagem é left bottom, e sobe negativo
-		//          Daqui         Pra ca         
-		//  ^    X_________      _________
-		//  |    |         |    |         |
-		//  | -Y |         |    |         |
-		//  |    |_________|    X_________|
-		//       0              0
+		//          Daqui         Pra ca    
+		//  ^    X_________      _________  
+		//  |    |         |    |         | 
+		//  | -Y |         |    |         | 
+		//  |    |_________|    X_________| 
+		//       0              0           
 		cropRect.y = spriteTexture.height - (porcentHeight * spriteTexture.height) - (porcentY * spriteTexture.height);
 		cropRect.width = porcentWidth * spriteTexture.width;
 		cropRect.height = porcentHeight * spriteTexture.height;
@@ -58,16 +61,38 @@ public class CropImage : MonoBehaviour
 		//Cria o sprite de crop
 		ImageCrop.GetComponent<Image>().sprite = Sprite.Create(spriteTexture, cropRect, new Vector2(0, 0));
 	}
-
+	/// <summary>
+	/// Ajusta o rectTransform da imagem deixando justo, assim, o drag dentro somente deste RecTransform é possivel
+	/// </summary>
 	public void AdjustRect()
 	{
-		//porcentagem para ser aplicado lado desproporcional do retangulo
-		float ImageRatio = ((float)Image.GetComponent<Image>().sprite.texture.width / (float)Image.GetComponent<Image>().sprite.texture.height);
-		//aplica, usando razao e proporcao
-		Image.sizeDelta = new Vector2(Image.sizeDelta.x, Image.sizeDelta.x / ImageRatio);
+		Image ImageCache = Image.GetComponent<Image>();
+		float ImageRatio;
+		////se o width da imagem for maior que o height
+		//if (ImageCache.sprite.texture.width > ImageCache.sprite.texture.height) {
+			//porcentagem para ser aplicado lado desproporcional do retangulo
+			ImageRatio = ((float)ImageCache.sprite.texture.width / (float)ImageCache.sprite.texture.height);
+			//aplica, usando razao e proporcao
+			Image.sizeDelta = new Vector2(Image.sizeDelta.x, Image.sizeDelta.x / ImageRatio);
+		//}
+		////se o height da imagem for maior que o width, ou ate se for igual
+		//else
+		//{
+		//	//porcentagem para ser aplicado lado desproporcional do retangulo
+		//	ImageRatio = ((float)ImageCache.sprite.texture.height / (float)ImageCache.sprite.texture.width);
+		//	//aplica, usando razao e proporcao
+		//	Image.sizeDelta = new Vector2(Image.sizeDelta.x, Image.sizeDelta.y / ImageRatio);
+		//}
 		//Coloca a area de crop no meio da imagem de novo
 		AreaCrop.anchoredPosition = new Vector2(Image.sizeDelta.x / 2, (Image.sizeDelta.y / 2) * -1);
-		//Debug.Log(Image.GetComponent<Image>().sprite.texture.width + " / " + Image.GetComponent<Image>().sprite.texture.height);
+
+		////porcentagem para ser aplicado lado desproporcional do retangulo
+		//float ImageRatio = ((float)ImageCache.sprite.texture.width / (float)ImageCache.sprite.texture.height);
+		////aplica, usando razao e proporcao
+		//Image.sizeDelta = new Vector2(Image.sizeDelta.x, Image.sizeDelta.x / ImageRatio);
+		////Coloca a area de crop no meio da imagem de novo
+		//AreaCrop.anchoredPosition = new Vector2(Image.sizeDelta.x / 2, (Image.sizeDelta.y / 2) * -1);
+		////Debug.Log(Image.GetComponent<Image>().sprite.texture.width + " / " + Image.GetComponent<Image>().sprite.texture.height);
 		//Debug.Log("Image.sizeDelta.x: " + Image.sizeDelta.x + " | Image.sizeDelta.y: " + Image.sizeDelta.y + " | ImageRatio: " + ImageRatio + " | sum: " + (float)Image.rect.height / ImageRatio + " | formula: " + Image.rect.height + " / " + "( " + Image.GetComponent<Image>().sprite.texture.width + " / " + Image.GetComponent<Image>().sprite.texture.height + ")");
 	}
 }
