@@ -5,6 +5,7 @@ using System.Collections;
 
 public class CropImage : MonoBehaviour
 {
+	public RectTransform ContainerCrop;
 	public RectTransform Image;
 	public RectTransform AreaCrop;
 	public RectTransform ImageCrop;
@@ -25,11 +26,11 @@ public class CropImage : MonoBehaviour
 		OnCrop();
 	}
 	/// <summary>
-	/// 
+	/// Funcao que faz o crop de image
 	/// </summary>
 	public void OnCrop()
 	{
-		//Referencia da image,
+		//Referencia da image
 		Image imageUI = Image.GetComponent<Image>();
 		//Textura da imagem
 		Sprite spriteToCropSprite = imageUI.sprite;
@@ -56,8 +57,6 @@ public class CropImage : MonoBehaviour
 		cropRect.width = porcentWidth * spriteTexture.width;
 		cropRect.height = porcentHeight * spriteTexture.height;
 
-		//Debug.Log("cropRect.width: " + cropRect.width + " | cropRect.height: " + cropRect.height);
-
 		//Cria o sprite de crop
 		ImageCrop.GetComponent<Image>().sprite = Sprite.Create(spriteTexture, cropRect, new Vector2(0, 0));
 	}
@@ -68,31 +67,26 @@ public class CropImage : MonoBehaviour
 	{
 		Image ImageCache = Image.GetComponent<Image>();
 		float ImageRatio;
-		////se o width da imagem for maior que o height
-		//if (ImageCache.sprite.texture.width > ImageCache.sprite.texture.height) {
+		//volta a imagem
+		Image.sizeDelta = new Vector2(ContainerCrop.sizeDelta.x, ContainerCrop.sizeDelta.y);
+		//se o width da imagem for maior que o height
+		if (ImageCache.sprite.texture.width > ImageCache.sprite.texture.height) {
 			//porcentagem para ser aplicado lado desproporcional do retangulo
-			ImageRatio = ((float)ImageCache.sprite.texture.width / (float)ImageCache.sprite.texture.height);
+			ImageRatio = (ImageCache.sprite.texture.width / ImageCache.sprite.texture.height);
 			//aplica, usando razao e proporcao
 			Image.sizeDelta = new Vector2(Image.sizeDelta.x, Image.sizeDelta.x / ImageRatio);
-		//}
-		////se o height da imagem for maior que o width, ou ate se for igual
-		//else
-		//{
-		//	//porcentagem para ser aplicado lado desproporcional do retangulo
-		//	ImageRatio = ((float)ImageCache.sprite.texture.height / (float)ImageCache.sprite.texture.width);
-		//	//aplica, usando razao e proporcao
-		//	Image.sizeDelta = new Vector2(Image.sizeDelta.x, Image.sizeDelta.y / ImageRatio);
-		//}
+		}
+		//se o height da imagem for maior que o width, ou ate se for igual
+		else
+		{
+			//porcentagem para ser aplicado lado desproporcional do retangulo
+			ImageRatio = (ImageCache.sprite.texture.height / ImageCache.sprite.texture.width);
+			//aplica, usando razao e proporcao
+			Image.sizeDelta = new Vector2(Image.sizeDelta.y / ImageRatio, Image.sizeDelta.y);
+		}
 		//Coloca a area de crop no meio da imagem de novo
 		AreaCrop.anchoredPosition = new Vector2(Image.sizeDelta.x / 2, (Image.sizeDelta.y / 2) * -1);
-
-		////porcentagem para ser aplicado lado desproporcional do retangulo
-		//float ImageRatio = ((float)ImageCache.sprite.texture.width / (float)ImageCache.sprite.texture.height);
-		////aplica, usando razao e proporcao
-		//Image.sizeDelta = new Vector2(Image.sizeDelta.x, Image.sizeDelta.x / ImageRatio);
-		////Coloca a area de crop no meio da imagem de novo
-		//AreaCrop.anchoredPosition = new Vector2(Image.sizeDelta.x / 2, (Image.sizeDelta.y / 2) * -1);
-		////Debug.Log(Image.GetComponent<Image>().sprite.texture.width + " / " + Image.GetComponent<Image>().sprite.texture.height);
-		//Debug.Log("Image.sizeDelta.x: " + Image.sizeDelta.x + " | Image.sizeDelta.y: " + Image.sizeDelta.y + " | ImageRatio: " + ImageRatio + " | sum: " + (float)Image.rect.height / ImageRatio + " | formula: " + Image.rect.height + " / " + "( " + Image.GetComponent<Image>().sprite.texture.width + " / " + Image.GetComponent<Image>().sprite.texture.height + ")");
+		//centraliza a imagem de novo
+		Image.anchoredPosition = new Vector2(0f, 0f);
 	}
 }
