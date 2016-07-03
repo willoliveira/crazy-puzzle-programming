@@ -33,7 +33,8 @@ public class SelectImage : MonoBehaviour {
 	{
 		//volta o botao de proximo
 		GameObject btNext = GameObject.Find("btNext");
-		btNext.GetComponent<Button>().interactable = true;
+		if (btNext != null)
+			btNext.GetComponent<Button>().interactable = true;
 	}
 	/// <summary>
 	/// 

@@ -5,8 +5,6 @@ using System.Collections;
 
 public class CropImage : MonoBehaviour
 {
-	public Texture2D ImageTexture;
-
 	public RectTransform Image;
 	public RectTransform AreaCrop;
 	public RectTransform ImageCrop;
@@ -55,12 +53,7 @@ public class CropImage : MonoBehaviour
 		cropRect.width = porcentWidth * spriteTexture.width;
 		cropRect.height = porcentHeight * spriteTexture.height;
 
-		//Debug.Log("Screen.width: " + Screen.width);
-		////rect
-		//Debug.Log("Image.rect.width: " + Image.rect.width + " | Image.rect.height: " + Image.rect.height);
-		////image
-		//Debug.Log("spriteTexture.width : " + spriteTexture.width + " | spriteTexture.height: " + spriteTexture.height);
-		
+		//Debug.Log("cropRect.width: " + cropRect.width + " | cropRect.height: " + cropRect.height);
 
 		//Cria o sprite de crop
 		ImageCrop.GetComponent<Image>().sprite = Sprite.Create(spriteTexture, cropRect, new Vector2(0, 0));
@@ -72,7 +65,8 @@ public class CropImage : MonoBehaviour
 		float ImageRatio = ((float)Image.GetComponent<Image>().sprite.texture.width / (float)Image.GetComponent<Image>().sprite.texture.height);
 		//aplica, usando razao e proporcao
 		Image.sizeDelta = new Vector2(Image.sizeDelta.x, Image.sizeDelta.x / ImageRatio);
-
+		//Coloca a area de crop no meio da imagem de novo
+		AreaCrop.anchoredPosition = new Vector2(Image.sizeDelta.x / 2, (Image.sizeDelta.y / 2) * -1);
 		//Debug.Log(Image.GetComponent<Image>().sprite.texture.width + " / " + Image.GetComponent<Image>().sprite.texture.height);
 		//Debug.Log("Image.sizeDelta.x: " + Image.sizeDelta.x + " | Image.sizeDelta.y: " + Image.sizeDelta.y + " | ImageRatio: " + ImageRatio + " | sum: " + (float)Image.rect.height / ImageRatio + " | formula: " + Image.rect.height + " / " + "( " + Image.GetComponent<Image>().sprite.texture.width + " / " + Image.GetComponent<Image>().sprite.texture.height + ")");
 	}
