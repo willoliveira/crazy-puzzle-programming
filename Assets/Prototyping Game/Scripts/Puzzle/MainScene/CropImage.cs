@@ -38,8 +38,8 @@ public class CropImage : MonoBehaviour
 		Texture2D spriteTexture = spriteToCropSprite.texture;
 		//AreaCrop.rect.width / 2 isso foi por mudei o pivot para x0,5 y0,5 - antes era x0 y1
 		//Porcentagem relativa do rectTransform sobre a o RectTransform da image para conseguir as coordenadas em pixesl da imagem
-		float porcentX = (float)Math.Round(AreaCrop.anchoredPosition.x - AreaCrop.rect.width / 2, 2) / (float)Math.Round((imageUI.rectTransform.rect.width), 2),
-			  porcentY = ((float)Math.Round((AreaCrop.anchoredPosition.y*-1) - AreaCrop.rect.height / 2, 2)) / (float)Math.Round(imageUI.rectTransform.rect.height, 2), //+ AreaCrop.rect.height / 2,
+		float porcentX = (float)Math.Round(AreaCrop.anchoredPosition.x - (float)AreaCrop.rect.width / 2, 2) / (float)Math.Round((imageUI.rectTransform.rect.width), 2),
+			  porcentY = ((float)Math.Round((AreaCrop.anchoredPosition.y*-1) - (float)AreaCrop.rect.height / 2, 2)) / (float)Math.Round(imageUI.rectTransform.rect.height, 2), //+ AreaCrop.rect.height / 2,
 			  porcentWidth = AreaCrop.rect.width / imageUI.rectTransform.rect.width,
 			  porcentHeight = AreaCrop.rect.height / imageUI.rectTransform.rect.height;
 		//Construção do rect de recorte

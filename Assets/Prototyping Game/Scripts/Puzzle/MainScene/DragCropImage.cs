@@ -42,7 +42,7 @@ using UnityEngine;
 	{
 		if (mouseDown)
 		{
-			myWidth = (MyRect.rect.width  + 5) / 2;
+			myWidth = (MyRect.rect.width + 5) / 2;
 			myHeight = (MyRect.rect.height + 5) / 2;
 
 			Vector3 currentPos = Input.mousePosition;

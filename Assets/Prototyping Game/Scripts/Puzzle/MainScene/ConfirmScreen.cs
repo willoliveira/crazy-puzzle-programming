@@ -106,6 +106,10 @@ public class ConfirmScreen : MonoBehaviour {
 	/// <param name="ImageCrop"></param>
 	public void SetImageCropImage(Sprite ImageCropSprite)
 	{
+		Debug.Log("SetImageCropImage");
+		mGameManager.ImageCropSelect = null;
+		//mGameManager.ImageCropRect = null;
+
 		ImageCrop.sprite = ImageCropSprite;
 		//Debug.Log(ImageCrop.ma);
 		mGameManager.ImageCropSelect = ImageCropSprite.texture;

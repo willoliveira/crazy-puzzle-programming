@@ -321,6 +321,7 @@ namespace PrototypingGame
 		/// </summary>
 		private void CropImage()
 		{
+			Debug.Log("CropImage");
 			for (int cont = 0; cont < (columns * columns); cont++)
 			{
 				int row = Mathf.FloorToInt(cont / (columns));
