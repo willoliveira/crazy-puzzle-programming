@@ -83,6 +83,10 @@ namespace PrototypingGame
 			listObjCropImages = new List<StructCrop>();
 			//Configura o board
 			ConfigGame();
+
+			Debug.Log("mGameManger.ImageCropSelect.width: " + mGameManger.ImageCropSelect.width + " | mGameManger.ImageCropSelect.height:" + mGameManger.ImageCropSelect.height);
+			Debug.Log("mGameManger.SpriteCropSelect.textureRect: " + mGameManger.SpriteCropSelect.textureRect);
+			Debug.Log("mGameManger.ImageCropRect: " + mGameManger.ImageCropRect);
 		}
 
 		#region PUBLIC METHODS
@@ -137,7 +141,7 @@ namespace PrototypingGame
 				mTimer.IsEnable = false;
 				StartCoroutine(FadeInAndFinishGame());
 			}
-			else if (mGameManger.mGameMode == GameMode.Classic)
+			else if (mGameManger.mGameMode == GameMode.Classic || mGameManger.mGameMode == GameMode.Hard)
 			{
 				//Ativa/Desativa o dragg das pecas
 				ToogleDrag();
@@ -321,7 +325,6 @@ namespace PrototypingGame
 		/// </summary>
 		private void CropImage()
 		{
-			Debug.Log("CropImage");
 			for (int cont = 0; cont < (columns * columns); cont++)
 			{
 				int row = Mathf.FloorToInt(cont / (columns));
@@ -336,6 +339,7 @@ namespace PrototypingGame
 				//monta o struct
 				StructCrop structCrop;
 				//structCrop.crop = squareTexture2d;
+				//structCrop.crop = Sprite.Create(mGameManger.ImageCropSelect, new Rect(mGameManger.ImageCropRect.width - cropSize - ((columns - 1 - row) * cropSize), mGameManger.ImageCropRect.height - cropSize - (column * cropSize), cropSize, cropSize), new Vector2(0, 0));
 				structCrop.crop = Sprite.Create(mGameManger.ImageCropSelect, new Rect(mGameManger.ImageCropRect.width - cropSize - ((columns - 1 - row) * cropSize), mGameManger.ImageCropRect.height - cropSize - (column * cropSize), cropSize, cropSize), new Vector2(0, 0));
 				structCrop.row = column;
 				structCrop.column = row;

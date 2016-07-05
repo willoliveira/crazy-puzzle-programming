@@ -37,6 +37,8 @@ namespace PrototypingGame
 		//imagem cropada selecionada
 		[HideInInspector]
 		public Texture2D ImageCropSelect;
+		[HideInInspector]
+		public Sprite SpriteCropSelect;
 		//retangulo de recorte da image
 		[HideInInspector]
 		public Rect ImageCropRect;

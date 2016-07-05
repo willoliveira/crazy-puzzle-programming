@@ -49,9 +49,13 @@ namespace PrototypingGame
 			gameManager = gameManagerObject.GetComponent<GameManager>();
 			//Referencia de qual tela o usuario esta
 			mMenuScreen = MenuScreen.MainMenu;
-			//Seta o botao voltar como inativo no inicio
-			buttonBack.SetActive(false);
-			buttonNext.SetActive(false);
+			
+			//Seta o botao avancar e voltar como inativo no inicio
+			//buttonBack.SetActive(false);
+			buttonBack.transform.localScale = new Vector3(0, 0);
+			//buttonNext.SetActive(false);
+			buttonNext.transform.localScale = new Vector3(0, 0);
+
 			//Seta a tela Main como ativa no inicio
 			MainMenu.SetActive(true);
 			SelectMode.SetActive(false);
@@ -69,8 +73,11 @@ namespace PrototypingGame
 			SelectMode.SetActive(true);
 			//
 			mMenuScreen = MenuScreen.SelectMode;
-			buttonBack.SetActive(true);
-			buttonNext.SetActive(true);
+
+			//buttonBack.SetActive(true);
+			buttonBack.transform.localScale = new Vector3(1, 1);
+			//buttonNext.SetActive(true);
+			buttonNext.transform.localScale = new Vector3(1, 1);
 		}
 		
 
@@ -82,8 +89,10 @@ namespace PrototypingGame
 			if (mMenuScreen == MenuScreen.SelectMode)
 			{
 				//desativa os botoes
-				buttonBack.SetActive(false);
-				buttonNext.SetActive(false);
+				//buttonBack.SetActive(false);
+				buttonBack.transform.localScale = new Vector3(0,0);
+				//buttonNext.SetActive(false);
+				buttonNext.transform.localScale = new Vector3(0, 0);
 				//
 				MainMenu.SetActive(true);
 				SelectMode.SetActive(false);
@@ -95,8 +104,10 @@ namespace PrototypingGame
 			else if (mMenuScreen == MenuScreen.SelectImages)
 			{
 				//ativa os botoes
-				buttonBack.SetActive(true);
-				buttonNext.SetActive(true);
+				//buttonBack.SetActive(true);
+				buttonBack.transform.localScale = new Vector3(1, 1);
+				//buttonNext.SetActive(true);
+				buttonNext.transform.localScale = new Vector3(1, 1);
 				//ativa/desativa as telas
 				MainMenu.SetActive(false);
 				SelectMode.SetActive(true);
@@ -108,8 +119,10 @@ namespace PrototypingGame
 			else if (mMenuScreen == MenuScreen.ConfirmationScreen)
 			{
 				//ativa os botoes
-				buttonBack.SetActive(true);
-				buttonNext.SetActive(true);
+				//buttonBack.SetActive(true);
+				buttonBack.transform.localScale = new Vector3(1, 1);
+				//buttonNext.SetActive(true);
+				buttonNext.transform.localScale = new Vector3(1, 1);
 				//ativa/desativa as telas
 				MainMenu.SetActive(false);
 				SelectMode.SetActive(false);
@@ -127,8 +140,10 @@ namespace PrototypingGame
 			 if (mMenuScreen == MenuScreen.SelectMode)
 			{
 				//ativa os botoes
-				buttonBack.SetActive(true);
-				buttonNext.SetActive(true);
+				//buttonBack.SetActive(true);
+				buttonBack.transform.localScale = new Vector3(1, 1);
+				//buttonNext.SetActive(true);
+				buttonNext.transform.localScale = new Vector3(1, 1);
 				//ativa/desativa as telas
 				MainMenu.SetActive(false);
 				SelectMode.SetActive(false);
@@ -141,8 +156,11 @@ namespace PrototypingGame
 			else if (mMenuScreen == MenuScreen.SelectImages)
 			{
 				//ativa/desativa os botoes
-				buttonBack.SetActive(true);
-				buttonNext.SetActive(false);
+				//buttonBack.SetActive(true);
+				buttonBack.transform.localScale = new Vector3(1, 1);
+				//buttonNext.SetActive(false);
+				buttonNext.transform.localScale = new Vector3(0, 0);
+
 				//ativa/desativa as telas
 				MainMenu.SetActive(false);
 				SelectMode.SetActive(false);
