@@ -48,7 +48,7 @@ namespace PrototypingGame
 		void Awake()
 		{
 			//tira o mult touch
-			//Input.multiTouchEnabled = false;
+			Input.multiTouchEnabled = false;
 			//mSelectMode = GameMode.Free;
 		}
 	}
