@@ -83,10 +83,6 @@ namespace PrototypingGame
 			listObjCropImages = new List<StructCrop>();
 			//Configura o board
 			ConfigGame();
-
-			Debug.Log("mGameManger.ImageCropSelect.width: " + mGameManger.ImageCropSelect.width + " | mGameManger.ImageCropSelect.height:" + mGameManger.ImageCropSelect.height);
-			Debug.Log("mGameManger.SpriteCropSelect.textureRect: " + mGameManger.SpriteCropSelect.textureRect);
-			Debug.Log("mGameManger.ImageCropRect: " + mGameManger.ImageCropRect);
 		}
 
 		#region PUBLIC METHODS
@@ -329,18 +325,10 @@ namespace PrototypingGame
 			{
 				int row = Mathf.FloorToInt(cont / (columns));
 				int column = cont % columns;
-				//Pega os pixels do recorte que quero fazer
-				//Color[] pix = mGameManger.ImageCropSelect.GetPixels(mGameManger.ImageCropSelect.width - cropSize - ((columns - 1 - row) * cropSize), mGameManger.ImageCropSelect.height - cropSize - (column * cropSize), cropSize, cropSize);
-				////Cria uma textura com o recorte
-				//Texture2D squareTexture2d = new Texture2D(cropSize, cropSize);
-				//squareTexture2d.SetPixels(pix);
-				//squareTexture2d.wrapMode = TextureWrapMode.Clamp;
-				//squareTexture2d.Apply();
 				//monta o struct
 				StructCrop structCrop;
-				//structCrop.crop = squareTexture2d;
-				//structCrop.crop = Sprite.Create(mGameManger.ImageCropSelect, new Rect(mGameManger.ImageCropRect.width - cropSize - ((columns - 1 - row) * cropSize), mGameManger.ImageCropRect.height - cropSize - (column * cropSize), cropSize, cropSize), new Vector2(0, 0));
-				structCrop.crop = Sprite.Create(mGameManger.ImageCropSelect, new Rect(mGameManger.ImageCropRect.width - cropSize - ((columns - 1 - row) * cropSize), mGameManger.ImageCropRect.height - cropSize - (column * cropSize), cropSize, cropSize), new Vector2(0, 0));
+				//soma a posicao do retangulo em o retangulo de crop estao: + mGameManger.ImageCropRect.x e + mGameManger.ImageCropRect.y,
+				structCrop.crop = Sprite.Create(mGameManger.ImageSelect, new Rect(mGameManger.ImageCropRect.width - cropSize - ((columns - 1 - row) * cropSize) + mGameManger.ImageCropRect.x, mGameManger.ImageCropRect.height - cropSize - (column * cropSize) + mGameManger.ImageCropRect.y, cropSize, cropSize), new Vector2(0, 0));
 				structCrop.row = column;
 				structCrop.column = row;
 				//adiciona no array o recorte
