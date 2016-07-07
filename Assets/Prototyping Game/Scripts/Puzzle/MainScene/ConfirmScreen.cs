@@ -106,17 +106,10 @@ public class ConfirmScreen : MonoBehaviour {
 	/// <param name="ImageCrop"></param>
 	public void SetImageCropImage(Sprite ImageCropSprite)
 	{
-		Debug.Log("SetImageCropImage");
-		mGameManager.ImageCropSelect = null;
-		//mGameManager.ImageCropRect = null;
-
-		ImageCrop.sprite = ImageCropSprite;
-		//Debug.Log(ImageCrop.ma);
-		mGameManager.SpriteCropSelect = ImageCropSprite;
-		mGameManager.ImageCropSelect = ImageCropSprite.texture;
+		mGameManager.ImageSelect = ImageCropSprite.texture;
 		mGameManager.ImageCropRect = ImageCropSprite.textureRect;
-		
-		//Debug.Log("mGameManager.ImageCropSelect.width: " + mGameManager.ImageCropSelect.width + " | mGameManager.ImageCropSelect.height: " + mGameManager.ImageCropSelect.height);
+
+		ImageCrop.sprite = Sprite.Create(mGameManager.ImageSelect, mGameManager.ImageCropRect, new Vector2(0, 0));
 	}
 	/// <summary>
 	/// 

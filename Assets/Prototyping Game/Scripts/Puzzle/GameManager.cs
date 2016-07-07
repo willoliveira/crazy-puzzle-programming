@@ -29,17 +29,14 @@ namespace PrototypingGame
 		public GameMode mGameMode;
 		[HideInInspector]
 		public ImageMode mImageMode;
+
+		//URL da imagem quando for da internet
+		[HideInInspector]
+		public string ImageURL;
 		//imagem selecionada
 		[HideInInspector]
 		public Texture2D ImageSelect;
-		[HideInInspector]
-		public string ImageURL;
-		//imagem cropada selecionada
-		[HideInInspector]
-		public Texture2D ImageCropSelect;
-		[HideInInspector]
-		public Sprite SpriteCropSelect;
-		//retangulo de recorte da image
+		//retangulo de recorte da image seleciona
 		[HideInInspector]
 		public Rect ImageCropRect;
 		/// <summary>
