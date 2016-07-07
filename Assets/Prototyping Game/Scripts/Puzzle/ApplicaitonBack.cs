@@ -7,9 +7,15 @@ using UnityEditor;
 
 public class ApplicaitonBack : MonoBehaviour {
 
+	#region PUBLIC VARS
+	public GameObject Loading;
 	public GameObject QuitScreen;
+	#endregion
+
+	#region PRIVATE VARS
 	private bool QuitOpen;
-	
+	#endregion
+
 	// Update is called once per frame
 	void Update () {		
 		if (Input.GetKeyDown(KeyCode.Escape)) {
@@ -25,6 +31,28 @@ public class ApplicaitonBack : MonoBehaviour {
 		}
 	}
 
+	#region PUBLIC METHODS
+	/// <summary>
+	/// 
+	/// </summary>
+	public void ButtonOk()
+	{
+		ManageBackScene();
+	}
+	/// <summary>
+	/// 
+	/// </summary>
+	public void ButtonCancel()
+	{
+		Time.timeScale = 1;
+		QuitScreen.SetActive(false);
+	}
+	#endregion
+
+	#region PRIVATE METHODS
+	/// <summary>
+	/// 
+	/// </summary>
 	private void ManageBackScene()
 	{
 		if (SceneManager.GetActiveScene().buildIndex > 0)
@@ -41,15 +69,6 @@ public class ApplicaitonBack : MonoBehaviour {
 #endif
 		}
 	}
+	#endregion
 
-	public void ButtonOk()
-	{
-		ManageBackScene();
-	}
-
-	public void ButtonCancel()
-	{
-		Time.timeScale = 1;
-		QuitScreen.SetActive(false);
-	}
 }

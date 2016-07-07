@@ -422,14 +422,19 @@ public class BoardManager : MonoBehaviour
 			{
 				int indexRandomPosition;
 				//não deixa a posição ser a mesma da posição atual
-				//do
-				//{
-				//TODO: quem sabe é esse while que ta cagando tudo... [UPDATE] Talvez nao... [UPDATE 1] era esse while mesmo que tava travando meu jogo
-				//randomiza a posição
-				indexRandomPosition = Random.Range(0, arrayPieces.Count - 1);
-				//se ele repetir a peca apenas na ultima, deixa queto. deixar pensar em algo pra isso
-				//	if (arrayPieces.Count <= 2) break;
-				//} while (arrayPieces[indexRandomPosition] == cont) ;
+				do
+				{
+					//TODO: quem sabe é esse while que ta cagando tudo... [UPDATE] Talvez nao... [UPDATE 1] era esse while mesmo que tava travando meu jogo
+					//randomiza a posição
+					indexRandomPosition = Random.Range(0, arrayPieces.Count - 1);
+					Debug.Log(arrayPieces.Count);
+					//se ele repetir a peca apenas na ultima, deixa queto. deixar pensar em algo pra isso
+					if (arrayPieces.Count == 2)
+					{
+						break;
+					}
+				} while (arrayPieces[indexRandomPosition] == cont);
+
 				//index da posição randomizada
 				int valueRandomPosition = arrayPieces[indexRandomPosition];
 				//linha e coluna da posição randomizada

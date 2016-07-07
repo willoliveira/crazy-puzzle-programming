@@ -8,9 +8,9 @@ public class LoadOnClick : MonoBehaviour
 
 	public void LoadScene(int level)
 	{
+		Debug.Log(loadingImage);
 		loadingImage.SetActive(loadingImage);
-		//depreciado
-		//Application.LoadLevel(level);
+
 		SceneManager.LoadScene(level);
 	}
 }
