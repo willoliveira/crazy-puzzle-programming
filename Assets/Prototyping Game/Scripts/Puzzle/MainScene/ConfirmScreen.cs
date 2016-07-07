@@ -108,6 +108,8 @@ public class ConfirmScreen : MonoBehaviour {
 	{
 		mGameManager.ImageSelect = ImageCropSprite.texture;
 		mGameManager.ImageCropRect = ImageCropSprite.textureRect;
+
+		ImageCrop.sprite = Sprite.Create(mGameManager.ImageSelect, mGameManager.ImageCropRect, new Vector2(0, 0));
 	}
 	/// <summary>
 	/// 
