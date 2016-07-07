@@ -1,22 +1,30 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
-using PrototypingGame;
 
 public class SelectMode : MonoBehaviour
 {
-	public GameManager gameManager;
-
+	#region PRIVATE VARS
 	public GameObject[] OptionsMode;
-	
+	#endregion
+
+	#region PUBLIC VARS
+	private GameManager mGameManager;
+	#endregion
+
 	// Use this for initialization
 	void Start()
 	{
+		mGameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+
 		//Seta o classico com Classic
-		gameManager.mGameMode = GameMode.Classic;
+		mGameManager.mGameMode = GameMode.Classic;
 		//Seta o classico com Classic
-		gameManager.mImageMode = ImageMode.Default;
+		mGameManager.mImageMode = ImageMode.Default;
 	}
+
+	#region PUBLIC METHODS
 	/// <summary>
 	/// 0: Volta um modo
 	/// 1: Avanca um modo
@@ -24,33 +32,33 @@ public class SelectMode : MonoBehaviour
 	public void btNavMode(int selectionMode)
 	{
 		int GameModeEnumLength = Enum.GetNames(typeof(GameMode)).Length;
-		int indexMode = (int)gameManager.mGameMode;
+		int indexMode = (int)mGameManager.mGameMode;
 		
 		//navega entre os modulos
 		if (selectionMode == -1 && indexMode == 0)
 		{
 			//se estiver na posicao 0, vai pra ultima
-			gameManager.mGameMode = (GameMode)(GameModeEnumLength - 1);
+			mGameManager.mGameMode = (GameMode)(GameModeEnumLength - 1);
 			selectionMode = GameModeEnumLength - 1;
 		}
 		else if (selectionMode == 1 && indexMode == GameModeEnumLength - 1)
 		{
 			//se estiver na posicao 0, vai pra ultima
-			gameManager.mGameMode = (GameMode) 0;
+			mGameManager.mGameMode = (GameMode) 0;
 			selectionMode = (GameModeEnumLength - 1) * -1;
-		}		
+		}
 		//atualiza o modo de jogo no game manager
-		gameManager.mGameMode = (GameMode)(indexMode + selectionMode);
+		mGameManager.mGameMode = (GameMode)(indexMode + selectionMode);
 
 		//Desativa a selecao anterior
 		OptionsMode[indexMode].SetActive(false);
 		//Ativa a selecao atual
-		OptionsMode[(int)gameManager.mGameMode].SetActive(true);
+		OptionsMode[(int)mGameManager.mGameMode].SetActive(true);
 	}
-
 	public void SetStateImageMode(int ImageMode)
 	{
 		//Seta o classico com Classic
-		gameManager.mImageMode = (ImageMode) ImageMode;
+		mGameManager.mImageMode = (ImageMode) ImageMode;
 	}
+	#endregion
 }

@@ -27,7 +27,6 @@ public class ApplicaitonBack : MonoBehaviour {
 
 	private void ManageBackScene()
 	{
-		Debug.Log(SceneManager.GetActiveScene().buildIndex);
 		if (SceneManager.GetActiveScene().buildIndex > 0)
 		{
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);

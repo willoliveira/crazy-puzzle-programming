@@ -7,18 +7,22 @@ using UnityEngine.EventSystems;
 
 public class SearchImagesWeb : MonoBehaviour
 {
+	#region PUBLIC VARS
 	public ImageServiceAPI mImageServiceAPI;
 	public InputField mInputField;
 	public GameObject ImageContainer;
 	public GameObject ImagePrefab;
 
 	public GameObject ErrorLoading;
+	#endregion
 
+	#region PRIVTE VARS
 	private int Page = 0;
 	private int ImagensTotal = 0;
 	private int ImagensLoaded = 0;
 
 	private ObjectImage SelectedObjectImage;
+	#endregion
 
 	// Use this for initialization
 	void Start()

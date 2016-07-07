@@ -1,33 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace PrototypingGame
+public class ChangeMusic : MonoBehaviour
 {
-	public class ChangeMusic : MonoBehaviour
+
+	public AudioClip level1Music;
+	public AudioClip level2Music;
+	private AudioSource source;
+
+	// Use this for initialization
+	void Awake()
 	{
+		source = GetComponent<AudioSource>();
+	}
 
-		public AudioClip level1Music;
-		public AudioClip level2Music;
-		private AudioSource source;
-
-		// Use this for initialization
-		void Awake()
+	void OnLevelWasLoaded(int level)
+	{
+		if (level == 1)
 		{
-			source = GetComponent<AudioSource>();
+			source.clip = level1Music;
+			source.Play();
 		}
-
-		void OnLevelWasLoaded(int level)
+		else if (level == 2)
 		{
-			if (level == 1)
-			{
-				source.clip = level1Music;
-				source.Play();
-			}
-			else if (level == 2)
-			{
-				source.clip = level2Music;
-				source.Play();
-			}
+			source.clip = level2Music;
+			source.Play();
 		}
 	}
 }

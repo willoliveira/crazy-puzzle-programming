@@ -2,8 +2,6 @@
 using UnityEngine.UI;
 using System.Collections;
 
-using PrototypingGame;
-
 /// <summary>
 /// TODO: quando for imagem de internet, colocar um loading
 /// TODO: nao carregar a imagem de novo quando ela for a mesma a url carregada anteriormente, para não puxar muita banda da internet
@@ -11,9 +9,7 @@ using PrototypingGame;
 /// </summary>
 public class ConfirmScreen : MonoBehaviour {
 
-	#region PUBLIC VARS
-	//referece de game manager
-	public GameManager mGameManager;
+	#region PUBLIC VARS	
 	public ImageServiceAPI mImageServiceAPI;
 	//
 	public Image ImageCrop;
@@ -25,9 +21,16 @@ public class ConfirmScreen : MonoBehaviour {
 	#endregion
 
 	#region PRIVATE VARS
+	//referece de game manager
+	private GameManager mGameManager;
 	private string urlImage;
 	#endregion
 	
+
+	void Awake()
+	{
+		mGameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+	}
 
 	void OnEnable () {
 		//zera a imagem alterior

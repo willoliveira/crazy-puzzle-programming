@@ -2,18 +2,20 @@
 using UnityEngine.EventSystems;
 using System.Collections;
 using System;
-using PrototypingGame;
 
 public class SquareDrop : MonoBehaviour, IDropHandler
 {
+	#region PRIVATE VARS
 	private BoardManager mUIBoardManager;
 	private SquareDrag mSquareDrag;
+	#endregion
 
 	void Start()
 	{
 		mUIBoardManager = GameObject.Find("BoardManager").GetComponent<BoardManager>();
 	}
 
+	#region PUBLIC METHODS
 	public void OnDrop(PointerEventData eventData)
 	{
 		//Debug.Log("OnDrop");
@@ -41,5 +43,5 @@ public class SquareDrop : MonoBehaviour, IDropHandler
 
 		}
 	}
+	#endregion
 }
-;

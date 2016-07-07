@@ -2,22 +2,24 @@
 using UnityEngine.UI;
 using System.Collections;
 
-using PrototypingGame;
-
 public class SelectImage : MonoBehaviour {
 	#region PUBLIC VARS
-	public GameManager mGameManager;
-	
 	public GameObject DefaultImageContainer;
 	public GameObject InternetImageContainer;
 	public GameObject LocalImageContainer;
 	#endregion
 
 	#region PRIVATE VARS
+	private GameManager mGameManager;
 	//
 	private GameObject PreviousImageSelect = null;
 	private GameObject ActualImageSelect = null;
 	#endregion
+
+	void Awake()
+	{
+		mGameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+	}
 
 	// Use this for initialization
 	void OnEnable () {
@@ -36,38 +38,8 @@ public class SelectImage : MonoBehaviour {
 		if (btNext != null)
 			btNext.GetComponent<Button>().interactable = true;
 	}
-	/// <summary>
-	/// 
-	/// </summary>
-	/// <param name="imageMode"></param>
-	private void SetActiveImageContainerMode(ImageMode imageMode)
-	{
-		if (imageMode == ImageMode.Local)
-		{
-			LocalImageContainer.SetActive(true);
-			InternetImageContainer.SetActive(false);
-			DefaultImageContainer.SetActive(false);
-		}
-		else if (imageMode == ImageMode.Internet)
-		{
-			LocalImageContainer.SetActive(false);
-			InternetImageContainer.SetActive(true);
-			DefaultImageContainer.SetActive(false);
-			//zera quando for da net, faz escolher de novo
-			//mGameManager.ImageSelect = null;
-			////sempre que habiltar a tela no modo internet, zera
-			//PreviousImageSelect = null;
-			//ActualImageSelect = null;
-			//desabilita o botao
-			//GameObject.Find("btNext").GetComponent<Button>().interactable = false;
-		}
-		else if (imageMode == ImageMode.Default)
-		{
-			LocalImageContainer.SetActive(false);
-			InternetImageContainer.SetActive(false);
-			DefaultImageContainer.SetActive(true);
-		}
-	}
+
+	#region PUBLIC METHODS
 	/// <summary>
 	/// 
 	/// TODO: Conversar com o Lucas sobre qual sera o estado de checkado
@@ -82,7 +54,7 @@ public class SelectImage : MonoBehaviour {
 		{
 			PreviousImageSelect = ActualImageSelect;
 		}
-		
+
 		if (ActualImageSelect == imageSelect)
 		{
 			//desabilita o botao
@@ -121,4 +93,34 @@ public class SelectImage : MonoBehaviour {
 			PreviousImageSelect.GetComponent<Image>().color = Color.white;
 		}
 	}
+	#endregion
+
+	#region PRIVATE METHODS
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="imageMode"></param>
+	private void SetActiveImageContainerMode(ImageMode imageMode)
+	{
+		if (imageMode == ImageMode.Local)
+		{
+			LocalImageContainer.SetActive(true);
+			InternetImageContainer.SetActive(false);
+			DefaultImageContainer.SetActive(false);
+		}
+		else if (imageMode == ImageMode.Internet)
+		{
+			LocalImageContainer.SetActive(false);
+			InternetImageContainer.SetActive(true);
+			DefaultImageContainer.SetActive(false);
+		}
+		else if (imageMode == ImageMode.Default)
+		{
+			LocalImageContainer.SetActive(false);
+			InternetImageContainer.SetActive(false);
+			DefaultImageContainer.SetActive(true);
+		}
+	}
+	#endregion
+	
 }

@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
-namespace PrototypingGame
+public class DontDentroy : MonoBehaviour
 {
-	public class DontDentroy : MonoBehaviour
+	private static GameObject instanceGO;
+
+	public string nameGameObject;
+
+	// Use this for initialization
+	void Awake()
 	{
-
-
-		// Use this for initialization
-		void Awake()
-		{
-			DontDestroyOnLoad(gameObject);
-		}
-
+		DontDestroyOnLoad(gameObject);
 	}
+
 }

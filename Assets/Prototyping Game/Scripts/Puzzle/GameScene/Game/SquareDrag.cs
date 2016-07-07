@@ -4,20 +4,27 @@ using UnityEngine.EventSystems;
 
 public class SquareDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-	private GameObject itemBeingDragged;
+	#region PUBLIC VARS
+	public bool EnabledDrag;
 	[HideInInspector] public Vector3 PositionBeforeDrag;
 	[HideInInspector] public bool IsDropped = false;
+	#endregion
 
+	#region PRIVATE VARS
+	private GameObject itemBeingDragged;
 	private Text getAxisTest;
-
-	public bool EnabledDrag;
+	#endregion
 
 	void Start()
 	{
 		//getAxisTest = GameObject.Find("GetAxisValue").GetComponent<Text>();
 	}
 
-	
+	#region PUBLIC METHODS
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="eventData"></param>
 	public void OnBeginDrag(PointerEventData eventData)
 	{
 			if (EnabledDrag)
@@ -27,7 +34,10 @@ public class SquareDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 			PositionBeforeDrag = transform.position;
 		}
 	}
-
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="eventData"></param>
 	public void OnDrag(PointerEventData eventData)
 	{
 		if (EnabledDrag)
@@ -36,7 +46,10 @@ public class SquareDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 			//getAxisTest.text = "MX: " + CrossPlatformInputManager.GetAxis("Mouse X") + " - MY: " + CrossPlatformInputManager.GetAxis("Mouse Y");
 		}
 	}
-
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="eventData"></param>
 	public void OnEndDrag(PointerEventData eventData)
 	{
 		//Debug.Log("OnEndDrag");
@@ -49,4 +62,5 @@ public class SquareDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 		IsDropped = false;
 		itemBeingDragged = null;
 	}
+	#endregion
 }

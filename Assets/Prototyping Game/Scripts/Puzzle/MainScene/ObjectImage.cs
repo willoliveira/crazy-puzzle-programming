@@ -4,14 +4,13 @@ using UnityEngine.EventSystems;
 
 public class ObjectImage : MonoBehaviour, IPointerDownHandler
 {
-	private int webformatWidth;
-	private int webformatHeight;
+	#region PRIVATE VARS
 	private string imageURL;
 	private Texture2D imageTexture;
-
 	private SelectImage mSelectImages;
-	
+	#endregion
 
+	#region PUBLIC VARS
 	public string ImageURL
 	{
 		get { return imageURL; }
@@ -23,13 +22,15 @@ public class ObjectImage : MonoBehaviour, IPointerDownHandler
 		get { return imageTexture; }
 		set { imageTexture = value; }
 	}
+	#endregion
 
 
-	public void Start() {
+	void Start() {
 		//guarda referencia do select images
 		mSelectImages = GameObject.Find("Select Images").GetComponent<SelectImage>();
 	}
 
+	#region PUBLIC METHODS
 	/// <summary>
 	/// TODO: Fazer o tratamento de quando for imagem da net, ele baixar imagem grande
 	/// </summary>
@@ -39,5 +40,5 @@ public class ObjectImage : MonoBehaviour, IPointerDownHandler
 		Debug.Log("OnPointerDown");
 		mSelectImages.SetImageChoice(gameObject);
 	}
-
+	#endregion
 }

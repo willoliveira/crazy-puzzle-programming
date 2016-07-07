@@ -8,11 +8,12 @@ using SimpleJSON;
 
 public class ImageServiceAPI : MonoBehaviour
 {
-
-
+	#region CONST VARS
 	const string URLApi = "https://pixabay.com/api/";
 	const string key = "2779220-fc18bd9ac9619ced4a7c773fc";
+	#endregion
 
+	#region PRIVATE VARS
 	//Imagens por pagina
 	private int PerPage = 10;
 	//busca
@@ -23,22 +24,12 @@ public class ImageServiceAPI : MonoBehaviour
 	private bool SafeSearch = true;
 	//linguagem da busca
 	private string Lang = "pt";
+	#endregion
 
 	// Use this for initialization
-	void Start()
-	{
-		//StartCoroutine(IEGetImages("carros"));
-		//StartCoroutine(GetImages());
-	}
+	void Start() { }
 
-	//IEnumerator GetImages()
-	//{
-	//	string strResult = null;
-	//	yield return StartCoroutine(IEGetImages("carros", 1, value => strResult = value) );
-	//	Debug.Log(strResult);
-	//}
-
-
+	#region PUBLIC METHODS
 	/// <summary>
 	/// 
 	/// key
@@ -74,7 +65,12 @@ public class ImageServiceAPI : MonoBehaviour
 			result("");
 		}
 	}
-
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="UrlImage"></param>
+	/// <param name="result"></param>
+	/// <returns></returns>
 	public IEnumerator GetImage(string UrlImage, System.Action<Texture2D> result)
 	{
 		WWW www = new WWW(UrlImage);
@@ -91,4 +87,5 @@ public class ImageServiceAPI : MonoBehaviour
 			result(Texture2D.whiteTexture);
 		}
 	}
+	#endregion
 }

@@ -72,7 +72,7 @@ public class CropImage : MonoBehaviour
 		//se o width da imagem for maior que o height
 		if (ImageCache.sprite.texture.width > ImageCache.sprite.texture.height) {
 			//porcentagem para ser aplicado proporcional ao retangulo da imagem
-			ImageRatio = (ImageCache.sprite.texture.width / ImageCache.sprite.texture.height);
+			ImageRatio = ((float)ImageCache.sprite.texture.width / (float)ImageCache.sprite.texture.height);
 			//aplica, usando razao e proporcao
 			Image.sizeDelta = new Vector2(Image.sizeDelta.x, Image.sizeDelta.x / ImageRatio);
 			//deixa a area de crop do tamanho do lado menor

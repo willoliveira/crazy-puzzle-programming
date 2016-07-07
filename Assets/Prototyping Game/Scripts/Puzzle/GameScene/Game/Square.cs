@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace PrototypingGame
-{
 	public class Square : MonoBehaviour
 	{
 		private int row;
@@ -62,4 +60,3 @@ namespace PrototypingGame
 			transform.name = "square-" + Row + "-" + Column;
 		}
 	}
-}
