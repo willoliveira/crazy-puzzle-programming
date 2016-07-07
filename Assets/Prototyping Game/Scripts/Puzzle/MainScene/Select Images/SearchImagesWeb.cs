@@ -9,6 +9,7 @@ public class SearchImagesWeb : MonoBehaviour
 {
 	#region PUBLIC VARS
 	public ImageServiceAPI mImageServiceAPI;
+	public Button GetMore;
 	public InputField mInputField;
 	public GameObject ImageContainer;
 	public GameObject ImagePrefab;
@@ -27,6 +28,8 @@ public class SearchImagesWeb : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
+		//deixa o botao de pesquisar mais imagens inativo no começo
+		GetMore.interactable = false;
 		//deixa a mensagem de erro no inicio desabilitada
 		ErrorLoading.SetActive(false);
 	}
@@ -46,7 +49,7 @@ public class SearchImagesWeb : MonoBehaviour
 		Application.OpenURL("https://pixabay.com/");
 	}
 	/// <summary>
-	/// TODO: partir daqui agora
+	/// 
 	/// </summary>
 	public void OnSelectImage()
 	{
@@ -57,8 +60,9 @@ public class SearchImagesWeb : MonoBehaviour
 	/// </summary>
 	public void OnSearchImages()
 	{
+		//limpas as imagens que estavam na tela
 		ClearSearch();
-
+		//pega as imagens
 		StartCoroutine(GetImages());
 	}
 	/// <summary>
@@ -73,7 +77,7 @@ public class SearchImagesWeb : MonoBehaviour
 		if (Page * 10 >= ImagensTotal)
 		{
 			//desativa o botao
-			GameObject.Find("GetMore").GetComponent<Button>().interactable = false;
+			GetMore.interactable = false;
 		}
 
 	}
@@ -106,7 +110,7 @@ public class SearchImagesWeb : MonoBehaviour
 		ProcessImages(strResult);
 	}
 	/// <summary>
-	/// formato a resposta
+	/// formato da resposta
 	/// {
 	///		"total": 4692
 	///		"totalHits": 500,
@@ -147,10 +151,12 @@ public class SearchImagesWeb : MonoBehaviour
 		if (string.IsNullOrEmpty(response))
 		{
 			ErrorLoading.SetActive(true);
+			GetMore.interactable = false;
 		}
 		else
-		{
+		{			
 			ErrorLoading.SetActive(false);
+			GetMore.interactable = true;
 			//Transforma a string
 			JSONNode JsonImages = JSON.Parse(response);
 			//pega o array da resposta das imagens

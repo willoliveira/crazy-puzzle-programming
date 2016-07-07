@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-
 public class MenuGame : MonoBehaviour
 {
 	#region PUBLIC VARS
@@ -51,17 +50,11 @@ public class MenuGame : MonoBehaviour
 	/// </summary>
 	void Start()
 	{
-		//Manager do jogo
-		//mGameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 		//Referencia de qual tela o usuario esta
 		mMenuScreen = MenuScreen.MainMenu;
-
 		//Seta o botao avancar e voltar como inativo no inicio
-		//buttonBack.SetActive(false);
-		buttonBack.transform.localScale = new Vector3(0, 0);
-		//buttonNext.SetActive(false);
-		buttonNext.transform.localScale = new Vector3(0, 0);
-
+		buttonBack.SetActive(false);
+		buttonNext.SetActive(false);
 		//Seta a tela Main como ativa no inicio
 		MainMenu.SetActive(true);
 		SelectMode.SetActive(false);
@@ -80,13 +73,9 @@ public class MenuGame : MonoBehaviour
 		//
 		mMenuScreen = MenuScreen.SelectMode;
 
-		//buttonBack.SetActive(true);
-		buttonBack.transform.localScale = new Vector3(1, 1);
-		//buttonNext.SetActive(true);
-		buttonNext.transform.localScale = new Vector3(1, 1);
+		buttonBack.SetActive(true);
+		buttonNext.SetActive(true);
 	}
-
-
 	/// <summary>
 	/// Botao voltar do menu principal do jogo
 	/// </summary>
@@ -95,10 +84,8 @@ public class MenuGame : MonoBehaviour
 		if (mMenuScreen == MenuScreen.SelectMode)
 		{
 			//desativa os botoes
-			//buttonBack.SetActive(false);
-			buttonBack.transform.localScale = new Vector3(0, 0);
-			//buttonNext.SetActive(false);
-			buttonNext.transform.localScale = new Vector3(0, 0);
+			buttonBack.SetActive(false);
+			buttonNext.SetActive(false);
 			//
 			MainMenu.SetActive(true);
 			SelectMode.SetActive(false);
@@ -110,10 +97,8 @@ public class MenuGame : MonoBehaviour
 		else if (mMenuScreen == MenuScreen.SelectImages)
 		{
 			//ativa os botoes
-			//buttonBack.SetActive(true);
-			buttonBack.transform.localScale = new Vector3(1, 1);
-			//buttonNext.SetActive(true);
-			buttonNext.transform.localScale = new Vector3(1, 1);
+			buttonBack.SetActive(true);
+			buttonNext.SetActive(true);
 			//ativa/desativa as telas
 			MainMenu.SetActive(false);
 			SelectMode.SetActive(true);
@@ -125,10 +110,8 @@ public class MenuGame : MonoBehaviour
 		else if (mMenuScreen == MenuScreen.ConfirmationScreen)
 		{
 			//ativa os botoes
-			//buttonBack.SetActive(true);
-			buttonBack.transform.localScale = new Vector3(1, 1);
-			//buttonNext.SetActive(true);
-			buttonNext.transform.localScale = new Vector3(1, 1);
+			buttonBack.SetActive(true);
+			buttonNext.SetActive(true);
 			//ativa/desativa as telas
 			MainMenu.SetActive(false);
 			SelectMode.SetActive(false);
@@ -146,10 +129,8 @@ public class MenuGame : MonoBehaviour
 		if (mMenuScreen == MenuScreen.SelectMode)
 		{
 			//ativa os botoes
-			//buttonBack.SetActive(true);
-			buttonBack.transform.localScale = new Vector3(1, 1);
-			//buttonNext.SetActive(true);
-			buttonNext.transform.localScale = new Vector3(1, 1);
+			buttonBack.SetActive(true);
+			buttonNext.SetActive(true);
 			//ativa/desativa as telas
 			MainMenu.SetActive(false);
 			SelectMode.SetActive(false);
@@ -162,11 +143,8 @@ public class MenuGame : MonoBehaviour
 		else if (mMenuScreen == MenuScreen.SelectImages)
 		{
 			//ativa/desativa os botoes
-			//buttonBack.SetActive(true);
-			buttonBack.transform.localScale = new Vector3(1, 1);
-			//buttonNext.SetActive(false);
-			buttonNext.transform.localScale = new Vector3(0, 0);
-
+			buttonBack.SetActive(true);
+			buttonNext.SetActive(false);
 			//ativa/desativa as telas
 			MainMenu.SetActive(false);
 			SelectMode.SetActive(false);
