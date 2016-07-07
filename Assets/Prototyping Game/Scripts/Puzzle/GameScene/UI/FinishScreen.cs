@@ -8,7 +8,7 @@ public class FinishScreen : MonoBehaviour
 	public Text TimerText;
 	#endregion
 
-	// Use this for initialization
+	// Use this for initialization 
 	void Start()
 	{
 
