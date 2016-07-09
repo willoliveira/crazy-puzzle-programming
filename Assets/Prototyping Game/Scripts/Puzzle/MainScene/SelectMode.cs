@@ -1,16 +1,31 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System;
 using System.Collections;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class SelectMode : MonoBehaviour
 {
+
+	public Text test;
+
 	#region PRIVATE VARS
 	public GameObject[] OptionsMode;
-	#endregion
-
-	#region PUBLIC VARS
 	private GameManager mGameManager;
 	#endregion
+
+	
+	void OnEnable()
+	{
+		EventManager.StartListening("Prev Mode", prevModeTrigger);
+		EventManager.StartListening("Next Mode", nextModeTrigger);
+	}
+
+	void OnDisable()
+	{
+		EventManager.StopListening("Prev Mode", prevModeTrigger);
+		EventManager.StopListening("Next Mode", nextModeTrigger);
+	}
 
 	// Use this for initialization
 	void Start()
@@ -22,6 +37,24 @@ public class SelectMode : MonoBehaviour
 		mGameManager.mGameMode = GameMode.Classic;
 		//Seta o classico com Classic
 		mGameManager.mImageMode = ImageMode.Default;
+	}
+
+	void Update()
+	{
+		if (CrossPlatformInputManager.GetAxis("Swipe X") > 0)
+			test.text = "X: " + CrossPlatformInputManager.GetAxis("Swipe X") + " Y: " + CrossPlatformInputManager.GetAxis("Swipe Y");
+	}
+
+	private void prevModeTrigger()
+	{
+		Debug.Log("prevModeTrigger");
+		btNavMode(-1);
+	}
+
+	private void nextModeTrigger()
+	{
+		Debug.Log("nextModeTrigger");
+		btNavMode(1);
 	}
 
 	#region PUBLIC METHODS
@@ -51,14 +84,9 @@ public class SelectMode : MonoBehaviour
 		mGameManager.mGameMode = (GameMode)(indexMode + selectionMode);
 
 		//Desativa a selecao anterior
-		OptionsMode[indexMode].SetActive(false);
+		//OptionsMode[indexMode].SetActive(false);
 		//Ativa a selecao atual
-		OptionsMode[(int)mGameManager.mGameMode].SetActive(true);
-	}
-	public void SetStateImageMode(int ImageMode)
-	{
-		//Seta o classico com Classic
-		mGameManager.mImageMode = (ImageMode) ImageMode;
+		//OptionsMode[(int)mGameManager.mGameMode].SetActive(true);
 	}
 	#endregion
 }
