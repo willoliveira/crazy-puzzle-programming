@@ -10,7 +10,7 @@ public class FinishScreen : MonoBehaviour
 	#endregion
 
 	private AudioManager mAudioManager;
-	
+
 	#region PUBLIC METHODS
 	/// <summary>
 	/// 
