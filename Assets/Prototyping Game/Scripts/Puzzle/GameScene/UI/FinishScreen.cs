@@ -6,14 +6,11 @@ public class FinishScreen : MonoBehaviour
 {
 	#region PUBLIC VARS
 	public Text TimerText;
+	public AudioClip FinishSound;
 	#endregion
 
-	// Use this for initialization 
-	void Start()
-	{
-
-	}
-
+	private AudioManager mAudioManager;
+	
 	#region PUBLIC METHODS
 	/// <summary>
 	/// 
@@ -21,21 +18,22 @@ public class FinishScreen : MonoBehaviour
 	/// <param name="StringTimer"></param>
 	public void Show(string StringTimer)
 	{
+		mAudioManager = AudioManager.instance;
 		//ativa a janela
 		gameObject.SetActive(true);
 		//Seta o tempo
 		TimerText.text = StringTimer;
+		//som de vitoria
+		mAudioManager.Play(FinishSound, this.name, AudioType.SFX);
 	}
-	#endregion
-
-	#region PRIVATE METHODS
-
 	/// <summary>
 	/// 
 	/// </summary>
-	private void VisibleBoard()
+	public void ButtonOk()
 	{
-		transform.gameObject.SetActive(true);
+		mAudioManager.Stop(this.name, AudioType.SFX);
 	}
+
 	#endregion
+	
 }

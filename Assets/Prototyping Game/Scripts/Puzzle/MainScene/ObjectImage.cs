@@ -24,10 +24,9 @@ public class ObjectImage : MonoBehaviour, IPointerDownHandler
 	}
 	#endregion
 
-
 	void Start() {
 		//guarda referencia do select images
-		mSelectImages = GameObject.Find("Select Images").GetComponent<SelectImage>();
+		mSelectImages = SelectImage.instance;
 	}
 
 	#region PUBLIC METHODS
@@ -37,7 +36,6 @@ public class ObjectImage : MonoBehaviour, IPointerDownHandler
 	/// <param name="data"></param>
 	public void OnPointerDown(PointerEventData data)
 	{
-		Debug.Log("OnPointerDown");
 		mSelectImages.SetImageChoice(gameObject);
 	}
 	#endregion

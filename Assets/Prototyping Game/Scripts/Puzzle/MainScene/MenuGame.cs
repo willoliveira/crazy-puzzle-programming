@@ -29,21 +29,9 @@ public class MenuGame : MonoBehaviour
 	/// <summary>
 	/// 
 	/// </summary>
-	private MenuScreen mMenuScreen;
-	/// <summary>
-	/// 
-	/// </summary>
-	private enum ImageMode
-	{
-		Local,
-		Default,
-		Internet
-	}
-	/// <summary>
-	/// 
-	/// </summary>
-	private ImageMode mImageMode;
+	private MenuScreen mMenuScreen;	
 	#endregion
+
 
 	/// <summary>
 	/// Da o setup inicial do menu

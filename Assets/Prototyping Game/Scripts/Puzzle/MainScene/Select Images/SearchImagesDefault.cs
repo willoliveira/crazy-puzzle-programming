@@ -8,7 +8,7 @@ public class SearchImagesDefault : MonoBehaviour {
 	public GameObject ImageContainer;
 	public GameObject ImagePrefab;
 	
-	void Start () {
+	void Awake () {
 
 		CreateContainersImages();
 	}

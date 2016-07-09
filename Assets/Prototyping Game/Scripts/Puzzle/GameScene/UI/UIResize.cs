@@ -28,7 +28,6 @@ public class UIResize : MonoBehaviour
 	private int ScreenHeight;
 	private int ScreenWidth;
 	//Referencia do Board
-	private GameObject mBoard;
 	private BoardManager mBoardManager;
 	#endregion
 
@@ -36,10 +35,8 @@ public class UIResize : MonoBehaviour
 	{
 		ScreenHeight = 0;
 		ScreenWidth = 0;
-		//Board
-		mBoard = GameObject.Find("BoardManager");
 		//BoardManager
-		mBoardManager = mBoard.GetComponent<BoardManager>();
+		mBoardManager = BoardManager.instance;
 	}
 
 	// Update is called once per frame
@@ -54,7 +51,7 @@ public class UIResize : MonoBehaviour
 	}
 
 	/// <summary>
-	/// TODO: Fazer para telas grandes
+	/// 
 	/// </summary>
 	void RecizeBoard()
 	{

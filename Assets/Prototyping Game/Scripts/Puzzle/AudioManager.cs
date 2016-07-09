@@ -14,6 +14,9 @@ public enum AudioType
 public class AudioManager : MonoBehaviour
 {
 	#region PUBLIC VARS
+	[HideInInspector]
+	public static AudioManager instance;
+
 	public bool BGMEnable = true;
 	public bool SFXEnable = true;
 
@@ -24,9 +27,6 @@ public class AudioManager : MonoBehaviour
 	#region PRIVATE VARS
 	private bool BGM_Before;
 	private bool BGM_After;
-	private AudioManager mAudioManager;
-
-	private static AudioManager AudioManagerInstance;
 	#endregion
 
 	void Awake()
@@ -34,9 +34,9 @@ public class AudioManager : MonoBehaviour
 		//não deixa ele ser destruido
 		DontDestroyOnLoad(gameObject);
 		//se for null mantem, senao destroi ele
-		if (AudioManagerInstance == null)
+		if (instance == null)
 		{
-			AudioManagerInstance = this;
+			instance = this;
 		}
 		else
 		{
@@ -118,6 +118,17 @@ public class AudioManager : MonoBehaviour
 				else
 					sfx.GetComponent<AudioSource>().UnPause();
 			}
+		}
+	}
+	/// <summary>
+	/// 
+	/// </summary>
+	public void Stop(string name, AudioType type)
+	{
+		GameObject audio = GameObject.Find(type + "-" + name);
+		if (audio != null)
+		{
+			Destroy(audio);
 		}
 	}
 	#endregion

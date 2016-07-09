@@ -148,13 +148,18 @@ public class SearchImagesWeb : MonoBehaviour
 	private void ProcessImages(string response)
 	{
 		//se nao houve resposta, quer dizer que houver algum erro
-		if (string.IsNullOrEmpty(response))
+		if (string.IsNullOrEmpty(response) || (!string.IsNullOrEmpty(response) && JSON.Parse(response)["totalHits"].AsInt == 0))
 		{
+			if (string.IsNullOrEmpty(response))
+				ErrorLoading.GetComponent<Text>().text = "Não foi possivel\ncarregar as imagens!";
+			else
+				ErrorLoading.GetComponent<Text>().text = "A busca não retornou\nnenhuma imagem!";
+			//ativa a mensagem de erro
 			ErrorLoading.SetActive(true);
 			GetMore.interactable = false;
 		}
 		else
-		{			
+		{
 			ErrorLoading.SetActive(false);
 			GetMore.interactable = true;
 			//Transforma a string

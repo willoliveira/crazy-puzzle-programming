@@ -15,7 +15,7 @@ public class SelectMode : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		mGameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+		mGameManager = GameManager.instance;
 
 
 		//Seta o classico com Classic
