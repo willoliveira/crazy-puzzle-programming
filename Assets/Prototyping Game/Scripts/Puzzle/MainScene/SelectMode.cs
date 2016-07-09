@@ -6,7 +6,6 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class SelectMode : MonoBehaviour
 {
-
 	public Text test;
 
 	#region PRIVATE VARS
@@ -31,29 +30,19 @@ public class SelectMode : MonoBehaviour
 	void Start()
 	{
 		mGameManager = GameManager.instance;
-
-
 		//Seta o classico com Classic
 		mGameManager.mGameMode = GameMode.Classic;
 		//Seta o classico com Classic
 		mGameManager.mImageMode = ImageMode.Default;
 	}
 
-	void Update()
-	{
-		if (CrossPlatformInputManager.GetAxis("Swipe X") > 0)
-			test.text = "X: " + CrossPlatformInputManager.GetAxis("Swipe X") + " Y: " + CrossPlatformInputManager.GetAxis("Swipe Y");
-	}
-
 	private void prevModeTrigger()
 	{
-		Debug.Log("prevModeTrigger");
 		btNavMode(-1);
 	}
 
 	private void nextModeTrigger()
 	{
-		Debug.Log("nextModeTrigger");
 		btNavMode(1);
 	}
 
@@ -82,11 +71,19 @@ public class SelectMode : MonoBehaviour
 		}
 		//atualiza o modo de jogo no game manager
 		mGameManager.mGameMode = (GameMode)(indexMode + selectionMode);
-
 		//Desativa a selecao anterior
 		//OptionsMode[indexMode].SetActive(false);
 		//Ativa a selecao atual
 		//OptionsMode[(int)mGameManager.mGameMode].SetActive(true);
+	}
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="ImageMode"></param>
+	public void SetStateImageMode(int ImageMode)
+	{
+		//Seta o classico com Classic
+		mGameManager.mImageMode = (ImageMode)ImageMode;
 	}
 	#endregion
 }

@@ -102,6 +102,11 @@ public class SelectImage : MonoBehaviour {
 			PreviousImageSelect.GetComponent<Image>().color = Color.white;
 		}
 	}
+	
+	public void OnScrollImageContainer()
+	{
+		Debug.Log("OnScrollImageContainer");
+	}
 	#endregion
 
 	#region PRIVATE METHODS
