@@ -9,7 +9,7 @@ public class MenuConfig : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		mAudioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+		mAudioManager = AudioManager.instance;
 	}
 	
 	public void OnButtonConfig()
@@ -19,6 +19,7 @@ public class MenuConfig : MonoBehaviour {
 
 	public void OnButtonMusic()
 	{
+
 		mAudioManager.SetMuteAudio(mAudioManager.BGMEnable, AudioType.BGM);
 	}
 

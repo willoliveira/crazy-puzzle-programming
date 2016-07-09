@@ -29,7 +29,7 @@ public class ConfirmScreen : MonoBehaviour {
 
 	void Awake()
 	{
-		mGameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+		mGameManager = GameManager.instance;
 	}
 
 	void OnEnable () {

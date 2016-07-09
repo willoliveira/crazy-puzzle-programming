@@ -6,13 +6,13 @@ using System;
 public class SquareDrop : MonoBehaviour, IDropHandler
 {
 	#region PRIVATE VARS
-	private BoardManager mUIBoardManager;
+	private BoardManager mBoardManager;
 	private SquareDrag mSquareDrag;
 	#endregion
 
 	void Start()
 	{
-		mUIBoardManager = GameObject.Find("BoardManager").GetComponent<BoardManager>();
+		mBoardManager = BoardManager.instance;// GameObject.Find("BoardManager").GetComponent<BoardManager>();
 	}
 
 	#region PUBLIC METHODS
@@ -31,14 +31,15 @@ public class SquareDrop : MonoBehaviour, IDropHandler
 				//seta a posicao da peca droppada, a posicao da area de drop
 				RectTransform SquareDropped = eventData.pointerDrag.GetComponent<RectTransform>();
 				//pega as posicoes da linha e coluna
-				//int PostionDragRow = Mathf.FloorToInt(SquareDropped.anchoredPosition.x / mUIBoardManager.PieceSize);
-				//int PostionDragColumn = Mathf.FloorToInt((SquareDropped.anchoredPosition.y * -1) / mUIBoardManager.PieceSize);
+				//int PostionDragRow = Mathf.FloorToInt(SquareDropped.anchoredPosition.x / mBoardManager.PieceSize);
+				//int PostionDragColumn = Mathf.FloorToInt((SquareDropped.anchoredPosition.y * -1) / mBoardManager.PieceSize);
 				//seta a posicao na peca
 				//Hora ou outra esse calculo quebrava...
-				//SquareDropped.anchoredPosition = new Vector2((PostionDragRow * mUIBoardManager.PieceSize) + (mUIBoardManager.PieceSize / 2), ((PostionDragColumn) * - mUIBoardManager.PieceSize) - (mUIBoardManager.PieceSize / 2));
+				//SquareDropped.anchoredPosition = new Vector2((PostionDragRow * mBoardManager.PieceSize) + (mBoardManager.PieceSize / 2), ((PostionDragColumn) * - mBoardManager.PieceSize) - (mBoardManager.PieceSize / 2));
+				//SquareDropped.anchoredPosition = mBoardManager.DropArea.GetComponent<RectTransform>().anchoredPosition;
 				SquareDropped.anchoredPosition = GameObject.Find("DropArea").GetComponent<RectTransform>().anchoredPosition;
 				//avisa ao board que a peca foi droppada
-				mUIBoardManager.SetPositionSquareBlank(eventData.pointerDrag);
+				mBoardManager.SetPositionSquareBlank(eventData.pointerDrag);
 			}
 
 		}

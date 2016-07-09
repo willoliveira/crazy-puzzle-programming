@@ -18,7 +18,10 @@ public class BoardManager : MonoBehaviour
 	};
 
 	#region PUBLIC VARS
+	[HideInInspector]
+	public static BoardManager instance;
 
+	public GameObject InitGame;
 	//imagem de referencia
 	public Texture2D image;
 	//referencia de onde vai adicionar as peças
@@ -57,8 +60,8 @@ public class BoardManager : MonoBehaviour
 	#region PRIVATE VARS
 	//GameObjectPositionBlank
 	private GameObject GameObjectPositionBlank;
-	//mGameManger
-	private GameManager mGameManger;
+	//mGameManager
+	private GameManager mGameManager;
 	//tamanho do recorte
 	private int cropSize;
 	//Lista de crop images
@@ -71,13 +74,15 @@ public class BoardManager : MonoBehaviour
 
 	void Awake()
 	{
-		mGameManger = GameObject.Find("GameManager").GetComponent<GameManager>();
+		//guarda referencia
+		instance = this;
 		//tira o mult touch
 		Input.multiTouchEnabled = false;
 	}
 
 	void Start()
 	{
+		mGameManager = GameManager.instance;
 		//inicia a lista de struct com as pecas
 		listObjCropImages = new List<StructCrop>();
 		//Configura o board
@@ -85,18 +90,13 @@ public class BoardManager : MonoBehaviour
 	}
 
 	#region PUBLIC METHODS
-	public void ScreenSize()
-	{
-		ScreenSizeText.text = "width: " + Screen.width + " | height: " + Screen.height;
-	}
 	/// <summary>
 	/// Inicia o game comecando dando um fade da ultima peca e randomizacao as pecas
 	/// </summary>
 	public void StartGame()
 	{
-		//Autamente provisorio, se for ser assim, fazer direito.
-		GameObject mInitGame = GameObject.Find("InitGame");
-		mInitGame.SetActive(false);
+		//Altamente provisorio, se for ser assim, fazer direito.
+		InitGame.SetActive(false);
 		//Começa o jogo
 		StartCoroutine(FadeInAndRandomPieces());
 	}
@@ -136,7 +136,7 @@ public class BoardManager : MonoBehaviour
 			mTimer.IsEnable = false;
 			StartCoroutine(FadeInAndFinishGame());
 		}
-		else if (mGameManger.mGameMode == GameMode.Classic || mGameManger.mGameMode == GameMode.Hard)
+		else if (mGameManager.mGameMode == GameMode.Classic || mGameManager.mGameMode == GameMode.Hard)
 		{
 			//Ativa/Desativa o dragg das pecas
 			ToogleDrag();
@@ -211,7 +211,7 @@ public class BoardManager : MonoBehaviour
 					TransformSquare.GetComponent<SquareDrag>().EnabledDrag = false;
 				}
 				//caso for pra habilitar e for o FREE Mode
-				else if (mGameManger.mGameMode == GameMode.Free)
+				else if (mGameManager.mGameMode == GameMode.Free)
 				{
 					TransformSquare.GetComponent<SquareDrag>().EnabledDrag = true;
 				}
@@ -295,7 +295,7 @@ public class BoardManager : MonoBehaviour
 	private void ConfigGame()
 	{
 		//Seta a dificuldade do jogo
-		if (mGameManger.mGameMode == GameMode.Hard)
+		if (mGameManager.mGameMode == GameMode.Hard)
 		{
 			columns = 4;
 		}
@@ -307,7 +307,7 @@ public class BoardManager : MonoBehaviour
 		//seta a escala da drop area do board
 		DropArea.GetComponent<RectTransform>().localScale = new Vector2((float)PieceSize / 100, (float)PieceSize / 100);
 		//pega o tamanho do recorte pelo numero de colunas
-		cropSize = (int)(mGameManger.ImageCropRect.width / columns);
+		cropSize = (int)(mGameManager.ImageCropRect.width / columns);
 		//Corta a imagem
 		CropImage();
 		//Create pieces
@@ -325,8 +325,14 @@ public class BoardManager : MonoBehaviour
 			int column = cont % columns;
 			//monta o struct
 			StructCrop structCrop;
-			//soma a posicao do retangulo em o retangulo de crop estao: + mGameManger.ImageCropRect.x e + mGameManger.ImageCropRect.y,
-			structCrop.crop = Sprite.Create(mGameManger.ImageSelect, new Rect(mGameManger.ImageCropRect.width - cropSize - ((columns - 1 - row) * cropSize) + mGameManger.ImageCropRect.x, mGameManger.ImageCropRect.height - cropSize - (column * cropSize) + mGameManger.ImageCropRect.y, cropSize, cropSize), new Vector2(0, 0));
+			//Eu recorto assim pra conseguir seguir a orientacao de uma matriz, pra conseguir marcar qual peça é qual, assim consigo ver se o cara terminou o quebra-cabeça
+			//soma a posicao do retangulo em o retangulo de crop estao: + mGameManager.ImageCropRect.x e + mGameManager.ImageCropRect.y
+			structCrop.crop = Sprite.Create(mGameManager.ImageSelect, 
+				new Rect(mGameManager.ImageCropRect.width - cropSize - ((columns - 1 - row) * cropSize) + mGameManager.ImageCropRect.x, 
+						 mGameManager.ImageCropRect.height - cropSize - (column * cropSize) + mGameManager.ImageCropRect.y, 
+						 cropSize, 
+						 cropSize),
+				new Vector2(0, 0));
 			structCrop.row = column;
 			structCrop.column = row;
 			//adiciona no array o recorte
@@ -427,7 +433,6 @@ public class BoardManager : MonoBehaviour
 					//TODO: quem sabe é esse while que ta cagando tudo... [UPDATE] Talvez nao... [UPDATE 1] era esse while mesmo que tava travando meu jogo
 					//randomiza a posição
 					indexRandomPosition = Random.Range(0, arrayPieces.Count - 1);
-					Debug.Log(arrayPieces.Count);
 					//se ele repetir a peca apenas na ultima, deixa queto. deixar pensar em algo pra isso
 					if (arrayPieces.Count == 2)
 					{

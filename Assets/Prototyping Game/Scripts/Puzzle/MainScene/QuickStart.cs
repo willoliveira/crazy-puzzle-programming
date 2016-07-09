@@ -10,7 +10,7 @@ public class QuickStart : MonoBehaviour {
 
 	void Awake()
 	{
-		mGameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+		mGameManager = GameManager.instance;
 	}
 	/// <summary>
 	/// 

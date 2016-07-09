@@ -5,6 +5,10 @@ using System.Collections;
 public class SelectImage : MonoBehaviour {
 
 	#region PUBLIC VARS
+	public static SelectImage instance;
+
+	public GameObject btNext;
+
 	public GameObject DefaultImageContainer;
 	public GameObject InternetImageContainer;
 	public GameObject LocalImageContainer;
@@ -19,14 +23,15 @@ public class SelectImage : MonoBehaviour {
 
 	void Awake()
 	{
-		mGameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+		instance = this;
+		mGameManager = GameManager.instance;
 	}
 
 	// Use this for initialization
 	void OnEnable () {
 		if (ActualImageSelect == null)
 		{
-			GameObject.Find("btNext").GetComponent<Button>().interactable = false;
+			btNext.GetComponent<Button>().interactable = false;
 		}
 		//seta o tipo do modo
 		SetActiveImageContainerMode(mGameManager.mImageMode);
@@ -35,9 +40,7 @@ public class SelectImage : MonoBehaviour {
 	void OnDisable()
 	{
 		//volta o botao de proximo
-		GameObject btNext = GameObject.Find("btNext");
-		if (btNext != null)
-			btNext.GetComponent<Button>().interactable = true;
+		btNext.GetComponent<Button>().interactable = true;
 	}
 
 	#region PUBLIC METHODS
@@ -59,7 +62,7 @@ public class SelectImage : MonoBehaviour {
 		if (ActualImageSelect == imageSelect)
 		{
 			//desabilita o botao
-			GameObject.Find("btNext").GetComponent<Button>().interactable = false;
+			btNext.GetComponent<Button>().interactable = false;
 			//
 			ActualImageSelect.GetComponent<Image>().color = Color.white;
 			//zera
@@ -72,7 +75,7 @@ public class SelectImage : MonoBehaviour {
 		else
 		{
 			//habilita o botao
-			GameObject.Find("btNext").GetComponent<Button>().interactable = true;
+			btNext.GetComponent<Button>().interactable = true;
 			//seta o clicado como atual
 			ActualImageSelect = imageSelect;
 			imageSelect.GetComponent<Image>().color = Color.black;

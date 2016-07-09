@@ -20,7 +20,7 @@ public class AudioHandler : MonoBehaviour, IPointerDownHandler
 
 	// Use this for initialization
 	void Start () {
-		mAudioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+		mAudioManager = AudioManager.instance;
 	}
 	
 	public void OnPointerDown(PointerEventData data)

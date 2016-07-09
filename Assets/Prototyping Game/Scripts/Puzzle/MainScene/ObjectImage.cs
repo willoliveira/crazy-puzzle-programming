@@ -27,7 +27,7 @@ public class ObjectImage : MonoBehaviour, IPointerDownHandler
 
 	void Start() {
 		//guarda referencia do select images
-		mSelectImages = GameObject.Find("Select Images").GetComponent<SelectImage>();
+		mSelectImages = SelectImage.instance; //GameObject.Find("Select Images").GetComponent<SelectImage>();
 	}
 
 	#region PUBLIC METHODS

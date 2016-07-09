@@ -15,11 +15,6 @@ public class SquareDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 	private Text getAxisTest;
 	#endregion
 
-	void Start()
-	{
-		//getAxisTest = GameObject.Find("GetAxisValue").GetComponent<Text>();
-	}
-
 	#region PUBLIC METHODS
 	/// <summary>
 	/// 
