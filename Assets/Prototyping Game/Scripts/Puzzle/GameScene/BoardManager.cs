@@ -427,7 +427,6 @@ public class BoardManager : MonoBehaviour
 					//TODO: quem sabe é esse while que ta cagando tudo... [UPDATE] Talvez nao... [UPDATE 1] era esse while mesmo que tava travando meu jogo
 					//randomiza a posição
 					indexRandomPosition = Random.Range(0, arrayPieces.Count - 1);
-					Debug.Log(arrayPieces.Count);
 					//se ele repetir a peca apenas na ultima, deixa queto. deixar pensar em algo pra isso
 					if (arrayPieces.Count == 2)
 					{

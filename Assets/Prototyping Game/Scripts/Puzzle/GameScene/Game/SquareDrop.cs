@@ -5,7 +5,10 @@ using System;
 
 public class SquareDrop : MonoBehaviour, IDropHandler
 {
+	public AudioClip DropSound;
+
 	#region PRIVATE VARS
+	private AudioManager mAudioManager;
 	private BoardManager mUIBoardManager;
 	private SquareDrag mSquareDrag;
 	#endregion
@@ -13,6 +16,7 @@ public class SquareDrop : MonoBehaviour, IDropHandler
 	void Start()
 	{
 		mUIBoardManager = GameObject.Find("BoardManager").GetComponent<BoardManager>();
+		mAudioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 	}
 
 	#region PUBLIC METHODS
@@ -39,6 +43,8 @@ public class SquareDrop : MonoBehaviour, IDropHandler
 				SquareDropped.anchoredPosition = GameObject.Find("DropArea").GetComponent<RectTransform>().anchoredPosition;
 				//avisa ao board que a peca foi droppada
 				mUIBoardManager.SetPositionSquareBlank(eventData.pointerDrag);
+				//
+				mAudioManager.Play(DropSound, this.name, AudioType.SFX);
 			}
 
 		}

@@ -24,6 +24,8 @@ public enum ImageMode
 public class GameManager : MonoBehaviour
 {
 	#region PUBLIC VARS
+	public static GameManager instance;
+
 	[HideInInspector]
 	public GameMode mGameMode;
 	[HideInInspector]
@@ -41,7 +43,7 @@ public class GameManager : MonoBehaviour
 	#endregion
 
 	#region PRIVATE VARS
-	private static GameManager GameManagerInstance;
+	
 	#endregion
 
 	/// <summary>
@@ -52,9 +54,9 @@ public class GameManager : MonoBehaviour
 		//não deixa ele ser destruido
 		DontDestroyOnLoad(gameObject);
 		//se for null mantem, senao destroi ele
-		if (GameManagerInstance == null)
+		if (instance == null)
 		{
-			GameManagerInstance = this;
+			instance = this;
 		}
 		else
 		{

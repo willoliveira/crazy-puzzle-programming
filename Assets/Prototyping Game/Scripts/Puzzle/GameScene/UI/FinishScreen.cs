@@ -6,12 +6,15 @@ public class FinishScreen : MonoBehaviour
 {
 	#region PUBLIC VARS
 	public Text TimerText;
+	public AudioClip FinishSound;
 	#endregion
+
+	private AudioManager mAudioManager;
 
 	// Use this for initialization 
 	void Start()
 	{
-
+		mAudioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 	}
 
 	#region PUBLIC METHODS
@@ -25,6 +28,8 @@ public class FinishScreen : MonoBehaviour
 		gameObject.SetActive(true);
 		//Seta o tempo
 		TimerText.text = StringTimer;
+		//
+		mAudioManager.Play(FinishSound, this.name, AudioType.SFX);
 	}
 	#endregion
 
