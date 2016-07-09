@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class SelectImage : MonoBehaviour {
+
 	#region PUBLIC VARS
 	public GameObject DefaultImageContainer;
 	public GameObject InternetImageContainer;
@@ -64,7 +65,7 @@ public class SelectImage : MonoBehaviour {
 			//zera
 			ActualImageSelect = null;
 			PreviousImageSelect = null;
-
+			
 			mGameManager.ImageSelect = null;
 			mGameManager.ImageURL = null;
 		}

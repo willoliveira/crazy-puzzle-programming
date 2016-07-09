@@ -12,7 +12,7 @@ public enum GameMode
 	Hard
 }
 /// <summary>
-/// Enum para o niveis de dificuldade
+/// Enum para os tipos de imagem do jogo
 /// </summary>
 public enum ImageMode
 {
@@ -23,7 +23,7 @@ public enum ImageMode
 
 public class GameManager : MonoBehaviour
 {
-
+	#region PUBLIC VARS
 	[HideInInspector]
 	public GameMode mGameMode;
 	[HideInInspector]
@@ -38,9 +38,11 @@ public class GameManager : MonoBehaviour
 	//retangulo de recorte da image seleciona
 	[HideInInspector]
 	public Rect ImageCropRect;
+	#endregion
 
-
+	#region PRIVATE VARS
 	private static GameManager GameManagerInstance;
+	#endregion
 
 	/// <summary>
 	/// Inicializa valores default para os modos de jogo
@@ -60,6 +62,5 @@ public class GameManager : MonoBehaviour
 		}
 		//tira o mult touch
 		Input.multiTouchEnabled = false;
-		//mSelectMode = GameMode.Free;
 	}
 }

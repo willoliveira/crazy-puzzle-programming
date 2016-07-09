@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections;
 
@@ -24,7 +25,8 @@ public class AudioHandler : MonoBehaviour, IPointerDownHandler
 	
 	public void OnPointerDown(PointerEventData data)
 	{
-		if (!IsOnClickAudio)
+		Button thisButton = gameObject.GetComponent<Button>();
+		if (!IsOnClickAudio && (thisButton == null || (thisButton != null && thisButton.interactable)))
 		{
 			IsOnClickAudio = true;
 			//limpa a variavel depois que tocar o som

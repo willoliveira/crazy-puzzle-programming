@@ -109,9 +109,9 @@ public class ConfirmScreen : MonoBehaviour {
 	/// <param name="ImageCrop"></param>
 	public void SetImageCropImage(Sprite ImageCropSprite)
 	{
-		mGameManager.ImageSelect = ImageCropSprite.texture;
+		//mGameManager.ImageSelect = ImageCropSprite.texture;
 		mGameManager.ImageCropRect = ImageCropSprite.textureRect;
-
+		//atualiza o sprite
 		ImageCrop.sprite = Sprite.Create(mGameManager.ImageSelect, mGameManager.ImageCropRect, new Vector2(0, 0));
 	}
 	/// <summary>
@@ -139,8 +139,6 @@ public class ConfirmScreen : MonoBehaviour {
 		CropRect = new Rect(new Vector2(PosX, PosY), new Vector2(CropSize, CropSize));
 		//printa na tela o recorte
 		Sprite ImageCropSprite = Sprite.Create(mGameManager.ImageSelect, CropRect, new Vector2(0.5f, 0.5f));
-		//ImageCrop.sprite = Sprite.Create(mGameManager.ImageSelect, CropRect, new Vector2(0.5f, 0.5f));
-		//Debug.Log("ImageCrop.sprite.textureRect: " + ImageCrop.sprite.textureRect + " | ImageCrop.sprite.texture width: " + ImageCrop.sprite.texture.width + " height: " + ImageCrop.sprite.texture.height);
 		//Salva o crop
 		SetImageCropImage(ImageCropSprite);
 	}
