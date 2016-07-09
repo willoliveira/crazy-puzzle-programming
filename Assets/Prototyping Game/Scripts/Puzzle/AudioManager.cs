@@ -120,6 +120,17 @@ public class AudioManager : MonoBehaviour
 			}
 		}
 	}
+	/// <summary>
+	/// 
+	/// </summary>
+	public void Stop(string name, AudioType type)
+	{
+		GameObject audio = GameObject.Find(type + "-" + name);
+		if (audio != null)
+		{
+			Destroy(audio);
+		}
+	}
 	#endregion
 
 	#region PRIVATE METHODS

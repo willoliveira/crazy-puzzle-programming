@@ -208,12 +208,12 @@ public class BoardManager : MonoBehaviour
 				if (DesactiveAll)
 				{
 					//Desabilita o drag
-					TransformSquare.GetComponent<SquareDrag>().EnabledDrag = false;
+					TransformSquare.GetComponent<DragAndDropUI>().EnabledDrag = false;
 				}
 				//caso for pra habilitar e for o FREE Mode
 				else if (mGameManager.mGameMode == GameMode.Free)
 				{
-					TransformSquare.GetComponent<SquareDrag>().EnabledDrag = true;
+					TransformSquare.GetComponent<DragAndDropUI>().EnabledDrag = true;
 				}
 				//Caso contrario, só habilita os vizinho
 				else
@@ -221,12 +221,12 @@ public class BoardManager : MonoBehaviour
 					if (checkNeighbors(row, column, (int)PositionBlank.Row, (int)PositionBlank.Column))
 					{
 						//Habilita o drag
-						TransformSquare.GetComponent<SquareDrag>().EnabledDrag = true;
+						TransformSquare.GetComponent<DragAndDropUI>().EnabledDrag = true;
 					}
 					else
 					{
 						//Desabilita o drag
-						TransformSquare.GetComponent<SquareDrag>().EnabledDrag = false;
+						TransformSquare.GetComponent<DragAndDropUI>().EnabledDrag = false;
 					}
 				}
 			}
@@ -346,6 +346,7 @@ public class BoardManager : MonoBehaviour
 	{
 		GameObject instance;
 		Image squareImage;
+		RectTransform BoardRectTrasnform = Board.GetComponent<RectTransform>();
 		for (int cont = 0; cont < (columns * columns); cont++)
 		{
 			int row = Mathf.FloorToInt(cont / (columns));
@@ -365,6 +366,10 @@ public class BoardManager : MonoBehaviour
 			//Instancia o game object com a imagem recortada
 			instance = Instantiate(SquareGameObject, new Vector3((row * PieceSize) + (PieceSize / 2), (column * -PieceSize) - (PieceSize / 2)), Quaternion.identity) as GameObject;
 			instance.name = "square-" + column + "-" + row;
+
+			DragAndDropUI SquareDragAndDropUI = instance.GetComponent<DragAndDropUI>();
+			SquareDragAndDropUI.ParentRT = BoardRectTrasnform;
+
 			//seta a linha e coluna que essa imagem 
 			Square CacheSquare = instance.GetComponent<Square>();
 			CacheSquare.Row = CacheSquare.RowCorrect = StructCropImage.row;
@@ -383,6 +388,8 @@ public class BoardManager : MonoBehaviour
 		instance.transform.SetAsLastSibling();
 		//Pega a referencia do RectTransform da area de Drop e guarda
 		InstanceDropArea = instance.GetComponent<RectTransform>();
+		//seta no SquareDrop uma referencia do drop
+		SquareDrop.DropArea = InstanceDropArea;
 		//rename na ultima peça
 		renameLastPiece();
 	}

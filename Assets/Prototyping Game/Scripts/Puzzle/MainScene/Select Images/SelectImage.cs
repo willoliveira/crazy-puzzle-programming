@@ -26,15 +26,20 @@ public class SelectImage : MonoBehaviour {
 		instance = this;
 		mGameManager = GameManager.instance;
 	}
-
+	
 	// Use this for initialization
 	void OnEnable () {
+
 		if (ActualImageSelect == null)
 		{
 			btNext.GetComponent<Button>().interactable = false;
 		}
 		//seta o tipo do modo
 		SetActiveImageContainerMode(mGameManager.mImageMode);
+	}
+	void Start()
+	{
+		
 	}
 
 	void OnDisable()

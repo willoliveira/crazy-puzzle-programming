@@ -4,42 +4,81 @@ using UnityEngine;
  using UnityEngine.EventSystems;
  using System.Collections;
  
- public class DragCropImage : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+ public class DragAndDropUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
+	#region PUBLIC VARS
+	public bool EnabledDrag;
+	[HideInInspector]
+	public Vector3 PositionBeforeDrag;
+	[HideInInspector]
+	public bool IsDropped = false;
+	[HideInInspector]
+	public RectTransform ParentRT;
+	
+	public bool hasDropArea;
+	#endregion
 
+	#region PRIVATE VARS
 	private bool mouseDown = false;
 	private Vector3 startMousePos;
-	private Vector3 startPos;
+
+	private int indeBeforeDrag = 0;
+	
 	private bool restrictX;
 	private bool restrictY;
 	private float fakeX;
 	private float fakeY;
 	private float myWidth;
 	private float myHeight;
-
-	public RectTransform ParentRT;
-	public RectTransform MyRect;
+	
+	private RectTransform MyRect;
+	#endregion
 
 	void Start()
 	{
+		MyRect = GetComponent<RectTransform>();
+
 		myWidth = (MyRect.rect.width + 5) / 2;
 		myHeight = (MyRect.rect.height + 5) / 2;
 	}
 
-	public void OnPointerDown(PointerEventData ped)
+	public void OnBeginDrag(PointerEventData ped)
 	{
+		if (!EnabledDrag) return;
+
+		indeBeforeDrag = transform.GetSiblingIndex();
+		//se houver area de drop, colocar ele acima de todo mundo, menos do drop
+		if (hasDropArea)
+		{
+			transform.SetSiblingIndex(SquareDrop.DropArea.transform.GetSiblingIndex() - 1);
+		}
+		else
+		{
+			transform.SetAsLastSibling();
+		}
 		mouseDown = true;
-		startPos = transform.position;
+		PositionBeforeDrag = transform.position;
 		startMousePos = Input.mousePosition;
 	}
 
-	public void OnPointerUp(PointerEventData ped)
+	public void OnEndDrag(PointerEventData ped)
 	{
 		mouseDown = false;
+		//volta pro index antes de começar o drag
+		transform.SetSiblingIndex(indeBeforeDrag);
+		//se houver area de drag
+		if (EnabledDrag && hasDropArea && !IsDropped)
+		{
+			IsDropped = false;
+			transform.position = PositionBeforeDrag;
+		}
+		IsDropped = false;
 	}
 
-	void Update()
+	public void OnDrag(PointerEventData ped)
 	{
+		if (!EnabledDrag) return;
+
 		if (mouseDown)
 		{
 			myWidth = (MyRect.rect.width + 5) / 2;
@@ -47,7 +86,7 @@ using UnityEngine;
 
 			Vector3 currentPos = Input.mousePosition;
 			Vector3 diff = currentPos - startMousePos;
-			Vector3 pos = startPos + diff;
+			Vector3 pos = PositionBeforeDrag + diff;
 			transform.position = pos;
 
 			if (transform.localPosition.x < 0 - ((ParentRT.rect.width / 2) - myWidth) || transform.localPosition.x > ((ParentRT.rect.width / 2) - myWidth))
@@ -84,4 +123,6 @@ using UnityEngine;
 
 		}
 	}
+
+
 }
