@@ -82,6 +82,9 @@ public class SelectMode : MonoBehaviour
 		//OptionsMode[indexMode].SetActive(false);
 		//Ativa a selecao atual
 		//OptionsMode[(int)mGameManager.mGameMode].SetActive(true);
+
+		Debug.Log(mGameManager.mGameMode);
+
 	}
 	/// <summary>
 	/// 

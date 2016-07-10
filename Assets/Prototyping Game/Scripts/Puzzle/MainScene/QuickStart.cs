@@ -8,7 +8,7 @@ public class QuickStart : MonoBehaviour {
 	private GameManager mGameManager;
 	private Texture2D mTexture2D;
 
-	void Awake()
+	void Start()
 	{
 		mGameManager = GameManager.instance;
 	}

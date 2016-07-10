@@ -28,12 +28,13 @@ public class ConfirmScreen : MonoBehaviour {
 	#endregion
 	
 
-	void Awake()
+	void Start()
 	{
 		mGameManager = GameManager.instance;
 	}
 
 	void OnEnable () {
+		mGameManager = GameManager.instance;
 		//zera a imagem alterior
 		ImageCrop.sprite = null;
 		//Debug.Log(mGameManager.ImageURL + " != " + urlImage);

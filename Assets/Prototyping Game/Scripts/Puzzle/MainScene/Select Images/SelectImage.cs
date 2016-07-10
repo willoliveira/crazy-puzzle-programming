@@ -26,15 +26,19 @@ public class SelectImage : MonoBehaviour {
 	void Awake()
 	{
 		instance = this;
-		mGameManager = GameManager.instance;
 	}
 
+	void Start()
+	{
+		mGameManager = GameManager.instance;
+	}
 
 	/// <summary>
 	/// 
 	/// </summary>
 	void OnEnable()
 	{
+		mGameManager = GameManager.instance;
 		if (ActualImageSelect == null)
 		{
 			//btNext.GetComponent<Button>().interactable = false;
