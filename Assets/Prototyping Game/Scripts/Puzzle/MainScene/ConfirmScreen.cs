@@ -14,7 +14,8 @@ public class ConfirmScreen : MonoBehaviour {
 	//
 	public Image ImageCrop;
 	//
-	public GameObject ButtonStart;
+	public Button ButtonBack;
+	public Button ButtonStart;
 	//
 	public GameObject PopUpImageCrop;
 	public CropImage mCropImage;
@@ -39,7 +40,8 @@ public class ConfirmScreen : MonoBehaviour {
 		if (mGameManager.mImageMode == ImageMode.Internet && mGameManager.ImageURL != urlImage)
 		{
 			//desabilita o botao ate a imagem carregar
-			ButtonStart.GetComponent<Button>().interactable = false;
+			ButtonBack.interactable = false;
+			ButtonStart.interactable = false;
 			//guarda um cache da ultima imagem salva
 			urlImage = mGameManager.ImageURL;
 			//puxa a imagem da net
@@ -99,7 +101,8 @@ public class ConfirmScreen : MonoBehaviour {
 		//Carrega a imagem 
 		mGameManager.ImageSelect = TextureImageSelect;
 		//habilita o botam depois da imagem ter carregado
-		ButtonStart.GetComponent<Button>().interactable = true;
+		ButtonBack.interactable = true;
+		ButtonStart.interactable = true;
 		//
 		SetImageCropImageCenter();
 	}

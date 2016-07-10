@@ -9,6 +9,7 @@ public class SearchImagesWeb : MonoBehaviour
 {
 	#region PUBLIC VARS
 	public ImageServiceAPI mImageServiceAPI;
+	public Button BtBack;
 	public Button GetMore;
 	public InputField mInputField;
 	public GameObject ImageContainer;
@@ -17,7 +18,7 @@ public class SearchImagesWeb : MonoBehaviour
 	public GameObject ErrorLoading;
 	#endregion
 
-	#region PRIVTE VARS
+	#region PRIVATE VARS
 	private int Page = 0;
 	private int ImagensTotal = 0;
 	private int ImagensLoaded = 0;

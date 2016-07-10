@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.EventSystems;
 
-public class ObjectImage : MonoBehaviour, IPointerDownHandler
+public class ObjectImage : MonoBehaviour, IPointerClickHandler
 {
 	#region PRIVATE VARS
 	private string imageURL;
@@ -31,12 +31,14 @@ public class ObjectImage : MonoBehaviour, IPointerDownHandler
 
 	#region PUBLIC METHODS
 	/// <summary>
-	/// TODO: Fazer o tratamento de quando for imagem da net, ele baixar imagem grande
+	/// 
 	/// </summary>
 	/// <param name="data"></param>
-	public void OnPointerDown(PointerEventData data)
+	public void OnPointerClick(PointerEventData data)
 	{
 		mSelectImages.SetImageChoice(gameObject);
 	}
 	#endregion
+
+	//private 	
 }

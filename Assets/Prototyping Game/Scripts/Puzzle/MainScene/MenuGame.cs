@@ -11,7 +11,7 @@ public class MenuGame : MonoBehaviour
 	public GameObject ConfirmationScreen;
 	//Botao boltar
 	public GameObject buttonBack;
-	public GameObject buttonNext;
+	//public GameObject buttonNext;
 	#endregion
 
 	#region PRIVATE VARS
@@ -42,7 +42,7 @@ public class MenuGame : MonoBehaviour
 		mMenuScreen = MenuScreen.MainMenu;
 		//Seta o botao avancar e voltar como inativo no inicio
 		buttonBack.SetActive(false);
-		buttonNext.SetActive(false);
+		//buttonNext.SetActive(false);
 		//Seta a tela Main como ativa no inicio
 		MainMenu.SetActive(true);
 		SelectMode.SetActive(false);
@@ -62,7 +62,7 @@ public class MenuGame : MonoBehaviour
 		mMenuScreen = MenuScreen.SelectMode;
 
 		buttonBack.SetActive(true);
-		buttonNext.SetActive(true);
+		//buttonNext.SetActive(true);
 	}
 	/// <summary>
 	/// Botao voltar do menu principal do jogo
@@ -73,7 +73,7 @@ public class MenuGame : MonoBehaviour
 		{
 			//desativa os botoes
 			buttonBack.SetActive(false);
-			buttonNext.SetActive(false);
+			//buttonNext.SetActive(false);
 			//
 			MainMenu.SetActive(true);
 			SelectMode.SetActive(false);
@@ -86,7 +86,7 @@ public class MenuGame : MonoBehaviour
 		{
 			//ativa os botoes
 			buttonBack.SetActive(true);
-			buttonNext.SetActive(true);
+			//buttonNext.SetActive(true);
 			//ativa/desativa as telas
 			MainMenu.SetActive(false);
 			SelectMode.SetActive(true);
@@ -99,7 +99,7 @@ public class MenuGame : MonoBehaviour
 		{
 			//ativa os botoes
 			buttonBack.SetActive(true);
-			buttonNext.SetActive(true);
+			//buttonNext.SetActive(true);
 			//ativa/desativa as telas
 			MainMenu.SetActive(false);
 			SelectMode.SetActive(false);
@@ -118,7 +118,7 @@ public class MenuGame : MonoBehaviour
 		{
 			//ativa os botoes
 			buttonBack.SetActive(true);
-			buttonNext.SetActive(true);
+			//buttonNext.SetActive(true);
 			//ativa/desativa as telas
 			MainMenu.SetActive(false);
 			SelectMode.SetActive(false);
@@ -132,7 +132,7 @@ public class MenuGame : MonoBehaviour
 		{
 			//ativa/desativa os botoes
 			buttonBack.SetActive(true);
-			buttonNext.SetActive(false);
+			//buttonNext.SetActive(false);
 			//ativa/desativa as telas
 			MainMenu.SetActive(false);
 			SelectMode.SetActive(false);

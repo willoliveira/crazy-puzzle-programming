@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.EventSystems;
 
 public class SelectImage : MonoBehaviour {
 
 	#region PUBLIC VARS
 	public static SelectImage instance;
-
-	public GameObject btNext;
+	public MenuGame mMenuGame;
 
 	public GameObject DefaultImageContainer;
 	public GameObject InternetImageContainer;
@@ -20,38 +20,32 @@ public class SelectImage : MonoBehaviour {
 	private GameObject PreviousImageSelect = null;
 	private GameObject ActualImageSelect = null;
 	#endregion
-
+	/// <summary>
+	/// 
+	/// </summary>
 	void Awake()
 	{
 		instance = this;
 		mGameManager = GameManager.instance;
 	}
-	
-	// Use this for initialization
-	void OnEnable () {
 
+
+	/// <summary>
+	/// 
+	/// </summary>
+	void OnEnable()
+	{
 		if (ActualImageSelect == null)
 		{
-			btNext.GetComponent<Button>().interactable = false;
+			//btNext.GetComponent<Button>().interactable = false;
 		}
 		//seta o tipo do modo
 		SetActiveImageContainerMode(mGameManager.mImageMode);
-	}
-	void Start()
-	{
-		
-	}
-
-	void OnDisable()
-	{
-		//volta o botao de proximo
-		btNext.GetComponent<Button>().interactable = true;
 	}
 
 	#region PUBLIC METHODS
 	/// <summary>
 	/// 
-	/// TODO: Conversar com o Lucas sobre qual sera o estado de checkado
 	/// </summary>
 	/// <param name="mObjectImage"></param>
 	public void SetImageChoice(GameObject imageSelect)
@@ -59,54 +53,49 @@ public class SelectImage : MonoBehaviour {
 		//pega o object image do game object
 		ObjectImage mObjectImage = imageSelect.GetComponent<ObjectImage>();
 		//guarda o anterior clicado
-		if (ActualImageSelect != null && ActualImageSelect != imageSelect)
-		{
-			PreviousImageSelect = ActualImageSelect;
-		}
-
-		if (ActualImageSelect == imageSelect)
-		{
-			//desabilita o botao
-			btNext.GetComponent<Button>().interactable = false;
-			//
-			ActualImageSelect.GetComponent<Image>().color = Color.white;
-			//zera
-			ActualImageSelect = null;
-			PreviousImageSelect = null;
+		//if (ActualImageSelect != null && ActualImageSelect != imageSelect)
+		//{
+		//	PreviousImageSelect = ActualImageSelect;
+		//}
+		//if (ActualImageSelect == imageSelect)
+		//{
+		//	//desabilita o botao
+		//	//btNext.GetComponent<Button>().interactable = false;
+		//	//
+		//	ActualImageSelect.GetComponent<Image>().color = Color.white;
+		//	//zera
+		//	ActualImageSelect = null;
+		//	PreviousImageSelect = null;
 			
-			mGameManager.ImageSelect = null;
-			mGameManager.ImageURL = null;
+		//	mGameManager.ImageSelect = null;
+		//	mGameManager.ImageURL = null;
+		//}
+		//else
+		//{
+		//habilita o botao
+		//btNext.GetComponent<Button>().interactable = true;
+		//seta o clicado como atual
+		ActualImageSelect = imageSelect;
+		//imageSelect.GetComponent<Image>().color = Color.black;
+		//se houver url
+		if (string.IsNullOrEmpty(mObjectImage.ImageURL))
+		{
+			//salva a imagem escolhida
+			mGameManager.ImageSelect = mObjectImage.ImageTexture;
 		}
 		else
 		{
-			//habilita o botao
-			btNext.GetComponent<Button>().interactable = true;
-			//seta o clicado como atual
-			ActualImageSelect = imageSelect;
-			imageSelect.GetComponent<Image>().color = Color.black;
-			//se houver url
-			if (string.IsNullOrEmpty(mObjectImage.ImageURL))
-			{
-				//salva a imagem escolhida
-				mGameManager.ImageSelect = mObjectImage.ImageTexture;
-			}
-			else
-			{
-				//Salva a url
-				mGameManager.ImageURL = mObjectImage.ImageURL;
-			}
+			//Salva a url
+			mGameManager.ImageURL = mObjectImage.ImageURL;
 		}
+		mMenuGame.btNext();
+		//}
 		//se houver um anterior, volta a cor dele
-		if (PreviousImageSelect != null)
-		{
-			PreviousImageSelect.GetComponent<Image>().color = Color.white;
-		}
-	}
-	
-	public void OnScrollImageContainer()
-	{
-		Debug.Log("OnScrollImageContainer");
-	}
+		//if (PreviousImageSelect != null)
+		//{
+		//	PreviousImageSelect.GetComponent<Image>().color = Color.white;
+		//}
+	}	
 	#endregion
 
 	#region PRIVATE METHODS

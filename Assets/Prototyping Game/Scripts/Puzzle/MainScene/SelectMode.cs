@@ -36,15 +36,22 @@ public class SelectMode : MonoBehaviour
 		mGameManager.mImageMode = ImageMode.Default;
 	}
 
+	#region PRIVATE METHODS
+	/// <summary>
+	/// 
+	/// </summary>
 	private void prevModeTrigger()
 	{
 		btNavMode(-1);
 	}
-
+	/// <summary>
+	/// 
+	/// </summary>
 	private void nextModeTrigger()
 	{
 		btNavMode(1);
 	}
+	#endregion
 
 	#region PUBLIC METHODS
 	/// <summary>
