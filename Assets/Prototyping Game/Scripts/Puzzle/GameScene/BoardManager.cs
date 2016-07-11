@@ -20,10 +20,7 @@ public class BoardManager : MonoBehaviour
 	#region PUBLIC VARS
 	[HideInInspector]
 	public static BoardManager instance;
-
-	public GameObject InitGame;
-	//imagem de referencia
-	public Texture2D image;
+	
 	//referencia de onde vai adicionar as peças
 	public Transform Board;
 	//quadrado de referencia
@@ -37,6 +34,9 @@ public class BoardManager : MonoBehaviour
 	//Janela de finish
 	public FinishScreen mFinishScreen;
 
+	public GameObject InitGame;
+	public GameObject InGame;
+	
 	#region CONFIG BOARD
 	//tamanho do board
 	public int BoardSize = 300;
@@ -83,10 +83,13 @@ public class BoardManager : MonoBehaviour
 	void Start()
 	{
 		mGameManager = GameManager.instance;
+		
 		//inicia a lista de struct com as pecas
 		listObjCropImages = new List<StructCrop>();
 		//Configura o board
 		ConfigGame();
+		//
+		InGame.SetActive(false);
 	}
 
 	#region PUBLIC METHODS
@@ -97,9 +100,16 @@ public class BoardManager : MonoBehaviour
 	{
 		//Altamente provisorio, se for ser assim, fazer direito.
 		InitGame.SetActive(false);
+		InGame.SetActive(false);
+		//Limpa o tempo
+		mTimer.ClearTimer();
+		mTimer.IsEnable = false;
 		//Começa o jogo
 		StartCoroutine(FadeInAndRandomPieces());
 	}
+	/// <summary>
+	/// 
+	/// </summary>
 	/// <summary>
 	/// OBS: o X em coordenada no plano cartesiano, aqui ele carecterizado como coluna e o Y como linha, pois,
 	///		movendo o objeto em X, você estara movendo ele horizontalmente, então, fazendo ele mudar a coluna, 
@@ -147,6 +157,8 @@ public class BoardManager : MonoBehaviour
 	/// </summary>
 	public void EndRandomPieces()
 	{
+		//ativa as opções in game
+		InGame.SetActive(true);
 		//habilita a movimentação
 		mMoveSquare.IsEnable = true;
 		//Limpa o tempo e começa a contagem
@@ -400,7 +412,10 @@ public class BoardManager : MonoBehaviour
 	private IEnumerator FadeInAndRandomPieces()
 	{
 		//some com a ultima
-		yield return StartCoroutine(Fade(lastPiece.GetComponent<Image>(), 0.03f));
+		if ((int)lastPiece.GetComponent<Image>().color.a == 1)
+			yield return StartCoroutine(Fade(lastPiece.GetComponent<Image>(), 0.03f));
+		else
+			yield return null;
 		//
 		//lastPiece.gameObject.SetActive(false);
 		//randomiza

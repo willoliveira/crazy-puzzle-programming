@@ -53,6 +53,11 @@ public class Timer : MonoBehaviour {
 	public void ClearTimer()
 	{
 		timer = 0;
+		minutes = 0;
+		seconds = 0;
+		fraction = 0;
+		//
+		TimeTextUI.text = TimerFormatted();
 	}
 	
 
