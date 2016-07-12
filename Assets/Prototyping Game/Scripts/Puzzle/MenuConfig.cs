@@ -17,6 +17,8 @@ public class MenuConfig : MonoBehaviour {
 	void Start () {
 		mAudioManager = AudioManager.instance;
 
+		OptionsMenu.SetActive(false);
+
 		ConfigMenu();
 	}
 	
