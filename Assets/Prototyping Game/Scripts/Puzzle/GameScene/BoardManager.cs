@@ -157,6 +157,7 @@ public class BoardManager : MonoBehaviour
 	/// </summary>
 	public void EndRandomPieces()
 	{
+		
 		//ativa as opções in game
 		InGame.SetActive(true);
 		//habilita a movimentação
