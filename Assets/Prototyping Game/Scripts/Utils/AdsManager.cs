@@ -11,10 +11,10 @@ public class AdsManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		#if UNITY_ANDROID
-		adUnitId = "ca-app-pub-9314300016729396/3916609662";
+#if UNITY_ANDROID
+		adUnitId = "ca-app-pub-2302915872676550/5582174420";
 		StartBannerGoogle();
-		#endif
+#endif
 	}
 
 	private void StartBannerGoogle() {
