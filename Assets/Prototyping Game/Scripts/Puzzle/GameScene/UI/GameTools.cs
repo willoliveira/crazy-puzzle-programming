@@ -55,8 +55,7 @@ public class GameTools : MonoBehaviour
 		InfoGameScreen.SetActive(false);
 	}
 
-
-
+	
 	public void OpenRestartScreen()
 	{
 		if (Time.timeScale == 0)
@@ -86,6 +85,10 @@ public class GameTools : MonoBehaviour
 	public void OkRestartScreen()
 	{
 		Time.timeScale = 1;
+
+		btPause.SetActive(true);
+		btResume.SetActive(false);
+
 		RestartScreen.SetActive(false);
 	}
 }
