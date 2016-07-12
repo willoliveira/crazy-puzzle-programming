@@ -10,10 +10,13 @@ public class ApplicaitonBack : MonoBehaviour {
 	#region PUBLIC VARS
 	public GameObject Loading;
 	public GameObject QuitScreen;
+	public GameObject Screens;
 	#endregion
 
 	#region PRIVATE VARS
 	private bool QuitOpen;
+
+	bool yetPaused = false;
 	#endregion
 
 	// Update is called once per frame
@@ -21,11 +24,15 @@ public class ApplicaitonBack : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Escape)) {
 			if (!QuitScreen.activeSelf)
 			{
-				Time.timeScale = 0;
+				if (Time.timeScale == 0)
+					yetPaused = true;
+				else
+					Time.timeScale = 0;
 				QuitScreen.SetActive(true);
 			}
 			else
 			{
+				Debug.Log("Hey");
 				ManageBackScene();
 			}
 		}
@@ -38,14 +45,19 @@ public class ApplicaitonBack : MonoBehaviour {
 	public void ButtonOk()
 	{
 		ManageBackScene();
+
+		yetPaused = false;
 	}
 	/// <summary>
 	/// 
 	/// </summary>
 	public void ButtonCancel()
 	{
-		Time.timeScale = 1;
+		if (!yetPaused)
+			Time.timeScale = 1;
 		QuitScreen.SetActive(false);
+
+		yetPaused = false;
 	}
 	#endregion
 
@@ -55,10 +67,14 @@ public class ApplicaitonBack : MonoBehaviour {
 	/// </summary>
 	private void ManageBackScene()
 	{
+		Debug.Log(SceneManager.GetActiveScene().buildIndex);
 		if (SceneManager.GetActiveScene().buildIndex > 0)
 		{
+			if (!yetPaused)
+				Time.timeScale = 1;
+			yetPaused = false;
+
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
-			Time.timeScale = 1;
 		}
 		else
 		{
