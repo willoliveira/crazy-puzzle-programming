@@ -7,6 +7,7 @@ using System;
 public class AdsManager : MonoBehaviour {
 
 	string adUnitId;
+	public 
 	BannerView bannerView;
 
 	// Use this for initialization
