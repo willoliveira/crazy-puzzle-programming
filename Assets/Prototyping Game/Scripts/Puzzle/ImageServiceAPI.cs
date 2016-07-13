@@ -15,11 +15,11 @@ public class ImageServiceAPI : MonoBehaviour
 
 	#region PRIVATE VARS
 	//Imagens por pagina
-	private int PerPage = 10;
+	private int PerPage = 9;
 	//busca
 	private string q = "";
 	//tipo de imagens
-	private string ImageType = "all";
+	private string ImageType = "photo";
 	//busca segura
 	private bool SafeSearch = true;
 	//linguagem da busca
