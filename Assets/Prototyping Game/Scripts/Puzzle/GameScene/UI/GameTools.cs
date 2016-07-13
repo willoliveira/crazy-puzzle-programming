@@ -8,6 +8,9 @@ public class GameTools : MonoBehaviour
 	public GameObject btResume;
 	public GameObject btPause;
 
+	public Button btInfo;
+	public GameObject labelInfo;
+
 	public GameObject InfoGameScreen;
 	public Image InfoImageSelect;
 
@@ -33,6 +36,11 @@ public class GameTools : MonoBehaviour
 
 			btResume.SetActive(true);
 			btPause.SetActive(false);
+
+			BoardManager.instance.PauseGame(true);
+
+			btInfo.interactable = false;
+			labelInfo.SetActive(false);
 		}
 		else
 		{
@@ -40,6 +48,11 @@ public class GameTools : MonoBehaviour
 
 			btResume.SetActive(false);
 			btPause.SetActive(true);
+
+			BoardManager.instance.PauseGame(false);
+
+			btInfo.interactable = true;
+			labelInfo.SetActive(true);
 		}
 	}
 
@@ -90,5 +103,9 @@ public class GameTools : MonoBehaviour
 		btResume.SetActive(false);
 
 		RestartScreen.SetActive(false);
+
+		btInfo.interactable = true;
+
+		BoardManager.instance.PauseGame(false);
 	}
 }
