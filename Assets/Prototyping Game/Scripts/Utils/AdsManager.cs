@@ -2,11 +2,12 @@
 using System.Collections;
 
 using GoogleMobileAds.Api;
-
+using System;
 
 public class AdsManager : MonoBehaviour {
 
 	string adUnitId;
+	BannerView bannerView;
 
 	// Use this for initialization
 	void Start () {
@@ -19,11 +20,18 @@ public class AdsManager : MonoBehaviour {
 
 	private void StartBannerGoogle() {
 		// Create a 320x50 banner at the top of the screen.
-		BannerView bannerView = new BannerView(adUnitId, AdSize.Banner, AdPosition.Bottom);
+		bannerView = new BannerView(adUnitId, AdSize.Banner, AdPosition.Bottom);
+		bannerView.OnAdLoaded += HandleAdLoaded;
 		// Create an empty ad request.
 		AdRequest request = new AdRequest.Builder().Build();
 		// Load the banner with the request.
 		bannerView.LoadAd(request);
+	}
+
+
+	public void HandleAdLoaded(object sender, EventArgs args)
+	{
+		bannerView.Show();
 	}
 
 }
