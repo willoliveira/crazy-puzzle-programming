@@ -17,8 +17,8 @@ public class SelectImage : MonoBehaviour {
 	#region PRIVATE VARS
 	private GameManager mGameManager;
 	//
-	private GameObject PreviousImageSelect = null;
-	private GameObject ActualImageSelect = null;
+	//private GameObject PreviousImageSelect = null;
+	//private GameObject ActualImageSelect = null;
 	#endregion
 	/// <summary>
 	/// 
@@ -39,10 +39,10 @@ public class SelectImage : MonoBehaviour {
 	void OnEnable()
 	{
 		mGameManager = GameManager.instance;
-		if (ActualImageSelect == null)
-		{
-			//btNext.GetComponent<Button>().interactable = false;
-		}
+		//if (ActualImageSelect == null)
+		//{
+		//	btNext.GetComponent<Button>().interactable = false;
+		//}
 		//seta o tipo do modo
 		SetActiveImageContainerMode(mGameManager.mImageMode);
 	}
@@ -79,7 +79,7 @@ public class SelectImage : MonoBehaviour {
 		//habilita o botao
 		//btNext.GetComponent<Button>().interactable = true;
 		//seta o clicado como atual
-		ActualImageSelect = imageSelect;
+		//ActualImageSelect = imageSelect;
 		//imageSelect.GetComponent<Image>().color = Color.black;
 		//se houver url
 		if (string.IsNullOrEmpty(mObjectImage.ImageURL))

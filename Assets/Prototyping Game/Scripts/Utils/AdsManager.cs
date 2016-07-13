@@ -1,35 +1,33 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
-
-using AdDuplexUnitySDK;
-
 #if UNITY_ANDROID
 using GoogleMobileAds.Api;
 #endif
-using System;
 
 public class AdsManager : MonoBehaviour {
 
-	public AdDuplexUnitySDK.Assets.Plugins.AdDuplexManagement mAdDuplexManagement;
+#if UNITY_WSA_10_0
+	public GameObject mAdDuplexManagement;
+#endif
+#if UNITY_ANDROID
 	string adUnitId;
-	#if UNITY_ANDROID
 	BannerView bannerView;
-	#endif
+#endif
 
 	// Use this for initialization
 	void Start () {
-
 #if UNITY_ANDROID
 		adUnitId = "ca-app-pub-2302915872676550/5582174420";
+		StartBanner();
 #endif
 #if UNITY_WSA_10_0
-		adUnitId = "ca-app-pub-2302915872676550/5582174420";
+		mAdDuplexManagement.SetActive(true);
 #endif
-		StartBanner();
 	}
 
-	private void StartBanner() {
 #if UNITY_ANDROID
+	private void StartBanner() {
 		// Create a 320x50 banner at the top of the screen.
 		bannerView = new BannerView(adUnitId, AdSize.Banner, AdPosition.Bottom);
 		bannerView.OnAdLoaded += HandleAdLoaded;
@@ -37,12 +35,8 @@ public class AdsManager : MonoBehaviour {
 		AdRequest request = new AdRequest.Builder().Build();
 		// Load the banner with the request.
 		bannerView.LoadAd(request);
-#endif
-#if UNITY_WSA_10_0
-#endif
-	}
+}
 
-#if UNITY_ANDROID
 	public void HandleAdLoaded(object sender, EventArgs args)
 	{
 		bannerView.Show();
