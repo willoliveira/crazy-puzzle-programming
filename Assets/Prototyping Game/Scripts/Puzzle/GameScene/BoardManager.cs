@@ -110,6 +110,24 @@ public class BoardManager : MonoBehaviour
 	/// <summary>
 	/// 
 	/// </summary>
+	/// <param name="pause"></param>
+	public void PauseGame(bool pause)
+	{
+		for (int cont = 0; cont < (columns * columns); cont++)
+		{
+			int row = Mathf.FloorToInt(cont / (columns));
+			int column = cont % columns;
+			//pega o gameobject do quadrado
+			Transform TransformSquare = Board.Find("square-" + row + "-" + column);
+			if (TransformSquare)
+			{
+				TransformSquare.GetComponent<DragAndDropUI>().EnabledDrag = !pause;
+			}
+		}
+	}
+	/// <summary>
+	/// 
+	/// </summary>
 	/// <summary>
 	/// OBS: o X em coordenada no plano cartesiano, aqui ele carecterizado como coluna e o Y como linha, pois,
 	///		movendo o objeto em X, você estara movendo ele horizontalmente, então, fazendo ele mudar a coluna, 
