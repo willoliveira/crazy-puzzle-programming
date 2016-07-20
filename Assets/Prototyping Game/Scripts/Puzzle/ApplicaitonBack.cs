@@ -10,7 +10,6 @@ public class ApplicaitonBack : MonoBehaviour {
 	#region PUBLIC VARS
 	public GameObject Loading;
 	public GameObject QuitScreen;
-	public GameObject Screens;
 	#endregion
 
 	#region PRIVATE VARS

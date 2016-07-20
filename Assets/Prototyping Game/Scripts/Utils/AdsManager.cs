@@ -23,6 +23,7 @@ public class AdsManager : MonoBehaviour {
 #endif
 #if UNITY_WSA_10_0
 		mAdDuplexManagement.SetActive(true);
+		AdDuplexInterop.ShowAdControl();
 #endif
 	}
 

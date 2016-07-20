@@ -26,12 +26,10 @@ public class GameManager : MonoBehaviour
 	#region PUBLIC VARS
 	[HideInInspector]
 	public static GameManager instance;
-
 	[HideInInspector]
 	public GameMode mGameMode;
 	[HideInInspector]
 	public ImageMode mImageMode;
-
 	//URL da imagem quando for da internet
 	[HideInInspector]
 	public string ImageURL;
@@ -41,6 +39,8 @@ public class GameManager : MonoBehaviour
 	//retangulo de recorte da image seleciona
 	[HideInInspector]
 	public Rect ImageCropRect;
+
+	public bool GamePaused;
 	#endregion
 
 	#region PRIVATE VARS
