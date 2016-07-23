@@ -16,7 +16,7 @@ public class TranslateSmartLocalization : MonoBehaviour {
 	
 	public void TextTranslate()
 	{
-		string str = mLanguageManager.GetTextValue(this.name);
+		string str = SmartLocalization.LanguageManager.Instance.GetTextValue(this.name);
 		if (!string.IsNullOrEmpty(str))
 		{
 			GetComponent<Text>().text = str;
