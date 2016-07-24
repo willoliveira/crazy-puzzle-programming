@@ -50,5 +50,11 @@
       <nativeName>português</nativeName>
       <isRightToLeft>false</isRightToLeft>
     </CultureInfo>
+    <CultureInfo>
+      <languageCode>zh-CHT</languageCode>
+      <englishName>Chinese</englishName>
+      <nativeName>中文</nativeName>
+      <isRightToLeft>false</isRightToLeft>
+    </CultureInfo>
   </CultureInfos>
 </SmartCultureCollections>

@@ -7,7 +7,6 @@ using SmartLocalization;
 public class TranslateManager : MonoBehaviour {
 
 	LanguageManager mLanguageManager;
-	public Text t;
 
 	private string returnLanguageCode()
 	{
@@ -20,7 +19,7 @@ public class TranslateManager : MonoBehaviour {
 			case "French":
 				retorno = "fr";
 				break;
-			case "Germany":
+			case "German":
 				retorno = "de";
 				break;
 			case "Korean":
@@ -51,9 +50,6 @@ public class TranslateManager : MonoBehaviour {
 	{
 		string strLanguageCode;
 		string systemLanguage = Application.systemLanguage + "";
-
-		t.text = Application.systemLanguage + ""; 
-		t.text = systemLanguage + " - " + returnLanguageCode();
 
 		if (LanguageManager.Instance.IsLanguageSupportedEnglishName(systemLanguage))
 		{

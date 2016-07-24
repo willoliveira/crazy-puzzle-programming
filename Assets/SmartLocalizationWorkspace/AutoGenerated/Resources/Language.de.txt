@@ -150,7 +150,8 @@
 		<value>HANDY</value>
 	</data>
 	<data name="ErrorLoading" xml:space="preserve">
-		<value>Es war nicht möglich, die Bilder zu laden.</value>
+		<value>Es war nicht möglich, 
+die Bilder zu laden.</value>
 	</data>
 	<data name="GameLabel" xml:space="preserve">
 		<value>SPIEL</value>
@@ -159,7 +160,8 @@
 		<value>BILD ANZEIGEN</value>
 	</data>
 	<data name="msg_ChangeAImage" xml:space="preserve">
-		<value>Klicken Sie auf das Bild, um Ihren Ausschnitt ändern!</value>
+		<value>Klicken Sie auf das Bild, 
+um Ihren Ausschnitt ändern!</value>
 	</data>
 	<data name="msg_CompletedGame" xml:space="preserve">
 		<value>Spiel beendet</value>
@@ -168,22 +170,27 @@
 		<value>Herzlichen Glückwunsch!</value>
 	</data>
 	<data name="msg_InfoImage" xml:space="preserve">
-		<value>Versuchen Sie, Ihr Image zu merken, denn die Uhr tickt!</value>
+		<value>Versuchen Sie, Ihr Image zu merken, 
+denn die Uhr tickt!</value>
 	</data>
 	<data name="msg_Loading" xml:space="preserve">
 		<value>Werden geladen...</value>
 	</data>
 	<data name="msg_QuitGame" xml:space="preserve">
-		<value>Möchten Sie wirklich das Spiel beenden?</value>
+		<value>Möchten Sie wirklich 
+das Spiel beenden?</value>
 	</data>
 	<data name="msg_RestartGame" xml:space="preserve">
-		<value>Möchten Sie wirklich Ihr Spiel fortsetzen?</value>
+		<value>Möchten Sie wirklich 
+Ihr Spiel fortsetzen?</value>
 	</data>
 	<data name="msg_SelectAImage" xml:space="preserve">
 		<value>Wählen SIE das Bild</value>
 	</data>
 	<data name="msg_Welcome" xml:space="preserve">
-		<value>Willkommen Sie Hallo, herzlich in Ihrem neuen Puzzle-Spiel</value>
+		<value>Willkommen Sie Hallo, 
+herzlich in Ihrem neuen 
+Puzzle-Spiel</value>
 	</data>
 	<data name="NetLabel" xml:space="preserve">
 		<value>INTERNET</value>
