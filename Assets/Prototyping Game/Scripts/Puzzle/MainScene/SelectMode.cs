@@ -6,10 +6,8 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class SelectMode : MonoBehaviour
 {
-	public Text test;
-
 	#region PRIVATE VARS
-	public GameObject[] OptionsMode;
+	//public GameObject[] OptionsMode;
 	private GameManager mGameManager;
 	#endregion
 

@@ -109,13 +109,14 @@ public class SelectImage : MonoBehaviour {
 	/// <param name="imageMode"></param>
 	private void SetActiveImageContainerMode(ImageMode imageMode)
 	{
-		if (imageMode == ImageMode.Local)
-		{
-			LocalImageContainer.SetActive(true);
-			InternetImageContainer.SetActive(false);
-			DefaultImageContainer.SetActive(false);
-		}
-		else if (imageMode == ImageMode.Internet)
+		//if (imageMode == ImageMode.Local)
+		//{
+		//	LocalImageContainer.SetActive(true);
+		//	InternetImageContainer.SetActive(false);
+		//	DefaultImageContainer.SetActive(false);
+		//}
+		//else 
+		if (imageMode == ImageMode.Internet)
 		{
 			LocalImageContainer.SetActive(false);
 			InternetImageContainer.SetActive(true);
